@@ -14,8 +14,11 @@
   const toggle = (v) => (selected = selected.includes(v) ? selected.filter((x) => x !== v) : [...selected, v])
 </script>
 
-<div class="group" data-facet={label}>
-  <h3 class="mono">{label}{#if selected.length}<span class="count">{selected.length}</span>{/if}</h3>
+<section class="group" data-facet={label}>
+  <h3 class="micro">
+    {label}{#if selected.length}<span class="count mono">{selected.length}</span>{/if}
+  </h3>
+
   <div class="opts">
     {#each shown as o}
       <button type="button" class:on={selected.includes(o)} aria-pressed={selected.includes(o)} onclick={() => toggle(o)}>
@@ -23,60 +26,53 @@
       </button>
     {/each}
   </div>
+
   {#if collapsible && options.length > limit}
-    <button type="button" class="more mono" onclick={() => (expanded = !expanded)}>
+    <button type="button" class="more micro" onclick={() => (expanded = !expanded)}>
       {expanded ? 'Show fewer' : `Show all ${options.length}`}
     </button>
   {/if}
-</div>
+</section>
 
 <style>
-  .group { display: grid; gap: 0.4rem; }
+  .group { display: grid; gap: 0.65rem; }
 
-  h3 {
-    margin: 0;
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
+  h3 { margin: 0; display: flex; align-items: center; gap: 0.45rem; }
 
   .count {
-    background: var(--seaglass);
-    color: var(--paper);
-    border-radius: 999px;
-    padding: 0 0.35rem;
+    color: var(--cyan);
+    background: var(--cyan-dim);
+    border-radius: var(--r-pill);
+    padding: 0 0.4rem;
     font-size: 0.6rem;
-    line-height: 1.4;
+    letter-spacing: 0;
   }
 
-  .opts { display: flex; flex-wrap: wrap; gap: 3px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 0.3rem; }
 
   .opts button {
-    border: var(--rule);
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-    border-radius: var(--radius);
-    padding: 0.2rem 0.45rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    color: var(--text-soft);
+    padding: 0.24rem 0.65rem;
     font-family: var(--font-mono);
     font-size: 0.68rem;
-    transition: background 120ms, color 120ms, border-color 120ms;
+    transition: border-color 140ms, color 140ms, background 140ms;
   }
-  .opts button:hover { border-color: var(--seaglass); }
-  .opts button.on { background: var(--seaglass); border-color: var(--seaglass); color: var(--paper); }
+  .opts button:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
+  .opts button.on {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--void);
+    font-weight: 500;
+  }
 
   .more {
     justify-self: start;
-    border: 0;
-    background: none;
-    padding: 0;
-    color: var(--seaglass);
-    font-size: 0.66rem;
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+    transition: color 140ms;
   }
+  .more:hover { color: var(--cyan); }
 </style>

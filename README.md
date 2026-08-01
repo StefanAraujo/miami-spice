@@ -53,7 +53,10 @@ node verify.mjs
 
 Drives the real UI in headless Chromium and checks every result count against an
 independent pass over `spice.json` — so a broken filter fails the run rather than
-silently returning the wrong restaurants. Writes `verify-*.png` screenshots.
+silently returning the wrong restaurants. Also asserts WCAG AA contrast across the
+palette and that nothing overflows a 390px viewport. Writes `verify-*.png` screenshots.
+
+Playwright is a devDependency, so the first `npm install` pulls a Chromium build.
 
 ## How the filtering works
 
@@ -91,9 +94,42 @@ derived/    AI summaries, notes, visit history — keyed by id so a re-scrape
             never clobbers them
 ```
 
+## Design: Vice noir
+
+Dark, minimal, two neons and nothing else. Grounded in the show's actual brand
+colors — cyan `#0BD2D3` and pink `#F990E8` — pulled off full saturation and set
+on a blue-black ground rather than pure black, per standard dark-mode practice.
+
+| Token | Hex | Use |
+|---|---|---|
+| `--void` | `#0A0D14` | Page ground |
+| `--surface` | `#12161F` | Cards, controls |
+| `--line` | `#232939` | Hairlines |
+| `--text` | `#EAECF2` | Body |
+| `--cyan` | `#22D3D4` | Structure and state: active filters, section heads |
+| `--hot` | `#FF4D9D` | Price only |
+| `--pink` | `#F97FD9` | Availability only |
+
+Three rules keep it from tipping into pastiche:
+
+1. **Neon is information, never decoration.** Cyan means "you selected this."
+   Pink means "this is what it costs and when." Nothing is neon for atmosphere.
+2. **One gradient, one place.** A sunset bleeds out of the top edge at ~15%
+   opacity. That is the whole 80s reference.
+3. **The two neons touch exactly once**, in the wordmark.
+
+Type is two families: **Space Grotesk** (display and body) and **IBM Plex Mono**
+(all data, tabular figures). Both are self-hosted via `@fontsource`, so the app
+renders identically offline and makes no request to Google.
+
+Every text color pair clears WCAG AA 4.5:1 — `verify.mjs` asserts it by parsing
+the tokens straight out of `app.css`, so a future palette tweak that breaks
+contrast fails the run instead of shipping.
+
 ## Notes
 
 - Review content is **deep-linked, never fetched**. Yelp, Google Places and
   Tripadvisor all forbid caching their content; each card links out instead.
-- Fonts load from Google Fonts with system fallbacks. Everything else is local.
 - Data snapshot date is shown in the masthead so you know how stale it is.
+- The palette is entirely CSS custom properties, so a light theme is a variable
+  swap in `app.css` rather than a rewrite.

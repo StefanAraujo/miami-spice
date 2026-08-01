@@ -19,7 +19,8 @@
 
   // Any filter change resets the scroll window.
   $effect(() => {
-    void f, sort
+    void f
+    void sort
     shown = 60
   })
 
@@ -31,11 +32,11 @@
   }
 
   const FACET_NAME = {
-    availability: 'the day and meal',
-    cuisines: 'the cuisine',
-    hoods: 'the neighborhood',
-    prices: 'the price',
-    flags: 'the dietary and amenity',
+    availability: 'day and meal',
+    cuisines: 'cuisine',
+    hoods: 'neighborhood',
+    prices: 'price',
+    flags: 'dietary and amenity',
   }
 
   /** Every active filter as a removable chip. */
@@ -56,8 +57,8 @@
     `${restaurants.length} restaurants`,
     `${facets.cuisines.length} cuisines`,
     `${facets.hoods.length} neighborhoods`,
-    stamp && `data from ${stamp}`,
-  ].filter(Boolean).join(' · ')
+    stamp && `updated ${stamp}`,
+  ].filter(Boolean).join('  ·  ')
 
   function sentinel(node) {
     const io = new IntersectionObserver((es) => {
@@ -70,8 +71,8 @@
 
 <header class="masthead">
   <div class="wrap">
-    <h1>Miami Spice</h1>
-    <p class="tagline mono">{tagline}</p>
+    <h1>Miami <span>Spice</span></h1>
+    <p class="tagline micro">{tagline}</p>
   </div>
 </header>
 
@@ -81,13 +82,13 @@
     <div class="rail-inner">
       <label class="search">
         <span class="sr-only">Search restaurants, cuisines or dishes</span>
-        <input type="search" placeholder="Search a name, cuisine or dish…" bind:value={f.query} />
+        <input type="search" placeholder="Search a name, cuisine, dish…" bind:value={f.query} />
       </label>
 
-      <div class="avail">
-        <h3 class="mono">When you want to go</h3>
+      <section class="avail">
+        <h3 class="micro">When you want to go</h3>
         <DayMealGrid bind:days={f.days} bind:meals={f.meals} />
-      </div>
+      </section>
 
       <FacetGroup label="Price" options={facets.prices} bind:selected={f.prices} format={(p) => `$${p}`} />
       <FacetGroup label="Cuisine" options={facets.cuisines} bind:selected={f.cuisines} collapsible limit={10} />
@@ -99,19 +100,20 @@
   <!-- ---------------------------------------------------------- results -->
   <main>
     <div class="bar">
-      <p class="count mono" aria-live="polite">
-        <strong>{results.length}</strong> {results.length === 1 ? 'restaurant' : 'restaurants'}
+      <p class="count" aria-live="polite">
+        <strong class="mono">{results.length}</strong>
+        <span class="micro">{results.length === 1 ? 'restaurant' : 'restaurants'}</span>
       </p>
 
       <div class="bar-right">
-        <label class="sortsel mono">
+        <label class="sortsel">
           <span class="sr-only">Sort results</span>
-          <select bind:value={sort}>
+          <select class="mono" bind:value={sort}>
             {#each Object.entries(SORTS) as [k, v]}<option value={k}>{v.label}</option>{/each}
           </select>
         </label>
         <button type="button" class="toggle mono" onclick={() => (filtersOpen = !filtersOpen)}>
-          {filtersOpen ? 'Hide filters' : 'Filters'}{#if chips.length} ({chips.length}){/if}
+          {filtersOpen ? 'Close' : chips.length ? `Filters · ${chips.length}` : 'Filters'}
         </button>
       </div>
     </div>
@@ -121,7 +123,7 @@
         {#each chips as c}
           <li>
             <button type="button" class="mono" onclick={c.remove}>
-              {c.label}<span aria-hidden="true">×</span><span class="sr-only">, remove filter</span>
+              {c.label}<span class="x" aria-hidden="true">×</span><span class="sr-only">, remove filter</span>
             </button>
           </li>
         {/each}
@@ -133,18 +135,19 @@
       <div class="empty">
         <p class="lead">Nothing matches all of those at once.</p>
         {#if relax.length}
-          <p class="fix">Loosening one filter brings results back:</p>
+          <p class="fix micro">Loosen one and results come back</p>
           <ul>
             {#each relax as r}
               <li>
                 <button type="button" class="mono" onclick={() => drop(r.facet)}>
-                  Drop {FACET_NAME[r.facet]} filter → {r.count} {r.count === 1 ? 'match' : 'matches'}
+                  <span>Drop {FACET_NAME[r.facet]}</span>
+                  <span class="n">{r.count}</span>
                 </button>
               </li>
             {/each}
           </ul>
         {:else}
-          <p class="fix">Try clearing a filter or two.</p>
+          <p class="fix micro">Try clearing a filter or two</p>
           <button type="button" class="mono reset" onclick={clearAll}>Start over</button>
         {/if}
       </div>
@@ -155,78 +158,76 @@
         {/each}
       </div>
       {#if shown < results.length}
-        <div class="sentinel mono" use:sentinel>Loading more…</div>
+        <div class="sentinel micro" use:sentinel>Loading more</div>
       {/if}
     {/if}
   </main>
 </div>
 
 <footer class="wrap">
-  <p class="mono">
-    Unofficial. Menus and prices come from miamiandbeaches.com and can change mid-season — confirm with the restaurant before you go.
+  <p class="micro">
+    Unofficial · menus and prices come from miamiandbeaches.com and shift mid-season · confirm before you go
   </p>
 </footer>
 
 <style>
-  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 1.25rem; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 1.5rem; }
 
-  .masthead { border-bottom: 3px solid var(--seaglass); background: var(--paper); padding: 1.4rem 0 1rem; }
+  .masthead { padding: 3.25rem 0 1.75rem; }
 
   h1 {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(1.9rem, 5vw, 2.9rem);
-    letter-spacing: -0.03em;
+    font-size: clamp(2.4rem, 7vw, 4rem);
+    letter-spacing: -0.045em;
+    line-height: 0.95;
     margin: 0;
-    line-height: 1;
+    color: var(--text);
+  }
+  h1 span {
+    /* The one place the two neons touch. Everything else keeps them apart. */
+    background: linear-gradient(96deg, var(--hot), var(--pink) 45%, var(--cyan));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .tagline {
-    margin: 0.4rem 0 0;
-    font-size: 0.68rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
+  .tagline { margin: 0.85rem 0 0; }
 
   .layout {
     display: grid;
-    grid-template-columns: 244px minmax(0, 1fr);
-    gap: 1.75rem;
+    grid-template-columns: 232px minmax(0, 1fr);
+    gap: 3rem;
     align-items: start;
-    padding-top: 1.25rem;
   }
 
   .rail-inner {
     position: sticky;
-    top: 1rem;
+    top: 1.5rem;
     display: grid;
-    gap: 1rem;
-    max-height: calc(100vh - 2rem);
+    gap: 1.75rem;
+    max-height: calc(100vh - 3rem);
     overflow-y: auto;
-    padding-right: 0.4rem;
+    padding-bottom: 1rem;
+    scrollbar-width: thin;
   }
 
   .search input {
     width: 100%;
-    border: var(--rule);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
-    padding: 0.45rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    padding: 0.55rem 0.9rem;
     font-family: var(--font-mono);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+    transition: border-color 140ms, background 140ms;
   }
-  .search input::placeholder { color: var(--ink-faint); }
+  .search input::placeholder { color: var(--text-faint); }
+  .search input:hover { border-color: var(--surface-2); }
+  .search input:focus { background: var(--surface-2); }
 
-  .avail { display: grid; gap: 0.4rem; }
-  .avail h3 {
-    margin: 0;
-    font-size: 0.62rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
+  .avail { display: grid; gap: 0.7rem; }
+  .avail h3 { margin: 0; }
 
   .bar {
     position: sticky;
@@ -236,68 +237,127 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.55rem 0;
-    background: var(--paper);
-    border-bottom: var(--rule);
-    margin-bottom: 0.75rem;
+    padding: 1.1rem 0 0.9rem;
+    background: color-mix(in srgb, var(--void) 88%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+    margin-bottom: 1.25rem;
   }
 
-  .count { margin: 0; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); }
-  .count strong { color: var(--ink); font-size: 0.95rem; }
+  .count { margin: 0; display: flex; align-items: baseline; gap: 0.45rem; }
+  .count strong { font-size: 1.35rem; font-weight: 500; letter-spacing: -0.02em; color: var(--text); }
 
   .bar-right { display: flex; align-items: center; gap: 0.5rem; }
 
   .sortsel select {
-    border: var(--rule);
-    border-radius: var(--radius);
-    background: var(--paper-raised);
-    padding: 0.22rem 0.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    padding: 0.32rem 0.7rem;
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    transition: border-color 140ms;
+  }
+  .sortsel select:hover { border-color: var(--surface-2); color: var(--text); }
+
+  .toggle {
+    display: none;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    padding: 0.32rem 0.8rem;
+    font-size: 0.68rem;
+    color: var(--text-soft);
   }
 
-  .toggle { display: none; border: var(--rule); background: var(--paper-raised); border-radius: var(--radius); padding: 0.24rem 0.5rem; font-size: 0.7rem; }
-
-  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.3rem; margin: 0 0 0.9rem; padding: 0; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0 0 1.25rem; padding: 0; }
   .chips button {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
-    border: 1px solid var(--seaglass);
-    background: var(--seaglass);
-    color: var(--paper);
-    border-radius: var(--radius);
-    padding: 0.14rem 0.4rem;
+    gap: 0.45rem;
+    border-radius: var(--r-pill);
+    background: var(--cyan);
+    color: var(--void);
+    padding: 0.22rem 0.5rem 0.22rem 0.7rem;
     font-size: 0.68rem;
+    font-weight: 500;
+    transition: opacity 140ms;
   }
-  .chips .clear { background: none; color: var(--ink-faint); border-color: var(--sand); }
-  .chips .clear:hover { color: var(--program-red); border-color: var(--program-red); }
+  .chips button:hover { opacity: 0.82; }
+  .chips .x { font-size: 0.85rem; line-height: 1; opacity: 0.65; }
+  .chips .clear {
+    background: none;
+    color: var(--text-faint);
+    border: 1px solid var(--line);
+    padding: 0.22rem 0.7rem;
+  }
+  .chips .clear:hover { color: var(--hot); border-color: var(--hot); opacity: 1; }
 
-  .list { display: grid; gap: 0.7rem; }
+  .list { display: grid; gap: 0.6rem; }
 
-  .empty { border: 1px dashed var(--sand); border-radius: var(--radius); padding: 1.5rem; background: var(--paper-raised); }
-  .empty .lead { font-size: 1.1rem; margin: 0 0 0.35rem; }
-  .empty .fix { font-size: 0.9rem; color: var(--ink-soft); margin: 0 0 0.6rem; }
-  .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; justify-items: start; }
-  .empty button {
-    border: var(--rule);
-    background: var(--paper);
-    border-radius: var(--radius);
-    padding: 0.28rem 0.55rem;
+  .empty {
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    padding: 2.25rem;
+  }
+  .empty .lead {
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.9rem;
+  }
+  .empty .fix { margin: 0 0 0.75rem; }
+  .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; justify-items: start; }
+  .empty ul button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    background: var(--surface-2);
+    padding: 0.35rem 0.5rem 0.35rem 0.9rem;
     font-size: 0.72rem;
+    color: var(--text-soft);
+    transition: border-color 140ms, color 140ms;
   }
-  .empty button:hover { border-color: var(--seaglass); color: var(--seaglass); }
+  .empty ul button:hover { border-color: var(--cyan); color: var(--text); }
+  .empty .n {
+    background: var(--cyan-dim);
+    color: var(--cyan);
+    border-radius: var(--r-pill);
+    padding: 0.05rem 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .empty .reset {
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    padding: 0.35rem 0.9rem;
+    font-size: 0.72rem;
+    color: var(--text-soft);
+  }
 
-  .sentinel { text-align: center; padding: 1.25rem; font-size: 0.7rem; color: var(--ink-faint); }
+  .sentinel { text-align: center; padding: 2rem; }
 
-  footer { padding: 2rem 1.25rem 3rem; }
-  footer p { font-size: 0.66rem; color: var(--ink-faint); margin: 0; border-top: var(--rule); padding-top: 0.8rem; }
+  footer { padding: 4rem 1.5rem 3rem; }
+  footer p { margin: 0; border-top: 1px solid var(--line-soft); padding-top: 1.25rem; }
 
-  @media (max-width: 820px) {
-    .layout { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+    .masthead { padding: 2rem 0 1rem; }
     .rail { display: none; }
     .rail.open { display: block; }
     .rail-inner { position: static; max-height: none; }
-    .toggle { display: inline-block; }
+    .toggle { display: inline-block; white-space: nowrap; }
+  }
+
+  @media (max-width: 560px) {
+    /* The sort <select> takes its intrinsic width from the longest option, which
+       pushes the filters button off-screen on a phone. Cap it instead. */
+    .bar { flex-wrap: wrap; row-gap: 0.6rem; }
+    .bar-right { flex: 1; min-width: 0; justify-content: flex-end; }
+    .sortsel { min-width: 0; }
+    .sortsel select { max-width: 100%; text-overflow: ellipsis; }
   }
 </style>

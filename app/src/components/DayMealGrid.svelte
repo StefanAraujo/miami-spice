@@ -3,9 +3,8 @@
 
   let { days = $bindable(), meals = $bindable() } = $props()
 
-  const mealOptions = MEAL_ORDER.filter((m) => facets.meals.includes(m))
-
   const DAY_FULL = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday', SUN: 'Sunday' }
+  const mealOptions = MEAL_ORDER.filter((m) => facets.meals.includes(m))
 
   const toggle = (list, v) => (list.includes(v) ? list.filter((x) => x !== v) : [...list, v])
 
@@ -38,7 +37,7 @@
     {#each mealOptions as m}
       <button
         type="button"
-        class="meal"
+        class="meal mono"
         class:on={meals.includes(m)}
         aria-pressed={meals.includes(m)}
         onclick={() => (meals = toggle(meals, m))}
@@ -48,50 +47,49 @@
     {/each}
   </div>
 
-  <p class="summary mono">{summary}</p>
+  <p class="summary mono" class:active={days.length || meals.length}>{summary}</p>
 </div>
 
 <style>
-  .grid { display: grid; gap: 0.5rem; }
+  .grid { display: grid; gap: 0.4rem; }
 
-  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.25rem; }
 
   .day {
     aspect-ratio: 1 / 1;
-    min-height: 30px;
-    border: var(--rule);
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-    border-radius: var(--radius);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    transition: background 120ms, color 120ms, border-color 120ms;
+    min-height: 28px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text-faint);
+    font-size: 0.68rem;
+    font-weight: 500;
+    transition: border-color 140ms, color 140ms, background 140ms;
   }
-  .day:hover { border-color: var(--seaglass); }
-  .day.on { background: var(--seaglass); border-color: var(--seaglass); color: var(--paper); }
+  .day:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
+  .day.on { background: var(--cyan); border-color: var(--cyan); color: var(--void); }
 
-  .meals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; }
+  .meals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; margin-top: 0.15rem; }
 
   .meal {
-    border: var(--rule);
-    background: var(--paper-raised);
-    color: var(--ink-soft);
-    border-radius: var(--radius);
+    border: 1px solid var(--line);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text-faint);
     padding: 0.3rem 0.2rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    letter-spacing: 0.04em;
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    transition: background 120ms, color 120ms, border-color 120ms;
+    transition: border-color 140ms, color 140ms, background 140ms;
   }
-  .meal:hover { border-color: var(--seaglass); }
-  .meal.on { background: var(--seaglass); border-color: var(--seaglass); color: var(--paper); }
+  .meal:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
+  .meal.on { background: var(--cyan); border-color: var(--cyan); color: var(--void); font-weight: 500; }
 
   .summary {
-    margin: 0;
-    font-size: 0.68rem;
-    color: var(--ink-faint);
-    letter-spacing: 0.02em;
+    margin: 0.25rem 0 0;
+    font-size: 0.66rem;
+    color: var(--text-faint);
+    transition: color 140ms;
   }
+  .summary.active { color: var(--cyan); }
 </style>

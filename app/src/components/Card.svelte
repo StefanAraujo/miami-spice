@@ -7,16 +7,16 @@
 
   const panelId = $derived(`menu-${r.id}`)
   const byMeal = (a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal)
-  const meta = $derived([r.cuisines.join(' · ') || 'Restaurant', r.hood].filter(Boolean).join('  /  '))
+  const meta = $derived([r.cuisines.join(' · ') || 'Restaurant', r.hood].filter(Boolean).join('  ·  '))
   const offers = $derived([...r.offers].sort(byMeal))
   const menus = $derived([...r.menus].sort(byMeal))
 </script>
 
-<article class="card">
+<article class="card" class:open>
   <div class="head">
     <div class="title">
       <h2>{r.name}</h2>
-      <p class="meta mono">{meta}</p>
+      <p class="meta micro">{meta}</p>
     </div>
     <p class="price mono">{priceRange(r)}</p>
   </div>
@@ -28,22 +28,18 @@
   </ul>
 
   {#if r.flags.length}
-    <ul class="flags">
-      {#each r.flags as f}
-        <li class="mono">{flagLabel(f)}</li>
-      {/each}
-    </ul>
+    <p class="flags micro">{r.flags.map(flagLabel).join('  ·  ')}</p>
   {/if}
 
   <div class="actions">
     <button type="button" class="expand mono" aria-expanded={open} aria-controls={panelId} onclick={() => (open = !open)}>
       {open ? 'Hide menu' : 'See the menu'}
     </button>
-    {#if r.reserve}
-      <a class="mono" href={r.reserve} target="_blank" rel="noopener">Book on {r.platform || 'their site'}</a>
-    {/if}
-    {#if r.maps}<a class="mono" href={r.maps} target="_blank" rel="noopener">Directions</a>{/if}
-    <a class="mono" href={r.url} target="_blank" rel="noopener">Details</a>
+    <span class="links mono">
+      {#if r.reserve}<a href={r.reserve} target="_blank" rel="noopener">Book on {r.platform || 'their site'}</a>{/if}
+      {#if r.maps}<a href={r.maps} target="_blank" rel="noopener">Directions</a>{/if}
+      <a href={r.url} target="_blank" rel="noopener">Details</a>
+    </span>
   </div>
 
   {#if open}
@@ -55,82 +51,77 @@
 
 <style>
   .card {
-    background: var(--paper-raised);
-    border: var(--rule);
-    border-radius: var(--radius);
-    padding: 0.9rem 1rem 0.8rem;
-    box-shadow: var(--shadow);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-md);
+    padding: 1.15rem 1.35rem 1rem;
+    transition: border-color 160ms, background 160ms;
   }
+  .card:hover { border-color: var(--surface-2); background: var(--surface-2); }
+  .card.open { border-color: var(--line); background: var(--surface); }
 
-  .head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem; }
 
   h2 {
     font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.28rem;
+    font-weight: 600;
+    font-size: 1.32rem;
     line-height: 1.15;
+    letter-spacing: -0.028em;
     margin: 0;
-    letter-spacing: -0.012em;
+    color: var(--text);
   }
 
-  .meta {
-    margin: 0.25rem 0 0;
-    font-size: 0.66rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-  }
-  .sep { color: var(--sand); }
+  .meta { margin: 0.35rem 0 0; }
 
   .price {
     margin: 0;
-    font-size: 0.98rem;
-    font-weight: 600;
-    color: var(--program-red);
+    font-size: 1.05rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--hot);
     white-space: nowrap;
   }
 
-  .offers { list-style: none; margin: 0.6rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .offers { list-style: none; margin: 0.85rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
   .offers li {
-    font-size: 0.7rem;
-    background: var(--seaglass-soft);
-    color: var(--seaglass);
-    border-radius: var(--radius);
-    padding: 0.15rem 0.4rem;
+    font-size: 0.68rem;
+    background: var(--hot-dim);
+    color: var(--pink);
+    border-radius: var(--r-pill);
+    padding: 0.18rem 0.6rem;
   }
 
-  .flags { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem; }
-  .flags li {
-    font-size: 0.64rem;
-    color: var(--ink-faint);
-    border: 1px solid var(--sand-soft);
-    border-radius: var(--radius);
-    padding: 0.1rem 0.35rem;
-  }
+  .flags { margin: 0.6rem 0 0; letter-spacing: 0.08em; }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: space-between;
     gap: 0.75rem;
-    margin-top: 0.7rem;
-    padding-top: 0.6rem;
-    border-top: 1px dashed var(--sand-soft);
-    font-size: 0.7rem;
+    margin-top: 1rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--line-soft);
   }
 
   .expand {
-    border: var(--rule);
-    background: var(--paper);
-    border-radius: var(--radius);
-    padding: 0.22rem 0.55rem;
-    font-size: 0.7rem;
-    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    padding: 0.28rem 0.85rem;
+    font-size: 0.68rem;
+    color: var(--text-soft);
+    transition: border-color 140ms, color 140ms;
   }
-  .expand:hover { border-color: var(--seaglass); color: var(--seaglass); }
+  .expand:hover { border-color: var(--cyan); color: var(--cyan); }
 
-  .actions a { color: var(--seaglass); text-decoration: none; border-bottom: 1px solid var(--sand); }
-  .actions a:hover { border-color: var(--seaglass); }
+  .links { display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.68rem; }
+  .links a { color: var(--text-faint); text-decoration: none; transition: color 140ms; }
+  .links a:hover { color: var(--cyan); }
 
-  .panel { margin-top: 0.2rem; }
+  @media (max-width: 560px) {
+    .card { padding: 1rem 1.1rem; }
+    .head { flex-direction: column; gap: 0.5rem; }
+    .actions { justify-content: flex-start; }
+  }
 </style>

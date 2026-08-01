@@ -90,8 +90,40 @@ check('Brickell · $40', await count(), expectBrickell40)
 
 // Mobile.
 await page.setViewportSize({ width: 390, height: 844 })
-await page.waitForTimeout(200)
+await page.waitForTimeout(250)
 await page.screenshot({ path: 'verify-mobile.png', fullPage: false })
+
+// Nothing may spill past the viewport on a phone — horizontal scroll is the
+// classic way a "responsive" layout is actually broken.
+const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
+check('no horizontal overflow at 390px', overflow <= 0, true)
+
+// --- palette contrast, asserted rather than eyeballed ----------------------
+// Neon on a dark ground is exactly where themes quietly fail WCAG, so every
+// text pair the design actually uses is checked against the AA 4.5:1 floor.
+const css = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'src/app.css'), 'utf8')
+const token = (name) => css.match(new RegExp(`--${name}:\\s*(#[0-9a-f]{6})`, 'i'))?.[1]
+const srgb = (h) => h.slice(1).match(/../g).map((x) => parseInt(x, 16) / 255)
+const lum = (h) => {
+  const [r, g, b] = srgb(h).map((c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4))
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b
+}
+const contrast = (a, b) => {
+  const [hi, lo] = [lum(a), lum(b)].sort((x, y) => y - x)
+  return (hi + 0.05) / (lo + 0.05)
+}
+const PAIRS = [
+  ['text', 'void'], ['text', 'surface'],
+  ['text-soft', 'surface'], ['text-faint', 'surface'], ['text-faint', 'void'],
+  ['cyan', 'surface'], ['pink', 'surface'], ['hot', 'surface'],
+  ['void', 'cyan'], // active chip: dark label on neon fill
+]
+let worst = { ratio: Infinity }
+for (const [fg, bg] of PAIRS) {
+  const ratio = contrast(token(fg), token(bg))
+  if (ratio < worst.ratio) worst = { ratio, fg, bg }
+}
+check(`palette AA (worst: ${worst.fg} on ${worst.bg} = ${worst.ratio.toFixed(2)}:1)`, worst.ratio >= 4.5, true)
 
 check('no console errors', errors.length, 0)
 if (errors.length) console.log(errors.slice(0, 5))
