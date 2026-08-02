@@ -85,12 +85,22 @@ check('Italian · lunch+dinner · Saturday', await count(), expectItalianSat)
 await page.screenshot({ path: 'verify-italian-saturday.png', fullPage: false })
 
 // Course ladder opens and renders choose-counts.
-await page.locator('.row').first().getByRole('button').first().click()
+await page.locator('.row').first().locator('.main').click()
 await page.waitForTimeout(150)
 const fracs = await page.locator('.row').first().locator('.frac').allTextContents()
 check('course ladder rows visible', fracs.length > 0, true)
 console.log('      ladder:', fracs.map(x=>x.replace(/\s+/g,'')).join(' '))
 await page.screenshot({ path: 'verify-course-ladder.png' })
+
+// Shortlist: pinning a row saves it; the shortlist view shows the saved rows.
+await page.locator('.row').first().locator('.pin').click()
+await page.waitForTimeout(80)
+check('pin adds to shortlist', await page.locator('.shortlist-btn .badge').textContent(), '1')
+await page.getByRole('button', { name: /^Shortlist/ }).click()
+await page.waitForTimeout(80)
+check('shortlist view shows saved row', await page.locator('.shortlist-view .row').count(), 1)
+await page.getByRole('button', { name: 'Done' }).click()
+await page.waitForTimeout(80)
 
 // Empty state names the conflict and offers a real fix.
 // Note: options that would yield zero are now disabled, so the old

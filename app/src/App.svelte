@@ -7,7 +7,7 @@
   import {
     facets, generatedAt, restaurants,
     emptyFilters, isEmpty, runQuery, relaxations, facetCounts,
-    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS,
+    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS, getById,
   } from './lib/search.js'
 
   let f = $state(emptyFilters())
@@ -20,6 +20,41 @@
   let view = $state('list')   // 'list' | 'map' — both driven by the same filtered results
   let course = $state('all')  // 'all' | 'starters' | 'mains' | 'desserts' — the teaser lens
   const COURSES = [['all', 'All'], ['starters', 'Starters'], ['mains', 'Mains'], ['desserts', 'Desserts']]
+
+  // Shortlist — the fix for the biggest gap in the UX review: an external place to
+  // park candidates (closes Zeigarnik open loops) that doubles as a group-decision
+  // primitive via a shareable URL. Client-side only, same localStorage mechanism as
+  // the AM/PM mood. A ?picks=id,id link opens straight into someone else's shortlist.
+  function loadPicks() {
+    try {
+      const p = new URLSearchParams(location.search).get('picks')
+      const ids = (p || '').split(',').map(Number).filter(Boolean)
+      if (ids.length) return ids
+      return JSON.parse(localStorage.getItem('shortlist') || '[]')
+    } catch { return [] }
+  }
+  let shortlist = $state(loadPicks())
+  let showShortlist = $state(!!new URLSearchParams(location.search).get('picks'))
+  let shareMsg = $state('')
+
+  $effect(() => { try { localStorage.setItem('shortlist', JSON.stringify(shortlist)) } catch {} })
+  const savedSet = $derived(new Set(shortlist))
+  const shortlistRows = $derived(shortlist.map(getById).filter(Boolean))
+  const togglePin = (id) => {
+    shortlist = shortlist.includes(id) ? shortlist.filter((x) => x !== id) : [...shortlist, id]
+    shareMsg = ''
+  }
+  async function share() {
+    const url = new URL(location.href)
+    url.search = ''
+    url.searchParams.set('picks', shortlist.join(','))
+    try {
+      await navigator.clipboard.writeText(url.toString())
+      shareMsg = "Link copied — send it to whoever you're going with."
+    } catch {
+      shareMsg = url.toString()
+    }
+  }
 
   // AM/PM colour mood — the one idea kept from the client's Vice reference. PM is
   // a restrained Deco-at-night override (see VICE_DIRECTION.md), not neon synthwave.
@@ -107,9 +142,15 @@
     <h1 class="wordmark">Miami Spice</h1>
     <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
     <p class="tagline micro">{tagline}</p>
-    <div class="mood" role="group" aria-label="Colour mood">
-      <button type="button" class="mono" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
-      <button type="button" class="mono" aria-pressed={mood === 'pm'} onclick={() => setMood('pm')}>PM</button>
+    <div class="masthead-tools">
+      <div class="mood" role="group" aria-label="Colour mood">
+        <button type="button" class="mono" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
+        <button type="button" class="mono" aria-pressed={mood === 'pm'} onclick={() => setMood('pm')}>PM</button>
+      </div>
+      <button type="button" class="shortlist-btn micro" aria-pressed={showShortlist}
+        onclick={() => (showShortlist = !showShortlist)}>
+        Shortlist{#if shortlist.length}<span class="badge mono">{shortlist.length}</span>{/if}
+      </button>
     </div>
   </div>
 </header>
@@ -146,7 +187,33 @@
   </aside>
 
   <main>
-    {#if discovering}
+    {#if showShortlist}
+      <section class="shortlist-view">
+        <div class="bar">
+          <p class="count"><strong class="mono">{shortlist.length}</strong><span class="micro">saved</span></p>
+          <div class="bar-right">
+            {#if shortlist.length}
+              <button type="button" class="share-btn micro" onclick={share}>Share list</button>
+              <button type="button" class="sl-action micro" onclick={() => (shortlist = [])}>Clear</button>
+            {/if}
+            <button type="button" class="sl-action micro" onclick={() => (showShortlist = false)}>Done</button>
+          </div>
+        </div>
+        {#if shareMsg}<p class="share-msg micro" aria-live="polite">{shareMsg}</p>{/if}
+        {#if shortlistRows.length}
+          <ul class="list">
+            {#each shortlistRows as r (r.id)}
+              <Row {r} saved={true} onTogglePin={togglePin} />
+            {/each}
+          </ul>
+        {:else}
+          <div class="empty">
+            <p class="lead">Your shortlist is empty.</p>
+            <p class="fix micro">Tap the bookmark on any restaurant to save it here — then share the list with whoever you're deciding with.</p>
+          </div>
+        {/if}
+      </section>
+    {:else if discovering}
       <Discover onPick={applyPreset} onBrowseAll={() => (browseAll = true)} />
     {:else}
     <div class="bar">
@@ -216,7 +283,7 @@
 
       <ul class="list">
         {#each visible as r (r.id)}
-          <Row {r} {course} />
+          <Row {r} {course} saved={savedSet.has(r.id)} onTogglePin={togglePin} />
         {/each}
       </ul>
 
@@ -272,9 +339,51 @@
 
   /* Two moods, one system — the reference's framing, our restraint. A hard-edged
      segmented control, not a glowing pill. Each half clears Apple's 44pt target. */
+  .masthead-tools {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--s3);
+    margin-top: var(--s5);
+  }
+  .shortlist-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    border: 1px solid var(--rule);
+    color: var(--soft);
+  }
+  .shortlist-btn:hover { color: var(--ink); border-color: var(--ink); }
+  .shortlist-btn[aria-pressed='true'] { background: var(--marine); border-color: var(--marine); color: var(--card); }
+  .shortlist-btn .badge { background: var(--flamingo); color: var(--card); padding: 1px 7px; }
+  .shortlist-btn[aria-pressed='true'] .badge { background: var(--card); color: var(--marine); }
+
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    background: var(--marine);
+    color: var(--card);
+    box-shadow: var(--eyebrow);
+  }
+  .share-msg { margin: var(--s3) 0 0; color: var(--signal); letter-spacing: 0.08em; }
+
+  .sl-action {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s3);
+    border: 1px solid var(--hair);
+    color: var(--soft);
+  }
+  .sl-action:hover { border-color: var(--rule); color: var(--ink); }
+
   .mood {
     display: inline-flex;
-    margin: var(--s5) auto 0;
     border: 1px solid var(--rule);
   }
   .mood button {

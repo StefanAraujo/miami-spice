@@ -15,7 +15,7 @@
    * Secondary actions live in the expanded panel; moving them off the row is
    * what buys the density.
    */
-  let { r, course = 'all' } = $props()
+  let { r, course = 'all', saved = false, onTogglePin } = $props()
   let open = $state(false)
 
   const panelId = $derived(`menu-${r.id}`)
@@ -51,7 +51,19 @@
 </script>
 
 <li class="row" class:open>
-  <button class="main" type="button" aria-expanded={open} aria-controls={panelId} onclick={() => (open = !open)}>
+  <div class="row-head">
+    <button
+      class="pin"
+      type="button"
+      aria-pressed={saved}
+      aria-label={saved ? `Remove ${r.name} from shortlist` : `Save ${r.name} to shortlist`}
+      onclick={() => onTogglePin?.(r.id)}
+    >
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+        <path d="M6 3.5h12v17l-6-4.2-6 4.2z" fill={saved ? 'currentColor' : 'none'} stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+      </svg>
+    </button>
+    <button class="main" type="button" aria-expanded={open} aria-controls={panelId} onclick={() => (open = !open)}>
     <span class="text">
       <span class="name">{r.name}</span>
       <span class="meta mono">{meta}</span>
@@ -62,7 +74,8 @@
       <span class="when mono">{offers.map(offerLine).join('  ·  ')}</span>
     </span>
     <span class="chev" aria-hidden="true"></span>
-  </button>
+    </button>
+  </div>
 
   {#if open}
     <div class="panel" id={panelId}>
@@ -90,6 +103,20 @@
 
 <style>
   .row { border-bottom: 1px solid var(--hair); }
+
+  /* Pin lives in a fixed left gutter so names still share one x-coordinate. It's
+     a separate control from the row disclosure (no nested buttons). */
+  .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; }
+  .pin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap);
+    color: var(--soft);
+    margin-left: calc(var(--s3) * -1);
+  }
+  .pin:hover { color: var(--marine); }
+  .pin[aria-pressed='true'] { color: var(--marine); }
 
   /* The whole row is the disclosure control, which makes the primary target far
      larger than Apple's 44pt floor instead of a 27px button. */
