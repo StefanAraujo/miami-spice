@@ -41,13 +41,13 @@
 
   header { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
 
-  .meal { color: var(--marine); letter-spacing: 0.18em; }
+  .meal { color: var(--marine); }
 
-  /* Racing stripes — the Deco device that translates most directly to 2D. */
+  /* A quiet hairline divider carries the eye across to the price. */
   .stripes {
     flex: 1;
-    height: 5px;
-    background: repeating-linear-gradient(to bottom, var(--rule) 0 1px, transparent 1px 2px);
+    height: 1px;
+    background: var(--hair);
   }
 
   .price { font-size: var(--t-body); color: var(--flamingo); }

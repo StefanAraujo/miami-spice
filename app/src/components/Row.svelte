@@ -78,7 +78,7 @@
     <button class="main" type="button" aria-expanded={open} aria-controls={panelId} onclick={() => (open = !open)}>
     <span class="text">
       <span class="name">{r.name}</span>
-      <span class="meta mono">{meta}</span>
+      <span class="meta">{meta}</span>
       {#if teaser}<span class="teaser">{teaser}</span>{/if}
     </span>
     <span class="side">
@@ -131,14 +131,15 @@
 
   /* Pin lives in a fixed left gutter so names still share one x-coordinate. It's
      a separate control from the row disclosure (no nested buttons). */
-  .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; }
+  .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; border-radius: var(--r-md); }
+  .row-head:hover { background: var(--marine-wash); }
   .pin {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: var(--tap);
     color: var(--soft);
-    margin-left: calc(var(--s3) * -1);
+    margin-left: calc(var(--s2) * -1);
   }
   .pin:hover { color: var(--marine); }
   .pin[aria-pressed='true'] { color: var(--marine); }
@@ -152,7 +153,7 @@
     align-items: center;
     width: 100%;
     text-align: left;
-    padding: var(--s4) 0;
+    padding: var(--s4) var(--s3);
     min-height: var(--tap);
   }
   .main:hover .name { color: var(--marine); }
@@ -163,16 +164,15 @@
     display: block;
     font-size: var(--t-name);
     font-weight: 600;
-    letter-spacing: -0.005em;
-    line-height: 1.2;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
   }
 
   .meta {
     display: block;
     font-size: var(--t-meta);
     color: var(--soft);
-    margin-top: var(--s1);
-    letter-spacing: 0.02em;
+    margin-top: 3px;
   }
 
   .teaser {
@@ -180,7 +180,6 @@
     font-size: var(--t-body);
     color: var(--soft);
     margin-top: 5px;
-    font-style: italic;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -188,90 +187,92 @@
 
   .side { text-align: right; white-space: nowrap; }
 
-  /* Signage price chip — flamingo fill, hard offset shadow, like a hand-painted
-     Deco sign plate. The one saturated object per row (Chanel's "one accessory"). */
+  /* The one saturated object per row: a flamingo price pill. Rounded and flat —
+     colour alone carries it now, no hard slab. */
   .price {
     display: inline-block;
     font-size: var(--t-name);
-    font-weight: 500;
-    padding: var(--s1) var(--s3);
+    font-weight: 600;
+    padding: 3px var(--s3);
+    border-radius: var(--r-sm);
     background: var(--flamingo);
     color: var(--card);
-    box-shadow: var(--eyebrow);
   }
 
-  /* No prix-fixe price on record: a quiet mono note, never the flamingo chip. */
+  /* No prix-fixe price on record: a quiet note, never the flamingo pill. */
   .noprice { display: inline-block; font-size: var(--t-body); color: var(--soft); }
 
-  .when { display: block; font-size: var(--t-meta); color: var(--soft); margin-top: var(--s1); }
+  .when { display: block; font-size: var(--t-meta); color: var(--soft); margin-top: 3px; }
 
   .chev {
     width: 9px; height: 9px;
-    border-right: 1.5px solid var(--rule);
-    border-bottom: 1.5px solid var(--rule);
+    border-right: 2px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
     transform: rotate(45deg);
     justify-self: end;
   }
   .row.open .chev { transform: rotate(225deg); }
 
-  /* Deco eyebrow: a hard offset slab, zero blur. */
+  /* The expanded detail — a soft, rounded, elevated card. */
   .panel {
     margin: 0 0 var(--s4);
-    padding: var(--s5) var(--s5) var(--s4);
+    padding: var(--s5);
     background: var(--card);
     border: 1px solid var(--hair);
+    border-radius: var(--r-lg);
     box-shadow: var(--eyebrow);
   }
 
-  /* One earned image on the detail state (UX review gap 1) — bounded, hard-framed,
+  /* One earned image on the detail state (UX review gap 1) — bounded, rounded,
      never a grid. Degrades to nothing if the CDN is unreachable. */
   .hero {
     display: block;
     width: 100%;
-    height: 176px;
+    height: 200px;
     object-fit: cover;
-    border: 1px solid var(--hair);
-    box-shadow: var(--eyebrow);
+    border-radius: var(--r-md);
     margin-bottom: var(--s5);
   }
 
   /* Appetite carried by language: name the one dish worth coming for. */
-  .signature { margin: 0 0 var(--s5); font-size: var(--t-name); line-height: 1.3; color: var(--ink); }
-  .signature .siglbl { display: block; color: var(--marine); letter-spacing: 0.14em; margin-bottom: var(--s1); }
+  .signature { margin: 0 0 var(--s5); font-size: var(--t-name); line-height: 1.35; color: var(--ink); }
+  .signature .siglbl { display: block; color: var(--marine); margin-bottom: var(--s1); }
 
-  .sched-h { margin: 0 0 var(--s3); letter-spacing: 0.14em; }
+  .sched-h { margin: 0 0 var(--s3); }
 
-  .flags { margin: var(--s5) 0 0; letter-spacing: 0.1em; }
+  .flags { margin: var(--s5) 0 0; }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--s5);
+    gap: var(--s3);
     align-items: center;
-    margin-top: var(--s4);
-    padding-top: var(--s3);
+    margin-top: var(--s5);
+    padding-top: var(--s4);
     border-top: 1px solid var(--hair);
   }
   .actions a {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
-    font-family: var(--f-mono);
+    padding: 0 var(--s4);
+    border-radius: var(--r-full);
+    font-family: var(--f-body);
     font-size: var(--t-body);
+    font-weight: 500;
     text-decoration: none;
-    color: var(--soft);
+    color: var(--marine);
   }
-  .actions a:hover { color: var(--marine); }
+  .actions a:hover { background: var(--marine-wash); }
   .actions .cta {
     color: var(--card);
     background: var(--marine);
     padding: 0 var(--s5);
-    box-shadow: 4px 4px 0 rgba(18, 65, 76, 0.18);
+    font-weight: 590;
+    box-shadow: var(--eyebrow);
   }
-  /* The CTA is marine-on-marine, so the generic .actions a:hover (which sets text
-     to marine) would make the label vanish. Keep it card-coloured; carry hover
-     feedback in the offset, not the text colour. */
-  .actions .cta:hover { color: var(--card); transform: translate(-1px, -1px); }
+  /* The CTA is filled tint; hover brightens it rather than shifting layout. */
+  .actions .cta:hover { color: var(--card); background: var(--marine); filter: brightness(1.08); }
 
   @media (max-width: 720px) {
     .main { grid-template-columns: minmax(0, 1fr) 20px; gap: var(--s3); align-items: start; }

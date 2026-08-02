@@ -47,33 +47,35 @@
 <style>
   .group { display: grid; gap: var(--s3); margin-bottom: var(--s6); }
 
-  h3 { margin: 0; padding-bottom: var(--s2); border-bottom: 1px solid var(--rule); }
+  h3 { margin: 0; }
 
   /* Telegraph the AND logic — dietary flags are requirements, not alternatives. */
-  .note { margin: 0; font-size: var(--t-meta); color: var(--soft); font-style: italic; }
+  .note { margin: 0; font-size: var(--t-meta); color: var(--soft); }
 
-  .opts { display: flex; flex-wrap: wrap; gap: var(--s1); }
+  .opts { display: flex; flex-wrap: wrap; gap: var(--s2); }
 
   .opts button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: var(--tap);          /* Apple: at least 44x44 pt */
-    padding: 0 var(--s3);
+    padding: 0 var(--s4);
     font-size: var(--t-body);
-    color: var(--soft);
-    background: var(--card);
-    border: 1px solid var(--hair);
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--sunk);
+    border: 1px solid transparent;
+    border-radius: var(--r-full);
   }
-  .opts button:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
-  .opts button.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
+  .opts button:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
+  .opts button.on { background: var(--marine); color: var(--card); }
 
   /* Baymard: zero options are disabled and greyed, never removed — removing them
      makes the list jump and destroys the user's spatial memory of it. */
-  .opts button:disabled { opacity: 0.45; cursor: default; }
+  .opts button:disabled { opacity: 0.4; cursor: default; }
 
   .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
-  .opts button.on .n { color: var(--card); opacity: 0.75; }
+  .opts button.on .n { color: var(--card); opacity: 0.8; }
 
   .more {
     justify-self: start;
@@ -81,6 +83,5 @@
     align-items: center;
     min-height: var(--tap);
     color: var(--marine);
-    letter-spacing: 0.1em;
   }
 </style>

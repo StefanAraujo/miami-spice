@@ -1,18 +1,8 @@
 import { mount } from 'svelte'
 
-// Self-hosted so the app renders identically offline and makes no request to
-// Google. Jost is the Futura lineage (1927) — period-correct Deco geometry that
-// still reads as contemporary UI type.
-import '@fontsource/jost/400.css'
-import '@fontsource/jost/500.css'
-import '@fontsource/jost/600.css'
-import '@fontsource/ibm-plex-mono/400.css'
-import '@fontsource/ibm-plex-mono/500.css'
-// Poiret One — a geometric Art-Deco display face, used ONLY for the wordmark and
-// section heads (the one place a literal Vice quote is safe). Not on any
-// design-lint AI-default list. See REVAMP_VISUAL.md §3.
-import '@fontsource/poiret-one/400.css'
-
+// The app now renders in the platform's own SF system faces (SF Pro Text/Display,
+// SF Mono) via the -apple-system stack in app.css — no web fonts to download, so
+// the first paint is instant and matches native Apple apps exactly. See DESIGN.md.
 import './app.css'
 import App from './App.svelte'
 

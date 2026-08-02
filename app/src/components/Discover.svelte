@@ -121,13 +121,14 @@
   .discover { padding: var(--s5) 0 var(--s7); }
 
   h2 {
-    font-family: var(--f-deco);
-    font-weight: 400;
+    font-family: var(--f-display);
+    font-weight: 700;
     font-size: var(--t-section);
-    letter-spacing: 0.02em;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
     margin: 0 0 var(--s2);
   }
-  .sub { margin: 0 0 var(--s6); color: var(--soft); }
+  .sub { margin: 0 0 var(--s6); color: var(--soft); font-size: var(--t-name); }
 
   .lane { margin-bottom: var(--s6); }
   .lane > .micro { display: block; margin-bottom: var(--s3); }
@@ -142,12 +143,14 @@
     padding: 0 var(--s4);
     background: var(--card);
     border: 1px solid var(--hair);
+    border-radius: var(--r-full);
     color: var(--ink);
     font-size: var(--t-body);
+    font-weight: 500;
   }
-  .tile:hover { border-color: var(--marine); color: var(--marine); }
+  .tile:hover { background: var(--marine-wash); border-color: transparent; color: var(--marine); }
   .tile .n { font-size: var(--t-meta); color: var(--soft); }
-  .tile .tsub { font-size: var(--t-meta); color: var(--soft); font-style: italic; }
+  .tile .tsub { font-size: var(--t-meta); color: var(--soft); }
 
   .decide { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; margin-top: var(--s2); }
   .pick-btn, .browse {
@@ -155,12 +158,15 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s5);
+    border-radius: var(--r-full);
     font-size: var(--t-body);
+    font-weight: 590;
   }
   .pick-btn { background: var(--marine); color: var(--card); box-shadow: var(--eyebrow); }
-  .browse { border: 1px solid var(--rule); color: var(--soft); }
-  .browse:hover { border-color: var(--ink); color: var(--ink); }
+  .pick-btn:hover { filter: brightness(1.08); }
+  .browse { background: var(--sunk); color: var(--ink); }
+  .browse:hover { background: var(--marine-wash); color: var(--marine); }
   .decide-lead { margin: 0 0 var(--s6); }
-  .decide .tsub { margin-left: var(--s2); font-style: italic; opacity: 0.8; }
-  .more-tiles { min-height: var(--tap); padding: 0 var(--s3); color: var(--marine); letter-spacing: 0.1em; }
+  .decide .tsub { margin-left: var(--s2); opacity: 0.8; }
+  .more-tiles { min-height: var(--tap); padding: 0 var(--s3); color: var(--marine); }
 </style>

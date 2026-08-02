@@ -70,21 +70,25 @@
     height: 70vh;
     min-height: 460px;
     margin-top: var(--s5);
-    border: 1px solid var(--rule);
+    border: 1px solid var(--hair);
+    border-radius: var(--r-lg);
+    overflow: hidden;
     box-shadow: var(--eyebrow);
   }
-  /* Leaflet paints its own controls; keep them square and on-palette. */
+  /* Leaflet paints its own controls; keep them on-palette. */
   .map :global(.leaflet-bar a) { color: var(--marine); }
   .map :global(.mp-open) {
     display: inline-flex;
     align-items: center;
     min-height: 40px;
     margin-top: var(--s2);
-    padding: 0 var(--s3);
+    padding: 0 var(--s4);
+    border-radius: var(--r-full);
     background: var(--marine);
     color: var(--card);
     border: none;
-    font-family: var(--f-mono);
+    font-family: var(--f-body);
+    font-weight: 590;
     font-size: var(--t-meta);
     cursor: pointer;
   }

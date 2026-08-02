@@ -235,32 +235,37 @@
   }
 </script>
 
-<!-- Symmetry in the frame, freedom in the contents — the Deco rule. -->
+<!-- DIRECTION: "Apple form · Vice night" (2026-08-02 redesign). Form language is
+     Apple HIG — SF system type, continuous rounded corners, soft neutral depth,
+     translucent-grade layering, generous rhythm, sentence case, system-tint
+     controls. Colour soul stays Miami Vice at night: deep marine field, cyan tint,
+     one flamingo for price. All product truth, function, copy and constraints
+     preserved; the retired look was Tropical Deco (hard offset "eyebrow" slab,
+     Poiret/Jost, uppercase eyebrows). See DESIGN.md. -->
+
+<!-- An iOS-style large title: the wordmark leads, a system-tint action sits to the
+     right, and a quiet subtitle carries the facts. Sentence case, soft, no ornament. -->
 <header class="masthead">
-  <div class="wrap">
-    <p class="eyebrow micro">Miami Beach · August – September</p>
+  <div class="wrap topbar">
     <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
-    <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
-    <p class="tagline micro">{tagline}</p>
-    <p class="promo micro">{promo}</p>
     <div class="masthead-tools">
-      <button type="button" class="shortlist-btn micro" aria-pressed={showShortlist}
+      <button type="button" class="shortlist-btn" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
         Shortlist{#if shortlist.length}<span class="badge mono">{shortlist.length}</span>{/if}
       </button>
     </div>
   </div>
+  <div class="wrap subhead">
+    <p class="tagline">{tagline}</p>
+    <p class="promo">{promo}</p>
+  </div>
 </header>
-
-<!-- The horizon eyebrow: one hard, full-bleed Deco sunshade line (marine over a
-     signal-teal offset, zero blur). Hard sun, the opposite of the aurora-blob hero. -->
-<div class="horizon" aria-hidden="true"></div>
 
 {#if !introSeen}
   <div class="wrap">
     <aside class="intro" aria-label="About Miami Spice">
       <p>The honest Miami Spice menu — which nights each spot actually serves it, and the full three-course lineup, filtered instantly. Unofficial · updated weekly.</p>
-      <button type="button" class="intro-x mono" onclick={dismissIntro}>Got it</button>
+      <button type="button" class="intro-x" onclick={dismissIntro}>Got it</button>
     </aside>
   </div>
 {/if}
@@ -437,38 +442,24 @@
 <style>
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s6); }
 
-  .masthead { padding: var(--s7) 0 0; text-align: center; }
+  .masthead { padding: var(--s7) 0 0; }
+  .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
 
-  .eyebrow { margin: 0 0 var(--s3); letter-spacing: 0.18em; }
-
+  /* The large title — SF at display weight, tight tracking, sentence case. */
   .wordmark {
-    font-family: var(--f-deco);
-    font-weight: 400;
+    font-family: var(--f-display);
+    font-weight: 700;
     font-size: var(--t-display);
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    line-height: 1;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
     margin: 0;
   }
-
-  .wordmark-btn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; }
+  .wordmark-btn { display: inline-flex; align-items: center; min-height: var(--tap); font: inherit; letter-spacing: inherit; color: inherit; }
   .wordmark-btn:hover { color: var(--marine); }
 
-  /* Full-bleed hard horizon line — the app's one signature graphic. */
-  .horizon {
-    height: 6px;
-    background: var(--marine);
-    box-shadow: 0 6px 0 0 var(--signal);
-    margin-top: var(--s7);
-  }
-
-  /* Rule of three. The whole 1930s reference, in three hairlines. */
-  .racing { display: flex; flex-direction: column; gap: 3px; margin: var(--s5) auto 0; max-width: 340px; }
-  .racing i { height: 2px; background: var(--marine); }
-  .racing i:nth-child(2) { background: var(--flamingo); }
-
-  .tagline { margin: var(--s4) 0 0; letter-spacing: 0.08em; }
-  .promo { margin: var(--s2) 0 0; letter-spacing: 0.08em; color: var(--marine); }
+  .subhead { margin-top: var(--s3); }
+  .tagline { margin: 0; font-size: var(--t-body); color: var(--soft); }
+  .promo { margin: var(--s1) 0 0; font-size: var(--t-body); color: var(--marine); }
 
   .intro {
     display: flex;
@@ -477,9 +468,11 @@
     justify-content: space-between;
     flex-wrap: wrap;
     margin-top: var(--s5);
-    padding: var(--s3) var(--s4);
+    padding: var(--s4) var(--s5);
     background: var(--card);
     border: 1px solid var(--hair);
+    border-radius: var(--r-lg);
+    box-shadow: var(--eyebrow);
   }
   .intro p { margin: 0; font-size: var(--t-body); color: var(--soft); max-width: 66ch; }
   .intro-x {
@@ -487,36 +480,34 @@
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
-    padding: 0 var(--s4);
-    border: 1px solid var(--rule);
-    color: var(--marine);
+    padding: 0 var(--s5);
+    border-radius: var(--r-full);
+    background: var(--marine);
+    color: var(--card);
+    font-weight: 590;
   }
-  .intro-x:hover { border-color: var(--marine); }
+  .intro-x:hover { filter: brightness(1.08); }
 
-  .moodhint { margin: var(--s3) 0 0; color: var(--soft); letter-spacing: 0.06em; }
-  .pickwhy { margin: var(--s3) 0 0; color: var(--marine); letter-spacing: 0.06em; }
+  .moodhint { margin: var(--s3) 0 0; color: var(--soft); }
+  .pickwhy { margin: var(--s3) 0 0; color: var(--marine); }
 
-  /* The masthead tools row — the shortlist affordance, centered under the wordmark. */
-  .masthead-tools {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: var(--s3);
-    margin-top: var(--s5);
-  }
+  /* The masthead tools row — the shortlist action, right-aligned in the nav. */
+  .masthead-tools { display: flex; align-items: center; gap: var(--s3); }
   .shortlist-btn {
     display: inline-flex;
     align-items: center;
     gap: var(--s2);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    border: 1px solid var(--rule);
-    color: var(--soft);
+    border-radius: var(--r-full);
+    background: var(--sunk);
+    color: var(--ink);
+    font-size: var(--t-body);
+    font-weight: 500;
   }
-  .shortlist-btn:hover { color: var(--ink); border-color: var(--ink); }
-  .shortlist-btn[aria-pressed='true'] { background: var(--marine); border-color: var(--marine); color: var(--card); }
-  .shortlist-btn .badge { background: var(--flamingo); color: var(--card); padding: 1px 7px; }
+  .shortlist-btn:hover { background: var(--marine-wash); }
+  .shortlist-btn[aria-pressed='true'] { background: var(--marine); color: var(--card); }
+  .shortlist-btn .badge { background: var(--flamingo); color: var(--card); border-radius: var(--r-full); padding: 1px 8px; font-size: var(--t-meta); }
   .shortlist-btn[aria-pressed='true'] .badge { background: var(--card); color: var(--marine); }
 
   .share-btn {
@@ -524,22 +515,26 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s4);
+    border-radius: var(--r-full);
     background: var(--marine);
     color: var(--card);
+    font-weight: 590;
     box-shadow: var(--eyebrow);
   }
-  .share-msg { margin: var(--s3) 0 0; color: var(--signal); letter-spacing: 0.08em; }
+  .share-btn:hover { filter: brightness(1.08); }
+  .share-msg { margin: var(--s3) 0 0; color: var(--signal); }
   .undo-link { color: var(--marine); text-decoration: underline; }
 
   .sl-action {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
-    padding: 0 var(--s3);
-    border: 1px solid var(--hair);
+    padding: 0 var(--s4);
+    border-radius: var(--r-full);
+    background: var(--sunk);
     color: var(--soft);
   }
-  .sl-action:hover { border-color: var(--rule); color: var(--ink); }
+  .sl-action:hover { color: var(--ink); background: var(--marine-wash); }
 
 
   .layout {
@@ -553,55 +548,58 @@
   .rail-inner { position: sticky; top: var(--s5); max-height: calc(100vh - var(--s7)); overflow-y: auto; }
 
   .group { display: grid; gap: var(--s3); margin-bottom: var(--s6); }
-  .group h3 { margin: 0; padding-bottom: var(--s2); border-bottom: 1px solid var(--rule); }
+  .group h3 { margin: 0; }
 
   .search { display: block; margin-bottom: var(--s6); }
   .search input {
     width: 100%;
     min-height: var(--tap);
-    padding: 0 var(--s3);
-    background: var(--card);
-    border: 1px solid var(--hair);
-    font-family: var(--f-mono);
+    padding: 0 var(--s4);
+    background: var(--sunk);
+    border: 1px solid transparent;
+    border-radius: var(--r-md);
     font-size: var(--t-body);
   }
-  .search input::placeholder { color: var(--soft); opacity: 0.75; }
-  .search input:hover, .search input:focus { border-color: var(--rule); }
+  .search input::placeholder { color: var(--soft); }
+  .search input:hover { background: var(--marine-wash); }
+  .search input:focus { background: var(--card); border-color: var(--marine); }
 
   .bar {
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: var(--s4);
-    padding-bottom: var(--s3);
-    border-bottom: 2px solid var(--ink);
+    padding-bottom: var(--s4);
+    border-bottom: 1px solid var(--hair);
   }
 
   .count { margin: 0; display: flex; align-items: baseline; gap: var(--s2); }
-  .count strong { font-size: var(--t-name); font-weight: 500; }
+  .count strong { font-size: var(--t-title); font-weight: 700; letter-spacing: -0.02em; }
 
   .bar-right { display: flex; align-items: center; gap: var(--s2); }
 
-  .viewsel { display: inline-flex; border: 1px solid var(--hair); }
+  /* iOS segmented control — a filled track with a soft neutral thumb on the
+     selected segment, not a tinted fill. */
+  .viewsel { display: inline-flex; gap: 2px; padding: 3px; background: var(--sunk); border-radius: var(--r-md); }
   .viewsel button {
     min-height: var(--tap);
-    padding: 0 var(--s3);
+    padding: 0 var(--s4);
     font-size: var(--t-meta);
-    letter-spacing: 0.14em;
+    font-weight: 590;
     color: var(--soft);
-    background: var(--card);
+    border-radius: var(--r-sm);
   }
-  .viewsel button + button { border-left: 1px solid var(--hair); }
-  .viewsel button[aria-pressed='true'] { background: var(--marine); color: var(--card); }
+  .viewsel button[aria-pressed='true'] { background: var(--card); color: var(--ink); box-shadow: var(--eyebrow); }
 
-  .bar-share { min-height: var(--tap); padding: 0 var(--s3); border: 1px solid var(--hair); color: var(--soft); }
-  .bar-share:hover { color: var(--marine); border-color: var(--marine); }
+  .bar-share { min-height: var(--tap); padding: 0 var(--s4); border-radius: var(--r-full); background: var(--sunk); color: var(--soft); }
+  .bar-share:hover { color: var(--marine); background: var(--marine-wash); }
 
   .sortsel select {
     min-height: var(--tap);
-    padding: 0 var(--s2);
-    background: var(--card);
-    border: 1px solid var(--hair);
+    padding: 0 var(--s3);
+    background: var(--sunk);
+    border: 1px solid transparent;
+    border-radius: var(--r-md);
     font-size: var(--t-meta);
     color: var(--soft);
   }
@@ -610,48 +608,52 @@
     display: none;
     align-items: center;
     min-height: var(--tap);
-    padding: 0 var(--s3);
-    background: var(--card);
-    border: 1px solid var(--hair);
+    padding: 0 var(--s4);
+    background: var(--sunk);
+    border-radius: var(--r-full);
     white-space: nowrap;
   }
 
-  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s1); margin: var(--s4) 0 0; padding: 0; }
+  .chips { list-style: none; display: flex; flex-wrap: wrap; gap: var(--s2); margin: var(--s4) 0 0; padding: 0; }
   .chips button {
     display: inline-flex;
     align-items: center;
     gap: var(--s2);
     min-height: var(--tap);
-    padding: 0 var(--s3);
+    padding: 0 var(--s3) 0 var(--s4);
+    border-radius: var(--r-full);
     background: var(--marine);
     color: var(--card);
-    font-size: var(--t-body);
+    font-size: var(--t-meta);
+    font-weight: 590;
   }
   .chips .x { font-size: var(--t-body); line-height: 1; opacity: 0.75; }
-  .chips .clear { background: none; color: var(--soft); border: 1px solid var(--hair); }
-  .chips .clear:hover { color: var(--flamingo); border-color: var(--flamingo); }
+  .chips .clear { background: var(--sunk); color: var(--soft); }
+  .chips .clear:hover { color: var(--flamingo); }
 
   /* fit-content + max-width keeps the segmented control from pushing the page
      wide at 320px (WCAG 1.4.10); if it can't fit, it scrolls inside itself. */
   .courses {
     display: flex;
+    gap: 2px;
     width: fit-content;
     max-width: 100%;
     overflow-x: auto;
-    border: 1px solid var(--hair);
-    margin: var(--s4) 0 var(--s2);
+    padding: 3px;
+    background: var(--sunk);
+    border-radius: var(--r-md);
+    margin: var(--s5) 0 var(--s2);
   }
   .courses button {
     flex: 0 0 auto;
     min-height: var(--tap);
     padding: 0 var(--s4);
     font-size: var(--t-meta);
-    letter-spacing: 0.14em;
+    font-weight: 590;
     color: var(--soft);
-    background: var(--card);
+    border-radius: var(--r-sm);
   }
-  .courses button + button { border-left: 1px solid var(--hair); }
-  .courses button[aria-pressed='true'] { background: var(--marine); color: var(--card); }
+  .courses button[aria-pressed='true'] { background: var(--card); color: var(--ink); box-shadow: var(--eyebrow); }
 
   .list { list-style: none; margin: 0; padding: 0; }
 
@@ -660,23 +662,24 @@
     padding: var(--s7) var(--s6);
     background: var(--card);
     border: 1px solid var(--hair);
+    border-radius: var(--r-lg);
     box-shadow: var(--eyebrow);
   }
-  .empty .lead { font-size: var(--t-name); font-weight: 500; margin: 0 0 var(--s3); }
+  .empty .lead { font-size: var(--t-title); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 var(--s3); }
   .empty .fix { margin: 0 0 var(--s3); }
-  .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s1); justify-items: start; }
+  .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); justify-items: start; }
   .empty ul button, .empty .reset {
     display: inline-flex;
     align-items: center;
     gap: var(--s3);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    background: var(--paper);
-    border: 1px solid var(--hair);
+    background: var(--sunk);
+    border-radius: var(--r-full);
     font-size: var(--t-body);
-    color: var(--soft);
+    color: var(--ink);
   }
-  .empty ul button:hover, .empty .reset:hover { border-color: var(--marine); color: var(--ink); }
+  .empty ul button:hover, .empty .reset:hover { background: var(--marine-wash); color: var(--ink); }
   .empty .n { color: var(--marine); font-size: var(--t-body); }
 
   .sentinel { text-align: center; padding: var(--s6); }
@@ -690,23 +693,24 @@
     min-height: var(--tap);
     margin-top: var(--s5);
     background: var(--card);
-    border: 1px solid var(--rule);
+    border: 1px solid var(--hair);
+    border-radius: var(--r-full);
     box-shadow: var(--eyebrow);
-    font-family: var(--f-mono);
     font-size: var(--t-body);
+    font-weight: 590;
     color: var(--marine);
   }
-  .loadmore .n { color: var(--soft); }
+  .loadmore:hover { background: var(--marine-wash); }
+  .loadmore .n { color: var(--soft); font-weight: 400; }
 
   footer { padding: var(--s7) var(--s6); text-align: center; }
-  footer p { margin: 0; letter-spacing: 0.08em; }
+  footer p { margin: 0; }
   .about-link {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
     margin-top: var(--s2);
     color: var(--marine);
-    letter-spacing: 0.1em;
   }
   .about-link:hover { text-decoration: underline; }
 
@@ -728,15 +732,7 @@
     .sortsel { min-width: 0; }
     .sortsel select { max-width: 100%; text-overflow: ellipsis; }
 
-    /* The masthead was eating ~43% of the first mobile screen (critique). Tighten
-       its rhythm so the actionable content sits closer to the fold. */
     .masthead { padding-top: var(--s5); }
-    .eyebrow { margin-bottom: var(--s2); }
-    .racing { margin-top: var(--s3); }
-    .tagline { margin-top: var(--s2); }
-    .promo { margin-top: var(--s1); }
-    .masthead-tools { margin-top: var(--s3); }
-    .horizon { margin-top: var(--s5); }
-    .intro { margin-top: var(--s4); padding: var(--s3); }
+    .intro { margin-top: var(--s4); padding: var(--s4); }
   }
 </style>

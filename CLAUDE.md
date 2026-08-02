@@ -73,24 +73,35 @@ Combination rules, since they are the one non-obvious part:
 the facet being counted. Zero options are **disabled and greyed, never removed** — removing them
 makes the list jump and destroys the user's spatial memory of it.
 
-## Design standard — Tropical Deco
+## Design standard — Apple form · Vice night
 
-Full reasoning in `DESIGN_REVIEW.md`. The short version, because it is easy to undo by accident:
+Full record in `DESIGN.md`. The 2026-08-02 redesign kept the Miami Vice *colour soul* but
+rebuilt the *form* in Apple's language. `DESIGN_REVIEW.md` / `VICE_DIRECTION.md` hold the
+retired Tropical Deco pass as historical anti-reference. The short version, easy to undo by accident:
 
-- **Near-white field, marine structure, one flamingo for price.** `--paper #E9E6DE`,
-  `--card #F5F3ED`, `--ink #161A19`, `--soft #464B47`, `--rule #8E887E`, `--marine #12414C`,
-  `--flamingo #9C1E45`. The pastel is the paper, not the ink.
+- **Deep-marine night field, cyan tint, one flamingo for price.** Shipped theme is
+  `:root[data-theme='pm']`: `--paper #0e1a1f`, `--card #16262c` (elevated surface),
+  `--sunk #0b151a` (wells/controls), `--ink #f2f4ee`, `--soft #a6bcb7`, `--marine #7fe3ef`
+  (the system tint — links, selection, filled controls), `--flamingo #ff6fae` (price, nothing else).
+  `:root` is a dormant light fallback; the app forces night in `main.js`.
 - **The accent is chosen by exclusion**, per Michael Mann's rule for *Miami Vice*: no earth tones,
   no red, no primaries. `--flamingo` is used for price and nothing else.
-- **Hard shadows, never glow.** `box-shadow: 6px 6px 0` — an Art Deco eyebrow. There is no blur
-  and no gradient anywhere in the app, deliberately.
-- **Four type steps only**: 12 / 15 / 19 / 44, each ≥1.25× the last. Jost + IBM Plex Mono,
-  self-hosted via `@fontsource`. Never introduce a fifth size.
+- **Soft neutral depth, never a hard slab or a glow.** `--eyebrow` is now a soft blurred
+  offset (`0 1px 3px rgba(0,0,0,.5)`), `--shadow-lg` for overlays. Colour-blurred glows stay banned
+  (that is the slop tell); neutral `rgba(0,0,0,…)` shadows are the Apple elevation.
+- **Continuous rounded corners.** Three radius tokens — `--r-sm 8`, `--r-md 12`, `--r-lg 20`,
+  plus `--r-full` for pills. Keep ≥3 distinct radii or the uniform-radius tell fires.
+- **SF system faces, sentence case.** `-apple-system` stack for text/display, SF Mono for figures —
+  no web fonts. Type ramp 13 / 15 / 17 / 22 / 28 / display(clamp 32–44); keep <3 adjacent pairs
+  under 1.15×. `.micro` is a sentence-case secondary caption now, **not** an uppercase eyebrow.
+- **No uppercase eyebrows.** Uppercase `text-transform` is retired entirely — re-adding it risks the
+  eyebrow-overuse tell. Labels lead in sentence case; the content, not the label, carries weight.
+- **iOS controls.** Segmented controls (view / course) are a filled `--sunk` track with a soft
+  neutral `--card` thumb on the selected segment; multi-select facets/chips fill with `--marine`
+  tint. Every control keeps a ≥44pt hit target even when it reads slim.
 - **Rows, not cards.** NN/g lists four cases where cards are the wrong component — search,
   comparison, homogeneous content, density — and a 380-item directory is all four.
-  Target ≥6 results per 900px viewport; currently 8.5.
-- **Uppercase is limited to two roles**: `.micro` and the wordmark. Adding a third re-triggers
-  the eyebrow-overuse rule.
+  Target ≥6 results per 900px viewport; currently 8.7.
 
 Floors enforced by `design-lint.mjs`, not by vigilance: 11px minimum type, 44px minimum tap
 target, 7:1 for small text, 3:1 for UI boundaries. Where Apple and WCAG disagree it takes the

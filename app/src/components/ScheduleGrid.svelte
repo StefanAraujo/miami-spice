@@ -47,7 +47,7 @@
 </p>
 
 <style>
-  .sched { border-collapse: collapse; margin-bottom: var(--s5); }
+  .sched { border-collapse: separate; border-spacing: 3px; margin: 0 -3px var(--s5); }
 
   .corner { width: 1%; }
 
@@ -68,18 +68,20 @@
   .rowh .ml { font-size: var(--t-body); color: var(--ink); }
   .rowh .pr { font-size: var(--t-meta); color: var(--flamingo); margin-left: var(--s2); }
 
-  /* Filled = served, hollow = not. Marine (cyan at night), hard-edged, no glow. */
+  /* Filled = served, empty = not. The system tint fills a served cell; soft
+     rounded cells, no glow. */
   .cell {
     width: 30px;
     height: 26px;
-    border: 1px solid var(--hair);
+    background: var(--sunk);
+    border-radius: var(--r-sm);
   }
-  .cell.on { background: var(--marine); border-color: var(--marine); }
+  .cell.on { background: var(--marine); }
 
   /* Legend so "filled = served" is explicit, not inferred (UX review Help gap). */
   .legend { display: flex; gap: var(--s4); margin: var(--s3) 0 0; font-size: var(--t-meta); color: var(--soft); }
-  .legend .sw { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--hair); vertical-align: -1px; margin-right: 4px; }
-  .legend .sw.on { background: var(--marine); border-color: var(--marine); }
+  .legend .sw { display: inline-block; width: 12px; height: 12px; background: var(--sunk); border-radius: 3px; vertical-align: -1px; margin-right: 4px; }
+  .legend .sw.on { background: var(--marine); }
 
   @media (max-width: 560px) {
     .cell { width: 26px; }

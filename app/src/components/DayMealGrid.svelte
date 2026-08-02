@@ -61,29 +61,33 @@
     min-height: var(--tap);
     min-width: var(--tap);
     font-size: var(--t-meta);
-    color: var(--soft);
-    background: var(--card);
-    border: 1px solid var(--hair);
+    font-weight: 590;
+    color: var(--ink);
+    background: var(--sunk);
+    border: 1px solid transparent;
+    border-radius: var(--r-md);
   }
-  .day:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
-  .day.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
-  .day:disabled { opacity: 0.45; cursor: default; }
+  .day:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
+  .day.on { background: var(--marine); color: var(--card); }
+  .day:disabled { opacity: 0.4; cursor: default; }
 
-  .meals { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+  .meals { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
 
   .meal {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
-    padding: 0 var(--s3);
+    padding: 0 var(--s4);
     font-size: var(--t-body);
-    color: var(--soft);
-    background: var(--card);
-    border: 1px solid var(--hair);
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--sunk);
+    border: 1px solid transparent;
+    border-radius: var(--r-full);
   }
-  .meal:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
-  .meal.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
-  .meal:disabled { opacity: 0.45; cursor: default; }
+  .meal:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
+  .meal.on { background: var(--marine); color: var(--card); }
+  .meal:disabled { opacity: 0.4; cursor: default; }
 
   .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
   .meal.on .n { color: var(--card); opacity: 0.75; }
