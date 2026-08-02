@@ -14,8 +14,11 @@ const data = JSON.parse(fs.readFileSync(path.join(path.dirname(fileURLToPath(imp
 
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json' }
 const server = http.createServer((req, res) => {
-  const p = path.join(root, req.url === '/' ? 'index.html' : decodeURIComponent(req.url.split('?')[0]))
-  if (!fs.existsSync(p)) { res.writeHead(404); return res.end() }
+  // Strip the query first — the app now puts filter state in ?params, so "/?cuisines=X"
+  // must still serve index.html (not try to read the dist directory).
+  const pathname = decodeURIComponent(req.url.split('?')[0])
+  const p = path.join(root, pathname === '/' ? 'index.html' : pathname)
+  if (!fs.existsSync(p) || fs.statSync(p).isDirectory()) { res.writeHead(404); return res.end() }
   res.writeHead(200, { 'Content-Type': TYPES[path.extname(p)] || 'application/octet-stream' })
   fs.createReadStream(p).pipe(res)
 })
@@ -188,6 +191,12 @@ for (const [fg, bg] of PAIRS) {
   if (ratio < worst.ratio) worst = { ratio, fg, bg }
 }
 check(`palette AA (worst: ${worst.fg} on ${worst.bg} = ${worst.ratio.toFixed(2)}:1)`, worst.ratio >= 4.5, true)
+
+// Shareable search: a filtered URL restores straight to results, skipping the door.
+await page.goto('http://localhost:4321/?cuisines=Italian', { waitUntil: 'networkidle' })
+await page.waitForTimeout(150)
+check('URL filter restores results', await count(), rs.filter((r) => r.cuisines.includes('Italian')).length)
+check('URL filter skips the front door', await page.locator('.discover').count(), 0)
 
 check('no console errors', errors.length, 0)
 if (errors.length) console.log(errors.slice(0, 5))

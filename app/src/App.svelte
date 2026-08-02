@@ -10,8 +10,26 @@
     SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS, getById, DAYS,
   } from './lib/search.js'
 
-  let f = $state(emptyFilters())
-  let sort = $state('relevance')
+  // The full filter state lives in the URL so any view is bookmarkable and
+  // shareable — "Italian, Saturday dinner, Brickell" is a link, not just a shortlist
+  // (UX review). Parsed once on load; kept in sync by the effect below.
+  function parseUrl() {
+    const p = new URLSearchParams(location.search)
+    const list = (k) => (p.get(k) || '').split(',').filter(Boolean)
+    const nums = (k) => list(k).map(Number).filter((x) => !Number.isNaN(x))
+    const f = {
+      ...emptyFilters(),
+      query: p.get('q') || '',
+      days: list('days'), meals: list('meals'),
+      cuisines: list('cuisines'), hoods: list('hoods'), cities: list('cities'),
+      prices: nums('prices'), flags: list('flags'), mood: p.get('mood') || null,
+    }
+    return { f, sort: p.get('sort') || 'relevance', picks: nums('picks') }
+  }
+  const _url = parseUrl()
+
+  let f = $state(_url.f)
+  let sort = $state(_url.sort)
   let shown = $state(40)
   let filtersOpen = $state(false)
   // First-run orientation — light and dismissible (UX review: Help & Docs gap).
@@ -22,7 +40,7 @@
   const dismissIntro = () => { introSeen = true; try { localStorage.setItem('intro-seen', '1') } catch {} }
   // Cold start shows the Discover front door (ROADMAP Phase 4). "Browse all" is
   // the escape hatch to the full list without picking anything first.
-  let browseAll = $state(false)
+  let browseAll = $state(!isEmpty(_url.f))
   let view = $state('list')   // 'list' | 'map' — both driven by the same filtered results
   let course = $state('all')  // 'all' | 'starters' | 'mains' | 'desserts' — the teaser lens
   const COURSES = [['all', 'All'], ['starters', 'Starters'], ['mains', 'Mains'], ['desserts', 'Desserts']]
@@ -31,34 +49,40 @@
   // park candidates (closes Zeigarnik open loops) that doubles as a group-decision
   // primitive via a shareable URL. Client-side only, same localStorage mechanism as
   // the AM/PM mood. A ?picks=id,id link opens straight into someone else's shortlist.
-  function loadPicks() {
-    try {
-      const p = new URLSearchParams(location.search).get('picks')
-      const ids = (p || '').split(',').map(Number).filter(Boolean)
-      if (ids.length) return ids
-      return JSON.parse(localStorage.getItem('shortlist') || '[]')
-    } catch { return [] }
-  }
-  let shortlist = $state(loadPicks())
-  let showShortlist = $state(!!new URLSearchParams(location.search).get('picks'))
+  function storedShortlist() { try { return JSON.parse(localStorage.getItem('shortlist') || '[]') } catch { return [] } }
+  let shortlist = $state(_url.picks.length ? _url.picks : storedShortlist())
+  // A link carrying only picks (no filters) is a shared shortlist — open to it.
+  let showShortlist = $state(_url.picks.length > 0 && isEmpty(_url.f))
   let shareMsg = $state('')
 
-  $effect(() => { try { localStorage.setItem('shortlist', JSON.stringify(shortlist)) } catch {} })
+  // Keep the URL in sync with the full state (filters + sort + shortlist), so the
+  // address bar is always a shareable, bookmarkable link. replaceState, not push —
+  // no history spam per keystroke.
+  $effect(() => {
+    try { localStorage.setItem('shortlist', JSON.stringify(shortlist)) } catch {}
+    const p = new URLSearchParams()
+    if (f.query.trim()) p.set('q', f.query.trim())
+    for (const k of ['days', 'meals', 'cuisines', 'hoods', 'cities', 'flags']) if (f[k].length) p.set(k, f[k].join(','))
+    if (f.prices.length) p.set('prices', f.prices.join(','))
+    if (f.mood) p.set('mood', f.mood)
+    if (sort !== 'relevance') p.set('sort', sort)
+    if (shortlist.length) p.set('picks', shortlist.join(','))
+    const qs = p.toString()
+    try { history.replaceState(null, '', qs ? `${location.pathname}?${qs}` : location.pathname) } catch {}
+  })
   const savedSet = $derived(new Set(shortlist))
   const shortlistRows = $derived(shortlist.map(getById).filter(Boolean))
   const togglePin = (id) => {
     shortlist = shortlist.includes(id) ? shortlist.filter((x) => x !== id) : [...shortlist, id]
     shareMsg = ''
   }
+  // The live URL already encodes the full state, so sharing is just copying it.
   async function share() {
-    const url = new URL(location.href)
-    url.search = ''
-    url.searchParams.set('picks', shortlist.join(','))
     try {
-      await navigator.clipboard.writeText(url.toString())
+      await navigator.clipboard.writeText(location.href)
       shareMsg = "Link copied — send it to whoever you're going with."
     } catch {
-      shareMsg = url.toString()
+      shareMsg = location.href
     }
   }
 
@@ -288,6 +312,7 @@
           <button type="button" class="micro" aria-pressed={view === 'list'} onclick={() => (view = 'list')}>List</button>
           <button type="button" class="micro" aria-pressed={view === 'map'} onclick={() => (view = 'map')}>Map</button>
         </div>
+        {#if !isEmpty(f)}<button type="button" class="bar-share micro" onclick={share} title="Copy a link to this search">Share</button>{/if}
         <label class="sortsel">
           <span class="sr-only">Sort results</span>
           <select class="mono" bind:value={sort}>
@@ -300,6 +325,7 @@
       </div>
     </div>
 
+    {#if shareMsg}<p class="share-msg micro" aria-live="polite">{shareMsg}</p>{/if}
     {#if f.mood}<p class="moodhint micro">Ranked by how well each menu fits “{MOODS[f.mood].label}” — cuisine, dietary flags, and dish names.</p>{/if}
 
     {#if chips.length}
@@ -540,6 +566,9 @@
   }
   .viewsel button + button { border-left: 1px solid var(--hair); }
   .viewsel button[aria-pressed='true'] { background: var(--marine); color: var(--card); }
+
+  .bar-share { min-height: var(--tap); padding: 0 var(--s3); border: 1px solid var(--hair); color: var(--soft); }
+  .bar-share:hover { color: var(--marine); border-color: var(--marine); }
 
   .sortsel select {
     min-height: var(--tap);
