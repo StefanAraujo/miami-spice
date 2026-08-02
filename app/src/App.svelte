@@ -7,7 +7,7 @@
   import {
     facets, generatedAt, restaurants,
     emptyFilters, isEmpty, runQuery, relaxations, facetCounts,
-    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS, getById,
+    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS, getById, DAYS,
   } from './lib/search.js'
 
   let f = $state(emptyFilters())
@@ -76,6 +76,22 @@
     if (s) sort = s
     browseAll = false
   }
+
+  // Confident default (UX review gaps 4 & 7): "Pick for us" surfaces ONE strong
+  // choice open tonight — for the tired, deferral-prone group who don't want a
+  // 380-row list. Scored from data we already have; a peak + a place to stop.
+  const TODAY = DAYS[(new Date().getDay() + 6) % 7]
+  let pickedId = $state(null)
+  function pickForUs() {
+    const openTonight = restaurants.filter((r) => r.serves.includes(`dinner@${TODAY}`))
+    const pool = (openTonight.length ? openTonight : restaurants)
+      .map((r) => ({ r, s: (r.michelin ? 4 : 0) + (r.flags.includes('michelin') ? 4 : 0) + (r.menus?.length || 0) + (r.prices.includes(65) ? 1 : 0) }))
+      .sort((a, b) => b.s - a.s)
+      .slice(0, 15)
+    pickedId = pool[Math.floor(Math.random() * pool.length)]?.r?.id ?? null
+    showShortlist = false
+  }
+  const pickedRow = $derived(pickedId != null ? getById(pickedId) : null)
 
   $effect(() => {
     void f
@@ -196,7 +212,20 @@
   </aside>
 
   <main>
-    {#if showShortlist}
+    {#if pickedRow}
+      <section class="pick-view">
+        <div class="bar">
+          <p class="count"><span class="micro">Tonight's pick</span></p>
+          <div class="bar-right">
+            <button type="button" class="sl-action micro" onclick={pickForUs}>Pick another</button>
+            <button type="button" class="sl-action micro" onclick={() => { pickedId = null; browseAll = true }}>Browse all</button>
+          </div>
+        </div>
+        <ul class="list">
+          <Row r={pickedRow} initialOpen={true} saved={savedSet.has(pickedRow.id)} onTogglePin={togglePin} />
+        </ul>
+      </section>
+    {:else if showShortlist}
       <section class="shortlist-view">
         <div class="bar">
           <p class="count"><strong class="mono">{shortlist.length}</strong><span class="micro">saved</span></p>
@@ -223,7 +252,7 @@
         {/if}
       </section>
     {:else if discovering}
-      <Discover onPick={applyPreset} onBrowseAll={() => (browseAll = true)} />
+      <Discover onPick={applyPreset} onBrowseAll={() => (browseAll = true)} onSurprise={pickForUs} />
     {:else}
     <div class="bar">
       <p class="count" aria-live="polite">

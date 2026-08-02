@@ -15,8 +15,9 @@
    * Secondary actions live in the expanded panel; moving them off the row is
    * what buys the density.
    */
-  let { r, course = 'all', saved = false, onTogglePin } = $props()
-  let open = $state(false)
+  let { r, course = 'all', saved = false, onTogglePin, initialOpen = false } = $props()
+  let open = $state(initialOpen)
+  let imgError = $state(false)
 
   const panelId = $derived(`menu-${r.id}`)
   const byMeal = (a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal)
@@ -45,6 +46,15 @@
         ? m.courses.find((x) => pat.test(x.name) && x.of)
         : (m.courses.find((x) => /entree/i.test(x.name) && x.of) ?? m.courses.find((x) => x.of))
       if (c?.items?.length) return c.items.slice(0, 2).join('  ·  ')
+    }
+    return null
+  })
+
+  /** The one dish to name — appetite carried by language (UX review gap 1). */
+  const signature = $derived.by(() => {
+    for (const m of menus) {
+      const c = m.courses.find((x) => /entree|main/i.test(x.name) && x.of) ?? m.courses.find((x) => x.of)
+      if (c?.items?.length) return c.items[0]
     }
     return null
   })
@@ -79,6 +89,13 @@
 
   {#if open}
     <div class="panel" id={panelId}>
+      {#if r.image && !imgError}
+        <img class="hero" src={r.image} alt="" loading="lazy" onerror={() => (imgError = true)} />
+      {/if}
+      {#if signature}
+        <p class="signature"><span class="siglbl micro">The dish to order</span>{signature}</p>
+      {/if}
+
       {#if offers.length}
         <p class="sched-h micro">When it's served</p>
         <ScheduleGrid {offers} />
@@ -196,6 +213,22 @@
     border: 1px solid var(--hair);
     box-shadow: var(--eyebrow);
   }
+
+  /* One earned image on the detail state (UX review gap 1) — bounded, hard-framed,
+     never a grid. Degrades to nothing if the CDN is unreachable. */
+  .hero {
+    display: block;
+    width: 100%;
+    height: 176px;
+    object-fit: cover;
+    border: 1px solid var(--hair);
+    box-shadow: var(--eyebrow);
+    margin-bottom: var(--s5);
+  }
+
+  /* Appetite carried by language: name the one dish worth coming for. */
+  .signature { margin: 0 0 var(--s5); font-size: var(--t-name); line-height: 1.3; color: var(--ink); }
+  .signature .siglbl { display: block; color: var(--marine); letter-spacing: 0.14em; margin-bottom: var(--s1); }
 
   .sched-h { margin: 0 0 var(--s3); letter-spacing: 0.14em; }
 

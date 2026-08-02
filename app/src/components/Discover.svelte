@@ -9,7 +9,7 @@
    * resolves to a {filters, sort} pushed into the SAME runQuery (no parallel path),
    * so chips, facet counts and relaxations all keep working.
    */
-  let { onPick, onBrowseAll } = $props()
+  let { onPick, onBrowseAll, onSurprise } = $props()
 
   // Every count is a real query over the 380 rows (~1ms each) — the number on a
   // tile is exactly what you'll get if you tap it. Never a stale or invented count.
@@ -98,7 +98,10 @@
     </div>
   </div>
 
-  <button class="browse" type="button" onclick={onBrowseAll}>Browse all {total} restaurants</button>
+  <div class="decide">
+    <button class="pick-btn mono" type="button" onclick={onSurprise}>Can’t decide? Pick one for us</button>
+    <button class="browse mono" type="button" onclick={onBrowseAll}>Browse all {total} restaurants</button>
+  </div>
 </section>
 
 <style>
@@ -133,16 +136,15 @@
   .tile .n { font-size: var(--t-meta); color: var(--soft); }
   .tile .tsub { font-size: var(--t-meta); color: var(--soft); font-style: italic; }
 
-  .browse {
+  .decide { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; margin-top: var(--s2); }
+  .pick-btn, .browse {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s5);
-    margin-top: var(--s2);
-    background: var(--marine);
-    color: var(--card);
-    box-shadow: var(--eyebrow);
-    font-family: var(--f-mono);
     font-size: var(--t-body);
   }
+  .pick-btn { background: var(--marine); color: var(--card); box-shadow: var(--eyebrow); }
+  .browse { border: 1px solid var(--rule); color: var(--soft); }
+  .browse:hover { border-color: var(--ink); color: var(--ink); }
 </style>

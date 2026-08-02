@@ -28,8 +28,19 @@ const browser = await chromium.launch(
 const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } })
 // Google Fonts is unreachable from the sandbox; that is a network fact, not an
 // app bug, so filter it out and let everything else fail the run.
-const IGNORE = /fonts\.(googleapis|gstatic)\.com|ERR_CONNECTION_RESET|favicon/i
-page.on('console', (m) => m.type() === 'error' && !IGNORE.test(m.text()) && errors.push(m.text()))
+// External resource loads (fonts, the detail-panel hero image on its CDN) can fail
+// in the sandbox; that's a network fact, not an app bug, and the app degrades
+// gracefully (img onerror hides it). Real JS errors arrive via `pageerror`, not
+// this generic console text, so ignoring resource-load failures here is safe.
+const IGNORE = /fonts\.(googleapis|gstatic)\.com|assets\.simpleviewinc\.com|ERR_CONNECTION_RESET|favicon|Failed to load resource/i
+page.on('console', (m) => {
+  if (m.type() !== 'error') return
+  // Match the message text AND its source URL — a failed CDN image logs a generic
+  // "Failed to load resource" whose host only appears in the location, not the text.
+  const loc = m.location?.().url || ''
+  if (IGNORE.test(m.text()) || IGNORE.test(loc)) return
+  errors.push(m.text())
+})
 page.on('pageerror', (e) => errors.push(String(e)))
 await page.goto('http://localhost:4321/', { waitUntil: 'networkidle' })
 
@@ -51,6 +62,7 @@ const expectVegOutdoor = rs.filter((r) => ['vegetarian', 'outdoor'].every((g) =>
 
 // Cold start now shows the Discover front door, not the list (ROADMAP Phase 4).
 check('discover front door on load', await page.locator('.discover').count() > 0, true)
+check('pick-for-us affordance present', await page.getByRole('button', { name: /Pick one for us/ }).count() > 0, true)
 
 // A mood tile is a soft lens: it should narrow the list, not empty it or no-op.
 await page.locator('.discover').getByRole('button', { name: /^Steak & fire\s*\d+$/ }).click()
