@@ -114,6 +114,13 @@ check('pin adds to shortlist', await page.locator('.shortlist-btn .badge').textC
 await page.getByRole('button', { name: /^Shortlist/ }).click()
 await page.waitForTimeout(80)
 check('shortlist view shows saved row', await page.locator('.shortlist-view .row').count(), 1)
+// Clearing the shortlist is undoable, not a silent destructive wipe.
+await page.locator('.shortlist-view').getByRole('button', { name: 'Clear' }).click()
+await page.waitForTimeout(80)
+check('clear surfaces an undo', await page.locator('.undo-link').count(), 1)
+await page.locator('.undo-link').click()
+await page.waitForTimeout(80)
+check('undo restores the shortlist', await page.locator('.shortlist-view .row').count(), 1)
 await page.getByRole('button', { name: 'Done' }).click()
 await page.waitForTimeout(80)
 

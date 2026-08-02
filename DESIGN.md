@@ -86,13 +86,13 @@ components:
 
 **Creative North Star: "Ocean Drive After Dark"**
 
-The system is the arc of a Miami Beach day compressed into one toggle. By day (AM) the field
-is the City of Miami Beach's own regulated near-white — Heron Plume paper, a Deco terrazzo
-calm — with structure drawn in marine blue and a single flamingo used for price. Flip to night
-(PM) and the same room becomes a deep-marine after-hours: the field darkens, the type stays,
-and the two Vice hues — cyan and hot pink — surface exactly where the daytime accents lived,
-as **neon signage over a pale-then-dark wall, never as the wall itself.** Nothing about the
-composition changes across the toggle; only the light does. That restraint is the whole point.
+The sun is already down on Ocean Drive. The field is a deep marine after-hours; structure is
+drawn in the Vice cyan and a single hot-pink flamingo carries price — the two Vice hues surface
+as **neon signage over the dark wall, never as the wall itself.** The saturation is a signage
+budget on a fraction of the pixels; the room is otherwise a calm, near-monochrome night. That
+restraint is the whole point. (The lighter "Ocean Drive AM" palette remains defined in `app.css`
+as a dormant base the night theme overrides — kept for a possible daytime mode, but the product
+ships night-only.)
 
 This is "Miami Vice" reached by *exclusion*, per Michael Mann's production rule — no earth
 tones, no primaries, no glow. The look is Apple-precise in its discipline (one type family for
@@ -113,7 +113,7 @@ enforced by `design-lint.mjs`.
 
 A near-neutral field with structure in marine and a single hot accent — the entire palette is
 chosen by what it *excludes*. Values below are the AM (default) theme; PM redefines the same
-token names for night (see the Dual-Theme Rule).
+token names for night (see the Night Rule).
 
 ### Primary
 - **Marine** (`#12414c`): the structural voice — links, active/selected state, section rules,
@@ -243,7 +243,7 @@ value, not its corners.
   **never removed** — removing them makes the list jump and destroys spatial memory.
 
 ### Segmented controls
-- Bordered inline group, one press-selected cell in marine (AM/PM mood, List/Map view, the
+- Bordered inline group, one press-selected cell in marine (List/Map view, the
   course strip). Same idiom everywhere so the pattern is learned once.
 
 ### Inputs / Fields

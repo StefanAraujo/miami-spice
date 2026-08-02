@@ -54,8 +54,8 @@ hosted ratings.
 Capabilities (confirmed, shipped): discovery-first home (browse by cuisine / city / neighborhood
 / mood / occasion / timing); interdependent filters with live counts and no dead ends;
 per-restaurant day×meal availability grid; a map synced to the filtered result set; course-first
-browsing; mood/craving scoring; a client-side shortlist with a shareable URL; and a "pick for us"
-confident default. AM/PM colour-mood toggle.
+browsing; mood/craving scoring; a client-side shortlist and shareable search/shortlist links; and a
+"pick for us" confident default with a stated reason. Single night-only theme ("Ocean Drive After Dark").
 
 Hard constraints future work MUST preserve (owner-confirmed):
 

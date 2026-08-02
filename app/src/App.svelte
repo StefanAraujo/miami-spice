@@ -53,8 +53,8 @@
 
   // Shortlist — the fix for the biggest gap in the UX review: an external place to
   // park candidates (closes Zeigarnik open loops) that doubles as a group-decision
-  // primitive via a shareable URL. Client-side only, same localStorage mechanism as
-  // the AM/PM mood. A ?picks=id,id link opens straight into someone else's shortlist.
+  // primitive via a shareable URL. Client-side only via localStorage. A ?picks=id,id
+  // link opens straight into someone else's shortlist.
   function storedShortlist() { try { return JSON.parse(localStorage.getItem('shortlist') || '[]') } catch { return [] } }
   let shortlist = $state(_url.picks.length ? _url.picks : storedShortlist())
   // A link shared FROM the shortlist (saved=1), or one carrying only picks, opens
@@ -92,6 +92,24 @@
     } catch {
       shareMsg = location.href
     }
+  }
+
+  // Clearing the shortlist is destructive to the group's decision, so it's undoable
+  // for a few seconds rather than an instant, silent wipe (critique P2).
+  let clearedStash = $state(null)
+  let clearTimer
+  const clearShortlist = () => {
+    if (!shortlist.length) return
+    clearedStash = shortlist.slice()
+    shortlist = []
+    if (clearTimer) clearTimeout(clearTimer)
+    clearTimer = setTimeout(() => { clearedStash = null }, 6000)
+  }
+  const undoClear = () => {
+    if (!clearedStash) return
+    shortlist = clearedStash
+    clearedStash = null
+    if (clearTimer) clearTimeout(clearTimer)
   }
 
   const results = $derived(runQuery(f, sort))
@@ -137,6 +155,13 @@
     if (dishes) bits.push(`${dishes} dishes to choose from`)
     if (r.max_price === 65) bits.push('a full $65 prix-fixe')
     return bits.join(' · ')
+  })
+
+  // Moving to the single-restaurant view should move focus + scroll there, so a
+  // screen-reader/keyboard user isn't stranded on the now-unmounted button (critique P3).
+  let pickHeading
+  $effect(() => {
+    if (pickedRow && pickHeading) { pickHeading.focus({ preventScroll: true }); window.scrollTo({ top: 0 }) }
   })
 
   $effect(() => {
@@ -270,7 +295,7 @@
   <main>
     {#if pickedRow}
       <section class="pick-view">
-        <h2 class="sr-only">{pickIsTonight ? "Tonight's pick" : 'Selected restaurant'}</h2>
+        <h2 class="sr-only" tabindex="-1" bind:this={pickHeading}>{pickIsTonight ? "Tonight's pick" : 'Selected restaurant'}</h2>
         <div class="bar">
           <p class="count"><span class="micro">{pickIsTonight ? "Tonight's pick" : 'From the map'}</span></p>
           <div class="bar-right">
@@ -291,12 +316,13 @@
           <div class="bar-right">
             {#if shortlist.length}
               <button type="button" class="share-btn micro" onclick={share}>Share list</button>
-              <button type="button" class="sl-action micro" onclick={() => (shortlist = [])}>Clear</button>
+              <button type="button" class="sl-action micro" onclick={clearShortlist}>Clear</button>
             {/if}
             <button type="button" class="sl-action micro" onclick={() => (showShortlist = false)}>Done</button>
           </div>
         </div>
         {#if shareMsg}<p class="share-msg micro" aria-live="polite">{shareMsg}</p>{/if}
+        {#if clearedStash}<p class="share-msg micro" aria-live="assertive">Shortlist cleared. <button type="button" class="undo-link" onclick={undoClear}>Undo</button></p>{/if}
         {#if shortlistRows.length}
           <ul class="list">
             {#each shortlistRows as r (r.id)}
@@ -470,8 +496,7 @@
   .moodhint { margin: var(--s3) 0 0; color: var(--soft); letter-spacing: 0.06em; }
   .pickwhy { margin: var(--s3) 0 0; color: var(--marine); letter-spacing: 0.06em; }
 
-  /* Two moods, one system — the reference's framing, our restraint. A hard-edged
-     segmented control, not a glowing pill. Each half clears Apple's 44pt target. */
+  /* The masthead tools row — the shortlist affordance, centered under the wordmark. */
   .masthead-tools {
     display: flex;
     align-items: center;
@@ -504,6 +529,7 @@
     box-shadow: var(--eyebrow);
   }
   .share-msg { margin: var(--s3) 0 0; color: var(--signal); letter-spacing: 0.08em; }
+  .undo-link { color: var(--marine); text-decoration: underline; }
 
   .sl-action {
     display: inline-flex;
