@@ -41,6 +41,11 @@
   </tbody>
 </table>
 
+<p class="legend">
+  <span><i class="sw on" aria-hidden="true"></i> served</span>
+  <span><i class="sw" aria-hidden="true"></i> not served</span>
+</p>
+
 <style>
   .sched { border-collapse: collapse; margin-bottom: var(--s5); }
 
@@ -70,6 +75,11 @@
     border: 1px solid var(--hair);
   }
   .cell.on { background: var(--marine); border-color: var(--marine); }
+
+  /* Legend so "filled = served" is explicit, not inferred (UX review Help gap). */
+  .legend { display: flex; gap: var(--s4); margin: var(--s3) 0 0; font-size: var(--t-meta); color: var(--soft); }
+  .legend .sw { display: inline-block; width: 12px; height: 12px; border: 1px solid var(--hair); vertical-align: -1px; margin-right: 4px; }
+  .legend .sw.on { background: var(--marine); border-color: var(--marine); }
 
   @media (max-width: 560px) {
     .cell { width: 26px; }

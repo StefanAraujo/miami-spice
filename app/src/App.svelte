@@ -14,6 +14,12 @@
   let sort = $state('relevance')
   let shown = $state(40)
   let filtersOpen = $state(false)
+  // First-run orientation — light and dismissible (UX review: Help & Docs gap).
+  // Shown until "Got it," then remembered; the honest edge, stated once for a
+  // friend who opens a shared link cold.
+  function introSeenInit() { try { return localStorage.getItem('intro-seen') === '1' } catch { return false } }
+  let introSeen = $state(introSeenInit())
+  const dismissIntro = () => { introSeen = true; try { localStorage.setItem('intro-seen', '1') } catch {} }
   // Cold start shows the Discover front door (ROADMAP Phase 4). "Browse all" is
   // the escape hatch to the full list without picking anything first.
   let browseAll = $state(false)
@@ -173,9 +179,9 @@
     <p class="tagline micro">{tagline}</p>
     <p class="promo micro">{promo}</p>
     <div class="masthead-tools">
-      <div class="mood" role="group" aria-label="Colour mood">
-        <button type="button" class="mono" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
-        <button type="button" class="mono" aria-pressed={mood === 'pm'} onclick={() => setMood('pm')}>PM</button>
+      <div class="mood" role="group" aria-label="Theme" title="Switch between the daytime and after-dark theme">
+        <button type="button" class="mono" aria-label="Daytime theme" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
+        <button type="button" class="mono" aria-label="After-dark theme" aria-pressed={mood === 'pm'} onclick={() => setMood('pm')}>PM</button>
       </div>
       <button type="button" class="shortlist-btn micro" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
@@ -188,6 +194,15 @@
 <!-- The horizon eyebrow: one hard, full-bleed Deco sunshade line (marine over a
      signal-teal offset, zero blur). Hard sun, the opposite of the aurora-blob hero. -->
 <div class="horizon" aria-hidden="true"></div>
+
+{#if !introSeen}
+  <div class="wrap">
+    <aside class="intro" aria-label="About Miami Spice">
+      <p>The honest Miami Spice menu — which nights each spot actually serves it, and the full three-course lineup, filtered instantly. Unofficial · updated weekly.</p>
+      <button type="button" class="intro-x mono" onclick={dismissIntro}>Got it</button>
+    </aside>
+  </div>
+{/if}
 
 <div class="wrap layout">
   <aside class="rail" class:open={filtersOpen}>
@@ -284,6 +299,8 @@
         </button>
       </div>
     </div>
+
+    {#if f.mood}<p class="moodhint micro">Ranked by how well each menu fits “{MOODS[f.mood].label}” — cuisine, dietary flags, and dish names.</p>{/if}
 
     {#if chips.length}
       <ul class="chips">
@@ -386,6 +403,31 @@
 
   .tagline { margin: var(--s4) 0 0; letter-spacing: 0.08em; }
   .promo { margin: var(--s2) 0 0; letter-spacing: 0.08em; color: var(--marine); }
+
+  .intro {
+    display: flex;
+    gap: var(--s4);
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: var(--s5);
+    padding: var(--s3) var(--s4);
+    background: var(--card);
+    border: 1px solid var(--hair);
+  }
+  .intro p { margin: 0; font-size: var(--t-body); color: var(--soft); max-width: 66ch; }
+  .intro-x {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    border: 1px solid var(--rule);
+    color: var(--marine);
+  }
+  .intro-x:hover { border-color: var(--marine); }
+
+  .moodhint { margin: var(--s3) 0 0; color: var(--soft); letter-spacing: 0.06em; }
 
   /* Two moods, one system — the reference's framing, our restraint. A hard-edged
      segmented control, not a glowing pill. Each half clears Apple's 44pt target. */
