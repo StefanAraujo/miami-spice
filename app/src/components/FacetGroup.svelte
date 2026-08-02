@@ -1,5 +1,8 @@
 <script>
-  let { label, options, selected = $bindable(), format = (v) => v, collapsible = false, limit = 8 } = $props()
+  let {
+    label, options, selected = $bindable(), counts = {},
+    format = (v) => v, collapsible = false, limit = 8,
+  } = $props()
 
   let expanded = $state(false)
 
@@ -15,14 +18,20 @@
 </script>
 
 <section class="group" data-facet={label}>
-  <h3 class="micro">
-    {label}{#if selected.length}<span class="count mono">{selected.length}</span>{/if}
-  </h3>
+  <h3 class="micro">{label}</h3>
 
   <div class="opts">
     {#each shown as o}
-      <button type="button" class:on={selected.includes(o)} aria-pressed={selected.includes(o)} onclick={() => toggle(o)}>
-        {format(o)}
+      {@const n = counts[o]}
+      {@const on = selected.includes(o)}
+      <button
+        type="button"
+        class:on
+        aria-pressed={on}
+        disabled={!on && n === 0}
+        onclick={() => toggle(o)}
+      >
+        {format(o)}{#if n !== undefined}<span class="n mono">{n}</span>{/if}
       </button>
     {/each}
   </div>
@@ -35,44 +44,39 @@
 </section>
 
 <style>
-  .group { display: grid; gap: 0.65rem; }
+  .group { display: grid; gap: var(--s3); margin-bottom: var(--s6); }
 
-  h3 { margin: 0; display: flex; align-items: center; gap: 0.45rem; }
+  h3 { margin: 0; padding-bottom: var(--s2); border-bottom: 1px solid var(--rule); }
 
-  .count {
-    color: var(--cyan);
-    background: var(--cyan-dim);
-    border-radius: var(--r-pill);
-    padding: 0 0.4rem;
-    font-size: 0.6rem;
-    letter-spacing: 0;
-  }
-
-  .opts { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .opts { display: flex; flex-wrap: wrap; gap: var(--s1); }
 
   .opts button {
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    background: var(--surface);
-    color: var(--text-soft);
-    padding: 0.24rem 0.65rem;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    transition: border-color 140ms, color 140ms, background 140ms;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--tap);          /* Apple: at least 44x44 pt */
+    padding: 0 var(--s3);
+    font-size: var(--t-body);
+    color: var(--soft);
+    background: var(--card);
+    border: 1px solid var(--hair);
   }
-  .opts button:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
-  .opts button.on {
-    background: var(--cyan);
-    border-color: var(--cyan);
-    color: var(--void);
-    font-weight: 500;
-  }
+  .opts button:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
+  .opts button.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
+
+  /* Baymard: zero options are disabled and greyed, never removed — removing them
+     makes the list jump and destroys the user's spatial memory of it. */
+  .opts button:disabled { opacity: 0.45; cursor: default; }
+
+  .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
+  .opts button.on .n { color: var(--card); opacity: 0.75; }
 
   .more {
     justify-self: start;
-    color: var(--text-faint);
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    color: var(--marine);
     letter-spacing: 0.1em;
-    transition: color 140ms;
   }
-  .more:hover { color: var(--cyan); }
 </style>

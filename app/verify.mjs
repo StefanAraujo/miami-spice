@@ -45,48 +45,81 @@ const rs = data.restaurants
 const expectAll = rs.length
 const expectItalianSat = rs.filter((r) => r.cuisines.includes('Italian') && r.serves.includes('lunch@SAT') && r.serves.includes('dinner@SAT')).length
 const expectBrickell40 = rs.filter((r) => r.hoods.includes('Brickell') && r.prices.includes(40)).length
+// Dietary & amenity flags AND together, so two flags return their INTERSECTION.
+// 111 here vs a ~276 union is what makes this a real test of the rule, not a tautology.
+const expectVegOutdoor = rs.filter((r) => ['vegetarian', 'outdoor'].every((g) => r.flags.includes(g))).length
 
+// Cold start now shows the Discover front door, not the list (ROADMAP Phase 4).
+check('discover front door on load', await page.locator('.discover').count() > 0, true)
+
+// A cuisine tile resolves to the same count as the cuisine facet — the tile's
+// number is a real query, asserted against an independent pass.
+const expectItalian = rs.filter((r) => r.cuisines.includes('Italian')).length
+await page.locator('.discover').getByRole('button', { name: /^Italian\s*\d+$/ }).click()
+await page.waitForTimeout(120)
+check('cuisine tile → Italian count', await count(), expectItalian)
+
+// Clear returns to the front door; Browse all reaches the full list.
+await page.getByRole('button', { name: 'Clear all' }).click()
+await page.waitForTimeout(80)
+await page.getByRole('button', { name: /^Browse all \d+ restaurants$/ }).click()
+await page.waitForTimeout(80)
 check('all restaurants on load', await count(), expectAll)
 
 // The motivating query: Italian, lunch AND dinner, Saturday.
 await page.getByRole('button', { name: 'Saturday', exact: true }).click()
-await page.getByRole('button', { name: 'Lunch', exact: true }).click()
-await page.getByRole('button', { name: 'Dinner', exact: true }).click()
+await page.getByRole('button', { name: /^Lunch\s*\d*$/ }).click()
+await page.getByRole('button', { name: /^Dinner\s*\d*$/ }).click()
 await page.getByRole('button', { name: 'Show all 28' }).click()
-await page.getByRole('button', { name: 'Italian', exact: true }).click()
+await page.getByRole('button', { name: /^Italian\s*\d*$/ }).click()
 await page.waitForTimeout(150)
 check('Italian · lunch+dinner · Saturday', await count(), expectItalianSat)
 await page.screenshot({ path: 'verify-italian-saturday.png', fullPage: false })
 
 // Course ladder opens and renders choose-counts.
-await page.locator('.card').first().getByRole('button', { name: 'See the menu' }).click()
+await page.locator('.row').first().getByRole('button').first().click()
 await page.waitForTimeout(150)
-const fracs = await page.locator('.card').first().locator('.frac').allTextContents()
+const fracs = await page.locator('.row').first().locator('.frac').allTextContents()
 check('course ladder rows visible', fracs.length > 0, true)
-console.log('      ladder:', fracs.join(' '))
+console.log('      ladder:', fracs.map(x=>x.replace(/\s+/g,'')).join(' '))
 await page.screenshot({ path: 'verify-course-ladder.png' })
 
 // Empty state names the conflict and offers a real fix.
+// Note: options that would yield zero are now disabled, so the old
+// "click two contradictory facets" route is deliberately unreachable — that is
+// Baymard's step 1, prevent the dead end. The remaining route to zero is a text
+// query applied AFTER a facet, since free text is not part of the count logic.
 await page.getByRole('button', { name: 'Clear all' }).click()
-await page.getByRole('button', { name: 'Italian', exact: true }).click()
-await page.locator('[data-facet="Dietary & amenities"]').getByRole('button', { name: 'Kosher', exact: true }).click()
-await page.waitForTimeout(150)
-check(
-  'Italian + kosher is genuinely empty',
-  rs.filter((r) => r.cuisines.includes('Italian') && r.flags.includes('kosher')).length,
-  0,
-)
-check('impossible combo yields 0', await count(), 0)
+// Scope to the rail: the Discover front door also shows an "Italian" cuisine tile.
+await page.locator('.rail').getByRole('button', { name: /^Italian\s*\d*$/ }).click()
+await page.getByRole('searchbox').fill('sashimi')
+await page.waitForTimeout(200)
+check('facet + contradictory text query yields 0', await count(), 0)
 check('empty state offers a relaxation', await page.locator('.empty button').count() > 0, true)
 await page.screenshot({ path: 'verify-empty-state.png' })
 
+// Zero-count options are disabled rather than removed (Baymard).
+await page.getByRole('button', { name: 'Clear all' }).click()
+await page.locator('.rail').getByRole('button', { name: /^Italian\s*\d*$/ }).click()
+await page.waitForTimeout(200)
+const disabled = await page.locator('[data-facet="Dietary & amenities"] button:disabled').count()
+check('zero-result options greyed, not removed', disabled > 0, true)
+
 // A second, unrelated combination — guards against a filter that ignores input.
 await page.getByRole('button', { name: 'Clear all' }).click()
-await page.getByRole('button', { name: 'Show all 38' }).click()
-await page.getByRole('button', { name: 'Brickell', exact: true }).click()
-await page.getByRole('button', { name: '$40', exact: true }).click()
+await page.locator('.rail').getByRole('button', { name: 'Show all 38' }).click()
+await page.locator('.rail').getByRole('button', { name: /^Brickell\s*\d*$/ }).click()
+await page.getByRole('button', { name: /^\$40\s*\d*$/ }).click()
 await page.waitForTimeout(150)
 check('Brickell · $40', await count(), expectBrickell40)
+
+// Dietary & amenities is the one facet that ANDs (the flags read as requirements,
+// not alternatives). Requiring two must return their intersection, not their union.
+await page.getByRole('button', { name: 'Clear all' }).click()
+await page.getByRole('button', { name: /^Vegetarian\s*\d*$/ }).click()
+await page.getByRole('button', { name: /^Outdoor seating\s*\d*$/ }).click()
+await page.waitForTimeout(150)
+check('Vegetarian AND Outdoor (intersection, not union)', await count(), expectVegOutdoor)
 
 // Mobile.
 await page.setViewportSize({ width: 390, height: 844 })
@@ -113,10 +146,11 @@ const contrast = (a, b) => {
   return (hi + 0.05) / (lo + 0.05)
 }
 const PAIRS = [
-  ['text', 'void'], ['text', 'surface'],
-  ['text-soft', 'surface'], ['text-faint', 'surface'], ['text-faint', 'void'],
-  ['cyan', 'surface'], ['pink', 'surface'], ['hot', 'surface'],
-  ['void', 'cyan'], // active chip: dark label on neon fill
+  ['ink', 'paper'], ['ink', 'card'],
+  ['soft', 'card'], ['soft', 'paper'],
+  ['marine', 'card'], ['marine', 'paper'],
+  ['flamingo', 'card'], ['flamingo', 'paper'],
+  ['card', 'marine'], // active chip: light label on marine fill
 ]
 let worst = { ratio: Infinity }
 for (const [fg, bg] of PAIRS) {

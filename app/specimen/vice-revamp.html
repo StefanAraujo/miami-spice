@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Miami Spice — Vice revamp specimen</title>
+<!--
+  PROVING GROUND for the "Apple-polished, Deco-at-night Miami Vice" direction.
+  Self-contained; not app code. Mirrors REVAMP_VISUAL.md + REVAMP_IA.md so the
+  look and the food-first discovery layer can be judged before the app teardown.
+  Built to hold every design-lint.mjs floor by construction: no gradient text,
+  no radial glow, no blurred coloured shadow, no banned font, no #000/#fff, two
+  uppercase roles (wordmark + .micro), five type steps each >=1.25x.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Poiret+One&family=Jost:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Light — "Ocean Drive · AM" */
+    --field:#E9E6DE; --raised:#F5F3ED; --sunk:#E2DED4;
+    --ink:#161A19; --soft:#464B47;
+    --rule:#8E887E; --hair:#CFCABE;
+    --marine:#12414C; --signal:#0C5460; --flamingo:#9C1E45;
+    --chip-ink:#F5F3ED;
+    --eyebrow:6px 6px 0 rgba(18,65,76,.14);
+
+    --f-display:'Jost',-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
+    --f-deco:'Poiret One','Jost',sans-serif;
+    --f-mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+
+    /* five deliberate steps, each >=1.25x */
+    --t-meta:12px; --t-body:15px; --t-name:19px; --t-section:30px;
+    --t-display:clamp(2.75rem,7vw,3.5rem);
+
+    --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px; --s8:72px;
+    --tap:44px;
+    color-scheme:light;
+  }
+  :root[data-theme='pm'] {
+    /* Dark — "Chrome Night · PM" */
+    --field:#0E1A1F; --raised:#16262C; --sunk:#0A1418;
+    --ink:#F2F4EE; --soft:#9FB0AC;
+    --rule:#6F827E; --hair:#26363B;
+    --marine:#7FE3EF; --signal:#7FE3EF; --flamingo:#FF6FAE;
+    --chip-ink:#0E1A1F;
+    --eyebrow:6px 6px 0 rgba(127,227,239,.16);
+    color-scheme:dark;
+  }
+
+  * { box-sizing:border-box; }
+  html,body { margin:0; padding:0; background:var(--field); color:var(--ink);
+    font-family:var(--f-display); font-size:var(--t-body); line-height:1.5;
+    -webkit-font-smoothing:antialiased; transition:background .2s ease, color .2s ease; }
+  button { font:inherit; color:inherit; cursor:pointer; background:none; border:0; padding:0; }
+  .wrap { max-width:1120px; margin:0 auto; padding:0 var(--s6); }
+  .mono { font-family:var(--f-mono); font-variant-numeric:tabular-nums; }
+  .micro { font-family:var(--f-mono); font-size:var(--t-meta); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--soft); }
+  :where(button,a):focus-visible { outline:2px solid var(--marine); outline-offset:3px; }
+
+  /* ---- Hero / masthead act ---- */
+  .hero { text-align:center; padding:var(--s8) 0 0; }
+  .eyebrow-lbl { margin:0 0 var(--s3); letter-spacing:.2em; }
+  .wordmark { font-family:var(--f-deco); font-weight:400; font-size:var(--t-display);
+    letter-spacing:.16em; text-transform:uppercase; line-height:1; margin:0; }
+  .racing { display:flex; flex-direction:column; gap:3px; margin:var(--s5) auto 0; max-width:360px; }
+  .racing i { height:2px; background:var(--marine); }
+  .racing i:nth-child(2){ background:var(--flamingo); }
+  .context { margin:var(--s4) 0 0; letter-spacing:.08em; }
+
+  /* sundown toggle */
+  .mood-toggle { display:inline-flex; margin:var(--s5) auto 0; border:1px solid var(--rule); }
+  .mood-toggle button { min-height:var(--tap); min-width:56px; padding:0 var(--s3);
+    font-size:var(--t-meta); letter-spacing:.14em; color:var(--soft); }
+  .mood-toggle button + button { border-left:1px solid var(--rule); }
+  .mood-toggle button[aria-pressed='true']{ background:var(--marine); color:var(--chip-ink); }
+
+  /* the horizon eyebrow — one hard, full-bleed Deco sunshade line */
+  .horizon { height:6px; background:var(--marine); box-shadow:0 6px 0 0 var(--signal);
+    margin-top:var(--s8); }
+
+  /* ---- Discovery act ---- */
+  .discover { padding:var(--s8) 0 var(--s6); }
+  .discover h2 { font-family:var(--f-deco); font-weight:400; font-size:var(--t-section);
+    letter-spacing:.02em; margin:0 0 var(--s2); }
+  .discover .sub { margin:0 0 var(--s5); color:var(--soft); }
+
+  .lane { margin-bottom:var(--s6); }
+  .lane > .micro { display:block; margin-bottom:var(--s3); }
+
+  /* course segmented control */
+  .courses { display:inline-flex; border:1px solid var(--rule); }
+  .courses button { min-height:var(--tap); padding:0 var(--s4); color:var(--soft); }
+  .courses button + button { border-left:1px solid var(--rule); }
+  .courses button[aria-pressed='true']{ background:var(--marine); color:var(--chip-ink); }
+
+  .tiles { display:flex; flex-wrap:wrap; gap:var(--s2); }
+  .tile { display:inline-flex; align-items:baseline; gap:var(--s2); min-height:var(--tap);
+    padding:0 var(--s4); background:var(--raised); border:1px solid var(--hair); color:var(--ink); }
+  .tile:hover { border-color:var(--rule); }
+  .tile .n { font-family:var(--f-mono); font-size:var(--t-meta); color:var(--soft); }
+  .tile[aria-pressed='true']{ background:var(--marine); border-color:var(--marine); color:var(--chip-ink); }
+  .tile[aria-pressed='true'] .n { color:var(--chip-ink); opacity:.75; }
+
+  /* ---- Result act ---- */
+  .bar { display:flex; align-items:baseline; justify-content:space-between;
+    padding-bottom:var(--s3); border-bottom:2px solid var(--ink); }
+  .count strong { font-size:var(--t-name); font-weight:500; }
+  .count span { margin-left:var(--s2); }
+
+  .list { list-style:none; margin:0; padding:0; }
+  .row { border-bottom:1px solid var(--hair); }
+  .row-main { display:grid; grid-template-columns:minmax(0,1fr) auto 20px; gap:var(--s6);
+    align-items:center; width:100%; text-align:left; padding:var(--s4) 0; min-height:var(--tap); }
+  .row-main:hover .name { color:var(--marine); }
+  .name { display:block; font-size:var(--t-name); font-weight:600; letter-spacing:-.005em; line-height:1.2; }
+  .meta { display:block; font-family:var(--f-mono); font-size:var(--t-meta); color:var(--soft); margin-top:var(--s1); }
+  .teaser { display:block; font-size:var(--t-body); color:var(--soft); margin-top:5px; font-style:italic;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .side { text-align:right; white-space:nowrap; display:flex; flex-direction:column; align-items:flex-end; gap:var(--s2); }
+
+  /* signage price chip — the one saturated object per row */
+  .price { display:inline-block; font-family:var(--f-mono); font-size:var(--t-body); font-weight:500;
+    padding:var(--s1) var(--s3); background:var(--flamingo); color:var(--chip-ink);
+    box-shadow:var(--eyebrow); }
+  .when { font-family:var(--f-mono); font-size:var(--t-meta); color:var(--soft); }
+  .chev { width:9px; height:9px; border-right:1.5px solid var(--rule); border-bottom:1.5px solid var(--rule);
+    transform:rotate(45deg); justify-self:end; }
+  .row.open .chev { transform:rotate(225deg); }
+
+  /* expanded panel + course ladder */
+  .panel { margin:0 0 var(--s4); padding:var(--s5); background:var(--raised);
+    border:1px solid var(--hair); box-shadow:var(--eyebrow); }
+  .why { margin:0 0 var(--s4); color:var(--signal); }
+  .ladder { display:grid; gap:var(--s4); }
+  .course { display:grid; grid-template-columns:auto 1fr auto; gap:var(--s4); align-items:baseline; }
+  .course .head { display:flex; align-items:baseline; gap:var(--s2); }
+  .course .cname { color:var(--soft); }
+  .frac { font-family:var(--f-mono); font-size:var(--t-meta); color:var(--soft); }
+  .items { color:var(--ink); }
+  .items .sig { color:var(--marine); font-weight:500; }
+  .cprice { font-family:var(--f-mono); font-size:var(--t-body); color:var(--flamingo); font-weight:500; }
+  .actions { display:flex; flex-wrap:wrap; gap:var(--s4); align-items:center; margin-top:var(--s5);
+    padding-top:var(--s3); border-top:1px solid var(--hair); }
+  .actions a { display:inline-flex; align-items:center; min-height:var(--tap); font-family:var(--f-mono);
+    font-size:var(--t-body); text-decoration:none; color:var(--soft); }
+  .actions .cta { color:var(--chip-ink); background:var(--marine); padding:0 var(--s5); box-shadow:var(--eyebrow); }
+
+  footer { padding:var(--s8) var(--s6); text-align:center; }
+
+  @media (max-width:720px){
+    .row-main{ grid-template-columns:minmax(0,1fr) 20px; gap:var(--s3); align-items:start; }
+    .side{ grid-column:1; align-items:flex-start; text-align:left; margin-top:var(--s2); }
+  }
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow-lbl micro">Miami Beach · August – September</p>
+      <h1 class="wordmark">Miami Spice</h1>
+      <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p class="context micro">380 restaurants · 7,000 dishes · updated Aug 1</p>
+      <div class="mood-toggle" role="group" aria-label="Colour mood">
+        <button type="button" aria-pressed="true" data-mood="am">AM</button>
+        <button type="button" aria-pressed="false" data-mood="pm">PM</button>
+      </div>
+    </div>
+  </header>
+  <div class="horizon" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="discover">
+      <h2>What are you in the mood for?</h2>
+      <p class="sub">Start from a craving, an occasion, or a course — or just browse the list below.</p>
+
+      <div class="lane">
+        <span class="micro">By course</span>
+        <div class="courses" role="group" aria-label="Course">
+          <button type="button" aria-pressed="true">All</button>
+          <button type="button" aria-pressed="false">Starters</button>
+          <button type="button" aria-pressed="false">Mains</button>
+          <button type="button" aria-pressed="false">Desserts</button>
+        </div>
+      </div>
+
+      <div class="lane">
+        <span class="micro">By mood</span>
+        <div class="tiles">
+          <button class="tile" aria-pressed="false">Light &amp; fresh <span class="n">140</span></button>
+          <button class="tile" aria-pressed="true">Rich &amp; indulgent <span class="n">178</span></button>
+          <button class="tile" aria-pressed="false">Seafood <span class="n">324</span></button>
+          <button class="tile" aria-pressed="false">Steak &amp; fire <span class="n">258</span></button>
+          <button class="tile" aria-pressed="false">Comfort <span class="n">179</span></button>
+          <button class="tile" aria-pressed="false">Adventurous <span class="n">59</span></button>
+          <button class="tile" aria-pressed="false">Sweet tooth <span class="n">272</span></button>
+        </div>
+      </div>
+
+      <div class="lane">
+        <span class="micro">By occasion</span>
+        <div class="tiles">
+          <button class="tile" aria-pressed="false">Date night</button>
+          <button class="tile" aria-pressed="false">Celebration</button>
+          <button class="tile" aria-pressed="false">Solo &amp; value</button>
+          <button class="tile" aria-pressed="false">Al-fresco</button>
+          <button class="tile" aria-pressed="false">Weekend brunch</button>
+          <button class="tile" aria-pressed="false">Open near me tonight</button>
+        </div>
+      </div>
+    </section>
+
+    <div class="bar">
+      <p class="count"><strong class="mono">178</strong><span class="micro">restaurants · rich &amp; indulgent</span></p>
+      <span class="mono" style="font-size:var(--t-meta);color:var(--soft)">Sorted by mood fit</span>
+    </div>
+
+    <ul class="list">
+      <li class="row open">
+        <button class="row-main" type="button" aria-expanded="true">
+          <span>
+            <span class="name">COTE Miami</span>
+            <span class="meta">Steakhouse, Korean  ·  $$$  ·  Design District</span>
+            <span class="teaser">Wagyu Beef Program · Dry-Aged Galbi</span>
+          </span>
+          <span class="side">
+            <span class="price">$65</span>
+            <span class="when">Dinner · Daily</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+        <div class="panel">
+          <p class="micro why">Matches Rich &amp; indulgent — wagyu program, dry-aged cuts, michelin</p>
+          <div class="ladder">
+            <div class="course">
+              <span class="head"><span class="micro cname">Appetizers</span></span>
+              <span class="items"><span class="sig">Steak Tartare</span> · Yukhoe · Tuna Crudo</span>
+              <span class="frac">1 of 3</span>
+            </div>
+            <div class="course">
+              <span class="head"><span class="micro cname">Entrees</span></span>
+              <span class="items"><span class="sig">Butcher's Feast</span> · Wagyu Galbi · Ribeye · Filet</span>
+              <span class="frac">1 of 4</span>
+            </div>
+            <div class="course">
+              <span class="head"><span class="micro cname">Desserts</span></span>
+              <span class="items">Soft Serve · Basque Cheesecake</span>
+              <span class="frac">1 of 2</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="cta" href="#">Book on Resy</a>
+            <a href="#">Directions</a>
+            <a href="#">Details</a>
+          </div>
+        </div>
+      </li>
+
+      <li class="row">
+        <button class="row-main" type="button" aria-expanded="false">
+          <span>
+            <span class="name">Il Gabbiano</span>
+            <span class="meta">Italian  ·  $$$  ·  Downtown Miami</span>
+            <span class="teaser">Truffle Risotto · Branzino al Forno</span>
+          </span>
+          <span class="side">
+            <span class="price">$50–$65</span>
+            <span class="when">Lunch · Dinner · Mon–Sat</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+      </li>
+
+      <li class="row">
+        <button class="row-main" type="button" aria-expanded="false">
+          <span>
+            <span class="name">107 Steak and Bar</span>
+            <span class="meta">Steakhouse  ·  $$$  ·  Doral</span>
+            <span class="teaser">Seared Atlantic Salmon · Grilled Picanha</span>
+          </span>
+          <span class="side">
+            <span class="price">$40–$65</span>
+            <span class="when">Lunch · Dinner · Mon–Sat</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+      </li>
+
+      <li class="row">
+        <button class="row-main" type="button" aria-expanded="false">
+          <span>
+            <span class="name">Mila</span>
+            <span class="meta">Mediterranean, Japanese  ·  $$$  ·  Miami Beach: South Beach</span>
+            <span class="teaser">Wagyu Gyoza · Black Cod Miso</span>
+          </span>
+          <span class="side">
+            <span class="price">$65</span>
+            <span class="when">Dinner · Daily</span>
+          </span>
+          <span class="chev" aria-hidden="true"></span>
+        </button>
+      </li>
+    </ul>
+  </main>
+
+  <footer class="micro">Unofficial · menus shift mid-season · confirm before you go</footer>
+
+  <script>
+    // AM/PM sundown toggle — token swap only, honest under reduced-motion.
+    document.querySelectorAll('.mood-toggle button').forEach((b) => {
+      b.addEventListener('click', () => {
+        const m = b.dataset.mood
+        document.documentElement.dataset.theme = m === 'pm' ? 'pm' : ''
+        document.querySelectorAll('.mood-toggle button').forEach((x) =>
+          x.setAttribute('aria-pressed', String(x === b)))
+      })
+    })
+    // Segmented / tile active-state demo (visual only).
+    const single = (sel) => document.querySelectorAll(sel).forEach((grp) => {})
+    document.querySelectorAll('.courses').forEach((grp) => {
+      grp.querySelectorAll('button').forEach((b) => b.addEventListener('click', () => {
+        grp.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)))
+      }))
+    })
+    document.querySelectorAll('.tiles').forEach((grp) => {
+      grp.querySelectorAll('.tile').forEach((b) => b.addEventListener('click', () => {
+        const on = b.getAttribute('aria-pressed') === 'true'
+        grp.querySelectorAll('.tile').forEach((x) => x.setAttribute('aria-pressed', 'false'))
+        b.setAttribute('aria-pressed', String(!on))
+      }))
+    })
+    // Row expand/collapse demo.
+    document.querySelectorAll('.row-main').forEach((b) => {
+      b.addEventListener('click', () => {
+        const row = b.closest('.row')
+        const open = row.classList.toggle('open')
+        b.setAttribute('aria-expanded', String(open))
+      })
+    })
+  </script>
+</body>
+</html>

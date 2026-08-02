@@ -21,6 +21,41 @@ SRC = Path(sys.argv[1] if len(sys.argv) > 1 else "restaurants.json")
 OUT = Path(sys.argv[2] if len(sys.argv) > 2 else "spice.json")
 
 DAYS = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+DAY_NAME = {
+    "monday": "MON", "tuesday": "TUE", "wednesday": "WED", "thursday": "THU",
+    "friday": "FRI", "saturday": "SAT", "sunday": "SUN",
+}
+
+
+# City is a coarser location axis than neighborhood (23 raw values, but several are
+# spelling/case variants of the same place). Normalize so the facet isn't polluted
+# with "Sunny Isles" vs "Sunny Isles Beach" or "MIAMI" vs "Miami".
+CITY_ALIASES = {"sunny isles": "Sunny Isles Beach", "acentura": "Aventura"}
+
+
+def norm_city(c):
+    if not c:
+        return None
+    c = " ".join(str(c).split()).strip()
+    if not c:
+        return None
+    key = c.lower()
+    if key in CITY_ALIASES:
+        return CITY_ALIASES[key]
+    return c.title() if c.isupper() or c.islower() else c
+
+
+def sane_coords(lat, lng):
+    """A few records geocoded to Canada / LA / Kentucky. Keep only coordinates
+    inside the Greater Miami bounding box; null the rest so the map and any
+    distance sort never place a Miami restaurant in another state."""
+    try:
+        lat, lng = float(lat), float(lng)
+    except (TypeError, ValueError):
+        return None, None
+    if 25.2 < lat < 26.2 and -80.7 < lng < -80.0:
+        return lat, lng
+    return None, None
 
 
 def slugify(s):
@@ -28,12 +63,10 @@ def slugify(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 
 
-def build_serves(participating_days):
+def _serves_from_participating(participating_days):
     """
-    {"Dinner $65": ["MON","TUE"]} -> (
-        ["dinner@MON", "dinner@TUE"],
-        [{"meal": "dinner", "price": 65, "days": ["MON","TUE"]}],
-    )
+    Legacy path: {"Dinner $65": ["MON","TUE"]} -> serves/offers. Kept only as a
+    fallback for the ~7 records with no spice_schedule (see build_serves).
     """
     serves, offers = [], []
     for label, days in (participating_days or {}).items():
@@ -47,6 +80,41 @@ def build_serves(participating_days):
             continue
         serves += [f"{meal}@{d}" for d in days]
         offers.append({"meal": meal, "price": price, "days": days})
+    return sorted(set(serves)), offers
+
+
+def build_serves(r):
+    """
+    Availability comes from spice_schedule, NOT participating_days.
+
+    participating_days is scraped from the detail-page day table, and that scrape
+    is wrong: unavailable days are marked with a dash, which the scraper reads as
+    "present," so ~99% of records list all seven days (this is why 107 Steak and
+    Bar showed a Sunday it does not serve). spice_schedule is the Algolia field and
+    matches the live site exactly; it ties day -> meal -> price in one string:
+
+        "Saturday > Dinner $65"  ->  serves "dinner@SAT", offer {dinner, 65, [SAT]}
+
+    Offers are grouped by (meal, price) so a meal with two price tiers stays two
+    offers. Falls back to the legacy table only when spice_schedule is empty.
+    """
+    sched = r.get("spice_schedule") or []
+    serves, grouped = [], {}
+    for entry in sched:
+        m = re.match(r"\s*([A-Za-z]+)\s*>\s*(\w+)\s*\$?(\d+)?", entry or "")
+        if not m:
+            continue
+        day = DAY_NAME.get(m.group(1).lower())
+        if not day:
+            continue
+        meal = m.group(2).lower()
+        price = int(m.group(3)) if m.group(3) else None
+        serves.append(f"{meal}@{day}")
+        grouped.setdefault((meal, price), set()).add(day)
+    if not grouped:
+        return _serves_from_participating(r.get("participating_days"))
+    offers = [{"meal": meal, "price": price, "days": sorted(days, key=DAYS.index)}
+              for (meal, price), days in grouped.items()]
     return sorted(set(serves)), offers
 
 
@@ -80,8 +148,46 @@ INSTRUCTION = re.compile(
 )
 
 
+# About a third of dish names arrive SHOUTED because each partner types their
+# menu into the CMS however they like. Rendered as-is the ladder looks broken —
+# half the menus in caps, half in sentence case. Normalize only items that are
+# entirely uppercase; leave mixed-case text exactly as the restaurant wrote it.
+LOWER_WORDS = {
+    "a", "agli", "ai", "al", "alla", "alle", "and", "au", "aux", "con", "da",
+    "de", "dei", "del", "della", "delle", "di", "du", "e", "el", "en", "et",
+    "in", "la", "le", "les", "lo", "of", "on", "or", "su", "the", "to", "un",
+    "una", "with", "y",
+}
+KEEP_UPPER = {"BBQ", "BLT", "NY", "AAA", "USDA", "IPA", "XO", "PEI", "II", "III"}
+
+
+def smart_title(s):
+    def fix(word):
+        core = word.strip("()[]{}\"'.,:;!?&/-")
+        if core in KEEP_UPPER or (len(core) > 1 and any(ch.isdigit() for ch in core)):
+            return word
+        return word.capitalize()
+
+    words = [fix(w) for w in s.split(" ")]
+    out = []
+    for i, w in enumerate(words):
+        low = w.lower()
+        if 0 < i < len(words) - 1 and low.strip("().,") in LOWER_WORDS:
+            out.append(low)
+        else:
+            out.append(w)
+    return " ".join(out)
+
+
+def normalize_case(s):
+    letters = [c for c in s if c.isalpha()]
+    if len(letters) > 3 and all(c.isupper() for c in letters):
+        return smart_title(s)
+    return s
+
+
 def clean_items(names):
-    return [n for n in names if n and not INSTRUCTION.match(n)]
+    return [normalize_case(n) for n in names if n and not INSTRUCTION.match(n)]
 
 
 def flatten_menus(menus):
@@ -104,10 +210,11 @@ def flatten_menus(menus):
 
 
 def transform(r):
-    serves, offers = build_serves(r.get("participating_days"))
+    serves, offers = build_serves(r)
     menus, dishes = flatten_menus(r.get("menus"))
     prices = sorted({o["price"] for o in offers if o["price"]})
     addr = ", ".join(x for x in [r.get("street"), r.get("city"), r.get("state")] if x)
+    lat, lng = sane_coords(r.get("lat"), r.get("lng"))
 
     return {
         "id": r["id"],
@@ -117,10 +224,11 @@ def transform(r):
         # location
         "hood": (r.get("neighborhoods") or [None])[0],
         "hoods": r.get("neighborhoods") or [],
+        "city": norm_city(r.get("city")),
         "address": addr,
         "zip": r.get("zip"),
-        "lat": r.get("lat"),
-        "lng": r.get("lng"),
+        "lat": lat,
+        "lng": lng,
         "phone": r.get("phone"),
         # classification
         "cuisines": r.get("cuisines") or [],
@@ -144,8 +252,8 @@ def transform(r):
         "reserve": r.get("reservations_url"),
         "platform": r.get("reservation_platform"),
         "website": r.get("website"),
-        "maps": (f"https://www.google.com/maps/dir/?api=1&destination={r['lat']},{r['lng']}"
-                 if r.get("lat") else None),
+        "maps": (f"https://www.google.com/maps/dir/?api=1&destination={lat},{lng}"
+                 if lat is not None else None),
         "gsearch": f"https://www.google.com/maps/search/?api=1&query={r['name']} {addr}".replace(" ", "+"),
         "yelp": f"https://www.yelp.com/search?find_desc={r['name']}&find_loc=Miami,+FL".replace(" ", "+"),
     }
@@ -159,6 +267,7 @@ def main():
     facets = {
         "cuisines": sorted({c for r in rows for c in r["cuisines"]}),
         "hoods": sorted({h for r in rows for h in r["hoods"]}),
+        "cities": sorted({r["city"] for r in rows if r["city"]}),
         "meals": sorted({m for r in rows for m in r["meals"]}),
         "days": DAYS,
         "prices": sorted({p for r in rows for p in r["prices"]}),

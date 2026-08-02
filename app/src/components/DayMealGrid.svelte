@@ -1,7 +1,7 @@
 <script>
   import { DAYS, DAY_LABEL, MEAL_LABEL, MEAL_ORDER, facets, dayRange, sortMeals } from '../lib/search.js'
 
-  let { days = $bindable(), meals = $bindable() } = $props()
+  let { days = $bindable(), meals = $bindable(), counts = {} } = $props()
 
   const DAY_FULL = { MON: 'Monday', TUE: 'Tuesday', WED: 'Wednesday', THU: 'Thursday', FRI: 'Friday', SAT: 'Saturday', SUN: 'Sunday' }
   const mealOptions = MEAL_ORDER.filter((m) => facets.meals.includes(m))
@@ -25,11 +25,10 @@
         class:on={days.includes(d)}
         aria-pressed={days.includes(d)}
         aria-label={DAY_FULL[d]}
-        title={DAY_FULL[d]}
+        title="{DAY_FULL[d]}{counts.days?.[d] !== undefined ? ` — ${counts.days[d]} restaurants` : ''}"
+        disabled={!days.includes(d) && counts.days?.[d] === 0}
         onclick={() => (days = toggle(days, d))}
-      >
-        {DAY_LABEL[d].slice(0, 1)}
-      </button>
+      >{DAY_LABEL[d].slice(0, 1)}</button>
     {/each}
   </div>
 
@@ -37,12 +36,13 @@
     {#each mealOptions as m}
       <button
         type="button"
-        class="meal mono"
+        class="meal"
         class:on={meals.includes(m)}
         aria-pressed={meals.includes(m)}
+        disabled={!meals.includes(m) && counts.meals?.[m] === 0}
         onclick={() => (meals = toggle(meals, m))}
       >
-        {MEAL_LABEL[m] ?? m}
+        {MEAL_LABEL[m] ?? m}{#if counts.meals?.[m] !== undefined}<span class="n mono">{counts.meals[m]}</span>{/if}
       </button>
     {/each}
   </div>
@@ -51,45 +51,43 @@
 </div>
 
 <style>
-  .grid { display: grid; gap: 0.4rem; }
+  .grid { display: grid; gap: var(--s1); }
 
-  .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.25rem; }
+  /* 7 x 44px will not fit a 216px rail, so the grid wraps rather than
+     shrinking cells below Apple's target floor. */
+  .days { display: grid; grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)); gap: 3px; }
 
   .day {
-    aspect-ratio: 1 / 1;
-    min-height: 28px;
-    border: 1px solid var(--line);
-    border-radius: var(--r-sm);
-    background: var(--surface);
-    color: var(--text-faint);
-    font-size: 0.68rem;
-    font-weight: 500;
-    transition: border-color 140ms, color 140ms, background 140ms;
+    min-height: var(--tap);
+    min-width: var(--tap);
+    font-size: var(--t-meta);
+    color: var(--soft);
+    background: var(--card);
+    border: 1px solid var(--hair);
   }
-  .day:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
-  .day.on { background: var(--cyan); border-color: var(--cyan); color: var(--void); }
+  .day:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
+  .day.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
+  .day:disabled { opacity: 0.45; cursor: default; }
 
-  .meals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.25rem; margin-top: 0.15rem; }
+  .meals { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
 
   .meal {
-    border: 1px solid var(--line);
-    border-radius: var(--r-sm);
-    background: var(--surface);
-    color: var(--text-faint);
-    padding: 0.3rem 0.2rem;
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: border-color 140ms, color 140ms, background 140ms;
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s3);
+    font-size: var(--t-body);
+    color: var(--soft);
+    background: var(--card);
+    border: 1px solid var(--hair);
   }
-  .meal:hover { border-color: var(--surface-2); background: var(--surface-2); color: var(--text); }
-  .meal.on { background: var(--cyan); border-color: var(--cyan); color: var(--void); font-weight: 500; }
+  .meal:hover:not(:disabled) { border-color: var(--rule); color: var(--ink); }
+  .meal.on { background: var(--marine); border-color: var(--marine); color: var(--card); }
+  .meal:disabled { opacity: 0.45; cursor: default; }
 
-  .summary {
-    margin: 0.25rem 0 0;
-    font-size: 0.66rem;
-    color: var(--text-faint);
-    transition: color 140ms;
-  }
-  .summary.active { color: var(--cyan); }
+  .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
+  .meal.on .n { color: var(--card); opacity: 0.75; }
+
+  .summary { margin: var(--s2) 0 0; font-size: var(--t-meta); color: var(--soft); }
+  .summary.active { color: var(--marine); }
 </style>

@@ -65,6 +65,7 @@ export const emptyFilters = () => ({
   meals: [],
   cuisines: [],
   hoods: [],
+  cities: [],
   prices: [],
   flags: [],
 })
@@ -72,7 +73,7 @@ export const emptyFilters = () => ({
 export const isEmpty = (f) =>
   !f.query.trim() &&
   !f.days.length && !f.meals.length && !f.cuisines.length &&
-  !f.hoods.length && !f.prices.length && !f.flags.length
+  !f.hoods.length && !f.cities.length && !f.prices.length && !f.flags.length
 
 const someIn = (values, selected) => selected.some((s) => values.includes(s))
 const everyIn = (values, selected) => selected.every((s) => values.includes(s))
@@ -99,6 +100,7 @@ export const PREDICATES = {
   availability: (r, f) => matchesAvailability(r, f.days, f.meals),
   cuisines: (r, f) => !f.cuisines.length || someIn(r.cuisines, f.cuisines),
   hoods: (r, f) => !f.hoods.length || someIn(r.hoods, f.hoods),
+  cities: (r, f) => !f.cities.length || (r.city != null && f.cities.includes(r.city)),
   prices: (r, f) => !f.prices.length || someIn(r.prices, f.prices),
   // Dietary and amenity flags read as requirements, so they AND.
   flags: (r, f) => !f.flags.length || everyIn(r.flags, f.flags),
@@ -137,6 +139,54 @@ export function runQuery(f, sort = 'relevance') {
 }
 
 /**
+ * Live per-option counts. Baymard calls these "one of the single highest-impact
+ * improvements" to a filter UI, with two conditions we honour here:
+ *   1. counts recompute against everything else currently applied
+ *   2. zero options are disabled and greyed, never removed — removing them makes
+ *      the list jump and destroys the user's spatial memory of it
+ *
+ * For facet X we apply every OTHER facet first, then count each option of X
+ * against that pool. Self-exclusion is what makes an OR facet's numbers add up.
+ */
+export function facetCounts(f) {
+  const ids = textMatchIds(f.query)
+  const pool = ids ? ids.map(getById).filter(Boolean) : restaurants
+  const poolFor = (skip) => {
+    const keys = Object.keys(PREDICATES).filter((k) => k !== skip)
+    return pool.filter((r) => keys.every((k) => PREDICATES[k](r, f)))
+  }
+
+  const tally = (rows, key, values) => {
+    const out = {}
+    for (const v of values) out[v] = 0
+    for (const r of rows) for (const v of r[key]) if (v in out) out[v]++
+    return out
+  }
+
+  const pc = poolFor('cuisines')
+  const ph = poolFor('hoods')
+  const pcity = poolFor('cities')
+  const pp = poolFor('prices')
+  const pf = poolFor('flags')
+  const pa = poolFor('availability')
+
+  return {
+    cuisines: tally(pc, 'cuisines', facets.cuisines),
+    hoods: tally(ph, 'hoods', facets.hoods),
+    // city is a single value per restaurant, not an array — count directly.
+    cities: Object.fromEntries((facets.cities || []).map((c) => [c, pcity.filter((r) => r.city === c).length])),
+    prices: tally(pp, 'prices', facets.prices),
+    // Flags AND together, so a flag's count is "how many survive if I add this one".
+    flags: Object.fromEntries(facets.flags.map((g) =>
+      [g, pf.filter((r) => r.flags.includes(g) && everyIn(r.flags, f.flags)).length])),
+    days: Object.fromEntries(facets.days.map((d) =>
+      [d, pa.filter((r) => matchesAvailability(r, [d], f.meals)).length])),
+    meals: Object.fromEntries(facets.meals.map((m) =>
+      [m, pa.filter((r) => matchesAvailability(r, f.days, [...new Set([...f.meals, m])])).length])),
+  }
+}
+
+/**
  * For the empty state: which single facet, if dropped, would bring results back?
  * Returns [{ facet, count }] sorted by how much each one is costing you.
  * Never a bare "no results" (BUILD_PLAN §6).
@@ -148,6 +198,7 @@ export function relaxations(f) {
     f.days.length || f.meals.length ? 'availability' : null,
     f.cuisines.length ? 'cuisines' : null,
     f.hoods.length ? 'hoods' : null,
+    f.cities.length ? 'cities' : null,
     f.prices.length ? 'prices' : null,
     f.flags.length ? 'flags' : null,
   ].filter(Boolean)

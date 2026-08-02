@@ -1,49 +1,103 @@
-/* ------------------------------------------------------------------
-   Miami Vice noir — dark, minimal, two neons and nothing else.
+/* ==========================================================================
+   TROPICAL DECO
+   Adopted 2026-08-02, replacing the dark "Vice noir" pass. See DESIGN_REVIEW.md
+   for why. Every value here traces to a source rather than to taste:
 
-   Grounded in the show's actual brand colors (cyan #0BD2D3, pink
-   #F990E8), adjusted for dark-mode legibility: no pure black ground,
-   no pure white text, accents pulled off full saturation. Every pair
-   used for text clears WCAG AA — asserted in verify.mjs, not eyeballed.
+   · Field colours come from the City of Miami Beach's own pre-approved paint
+     palette for the historic district — ~250 near-white, low-chroma body tints,
+     with trim restricted to greys and whites. The pastel everyone pictures is
+     the paper, not the ink; saturation lives only in signage and awnings.
+   · The accent is chosen by EXCLUSION, per Michael Mann's production rule for
+     Miami Vice: "no earth tones, no red," no primaries. What survives is a
+     marine blue for structure and one flamingo, used for price and nothing else.
+   · Depth is a hard-edged offset shadow — the Deco "eyebrow" sunshade. Miami
+     light is knife-edge sun. There is no blur and no glow anywhere in this file.
+   · Rule of three: the racing stripes under the wordmark.
 
-   Discipline that keeps it from tipping into pastiche:
-     · neon is information, never decoration
-     · cyan = structure and state, pink = price and availability
-     · one gradient, one place, low opacity
-   ------------------------------------------------------------------ */
+   Floors enforced by design-lint.mjs, not by vigilance:
+     11px minimum type (Apple iOS), 44px minimum target (Apple Buttons),
+     7:1 for small text, 3:1 for UI boundaries, ≥1.25x between type steps.
+   ========================================================================== */
 :root {
-  /* ground */
-  --void: #0a0d14;
-  --surface: #12161f;
-  --surface-2: #1a1f2b;
-  --line: #232939;
-  --line-soft: #191e29;
+  /* ground — SW Heron Plume / Pure White family */
+  --paper: #e9e6de;
+  --card: #f5f3ed;
+  --sunk: #e2ded4;
 
-  /* type */
-  --text: #eaecf2;
-  --text-soft: #a2abc0;
-  --text-faint: #7a849c;
+  /* ink — 15.8:1 and 8.0:1 on card; --soft clears Apple's 7:1 small-text target */
+  --ink: #161a19;
+  --soft: #464b47;
 
-  /* neon */
-  --cyan: #22d3d4;
-  --cyan-dim: rgba(34, 211, 212, 0.12);
-  --pink: #f97fd9;
-  --hot: #ff4d9d;
-  --hot-dim: rgba(255, 77, 157, 0.12);
+  /* structure — --rule clears WCAG 1.4.11's 3:1 for UI boundaries */
+  --rule: #8e887e;
+  --hair: #cfcabe;
 
-  --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-body: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* marine = structure & state. signal = SECONDARY interactive (the Vice cyan,
+     deepened to a teal that clears 7:1 on near-white — same hue as PM, luminance
+     dropped). flamingo = PRICE ONLY. The hue-role is fixed; only luminance flips
+     with the theme, which is what keeps "cyan on dark" from becoming the slop tell. */
+  --marine: #12414c;
+  --marine-wash: #e2eaea;
+  --signal: #0c5460;
+  --flamingo: #9c1e45;
 
-  --r-sm: 6px;
-  --r-md: 10px;
-  --r-pill: 999px;
+  --f-display: 'Jost', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+  --f-deco: 'Poiret One', 'Jost', sans-serif;   /* Deco display — hero moments only */
+  --f-mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  color-scheme: dark;
+  /* Five deliberate steps, each ≥1.25x the last. The big jump to --t-display is
+     where the Apple-cinematic drama lives; nothing sits between these. */
+  --t-meta: 12px;
+  --t-body: 15px;
+  --t-name: 19px;
+  --t-section: 30px;
+  --t-display: clamp(2.75rem, 7vw, 3.5rem);
+
+  /* 4px base */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+
+  --tap: 44px;                    /* Apple: "at least 44x44 pt" */
+  --eyebrow: 6px 6px 0 rgba(18, 65, 76, 0.1);   /* zero blur, always */
+
+  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- PM · Afterdark -------------------------------------------------------
+   The one idea worth keeping from the client's reference (dewanism/project-vice)
+   is its AM/PM dual mood — NOT its neon-on-dark synthwave, which is the exact slop
+   cluster DESIGN_REVIEW.md catalogues. So PM is Deco-at-night: a deep marine
+   field with the two Vice hues used only where AM uses its accents —
+   cyan for structure, hot pink for price — never as the field, never blurred.
+   Full reasoning in VICE_DIRECTION.md.
+
+   Every colour is overridden BY NAME, so the whole app recolours without a single
+   component change, and the racing stripes become the Vice cyan/pink two-tone for
+   free. Contrast measured; every pair clears its floor on both --paper and --card:
+   ink 15.98:1, soft 7.82:1, rule 4.36:1 (>3:1 for a UI boundary), cyan 11.92:1,
+   pink 6.86:1 (price is 19px/500, so well past the large-text bar). */
+:root[data-theme='pm'] {
+  --paper: #0e1a1f;
+  --card: #16262c;
+  --sunk: #0a1418;
+
+  --ink: #f2f4ee;
+  --soft: #9fb0ac;
+
+  --rule: #6f827e;
+  --hair: #26363b;
+
+  --marine: #7fe3ef;
+  --marine-wash: #123339;
+  --signal: #7fe3ef;
+  --flamingo: #ff6fae;
+
+  --eyebrow: 6px 6px 0 rgba(127, 227, 239, 0.14);   /* still zero blur, always */
+
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -51,56 +105,39 @@
 html, body {
   margin: 0;
   padding: 0;
-  background: var(--void);
-  color: var(--text);
-  font-family: var(--font-body);
-  font-size: 16px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-display);
+  font-size: var(--t-body);
   line-height: 1.5;
 }
 
-/* The single gradient: a sunset bleeding out of the top edge. Sits behind
-   everything at low opacity so it reads as atmosphere, not as a banner. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0 0 auto 0;
-  height: 520px;
-  background:
-    radial-gradient(120% 100% at 18% 0%, rgba(255, 77, 157, 0.16), transparent 60%),
-    radial-gradient(100% 100% at 82% 0%, rgba(34, 211, 212, 0.12), transparent 62%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body > * { position: relative; z-index: 1; }
-
 button, input, select { font: inherit; color: inherit; }
 button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: var(--marine); }
 
+/* Focus is an outline, never a border — a border would shift layout — and it is
+   never transitioned, so it appears instantly. WCAG 2.4.13 wants a 2px
+   perimeter at 3:1; marine on paper is 8.9:1. */
 :where(a, button, input, select, [tabindex]):focus-visible {
-  outline: 2px solid var(--cyan);
-  outline-offset: 2px;
-  border-radius: var(--r-sm);
+  outline: 2px solid var(--marine);
+  outline-offset: 3px;
 }
 
-a { color: var(--cyan); }
-
+/* Type is architecture: uppercase, tracked, tabular. Apple's own tracking table
+   opens letter-spacing below 12pt rather than tightening it. */
 .mono {
-  font-family: var(--font-mono);
+  font-family: var(--f-mono);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
 }
 
-/* Micro-label: uppercase, letterspaced, quiet. Used for every section head
-   and every unit of metadata, which is what holds the layout together once
-   the boxes and shadows are gone. */
 .micro {
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 500;
+  font-family: var(--f-mono);
+  font-size: var(--t-meta);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--soft);
 }
 
 .sr-only {
@@ -113,13 +150,28 @@ a { color: var(--cyan); }
   border: 0;
 }
 
-::selection { background: var(--hot); color: var(--void); }
+::selection { background: var(--marine); color: var(--card); }
 
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--line); border-radius: var(--r-pill); border: 3px solid var(--void); }
-::-webkit-scrollbar-thumb:hover { background: var(--surface-2); }
+/* Apple: if you cannot meet contrast by default, at least honour Increase Contrast. */
+@media (prefers-contrast: more) {
+  :root:not([data-theme='pm']) {
+    --soft: #2a2e2b;
+    --rule: #5f5a52;
+    --hair: #9c968c;
+    --marine: #0a2c34;
+    --flamingo: #7d1436;
+  }
+  /* At night the move is the opposite: push the accents brighter, not darker. */
+  :root[data-theme='pm'] {
+    --soft: #c7d3cf;
+    --rule: #8ea19c;
+    --hair: #3a4c51;
+    --marine: #a6ecf5;
+    --flamingo: #ff9cc4;
+  }
+}
 
+/* Apple's Reduce Motion guidance: replace transitions with fades, kill springs. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;

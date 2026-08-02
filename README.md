@@ -94,42 +94,53 @@ derived/    AI summaries, notes, visit history — keyed by id so a re-scrape
             never clobbers them
 ```
 
-## Design: Vice noir
+## Design: Tropical Deco
 
-Dark, minimal, two neons and nothing else. Grounded in the show's actual brand
-colors — cyan `#0BD2D3` and pink `#F990E8` — pulled off full saturation and set
-on a blue-black ground rather than pure black, per standard dark-mode practice.
+Near-white field, marine structure, one flamingo accent for price. Full reasoning and the
+audit that produced it are in [DESIGN_REVIEW.md](./DESIGN_REVIEW.md).
 
 | Token | Hex | Use |
 |---|---|---|
-| `--void` | `#0A0D14` | Page ground |
-| `--surface` | `#12161F` | Cards, controls |
-| `--line` | `#232939` | Hairlines |
-| `--text` | `#EAECF2` | Body |
-| `--cyan` | `#22D3D4` | Structure and state: active filters, section heads |
-| `--hot` | `#FF4D9D` | Price only |
-| `--pink` | `#F97FD9` | Availability only |
+| `--paper` | `#E9E6DE` | Page ground (City of Miami Beach approved district palette) |
+| `--card` | `#F5F3ED` | Raised surface |
+| `--ink` | `#161A19` | Body — 15.8:1 |
+| `--soft` | `#464B47` | Metadata — 8.0:1, clears Apple's 7:1 small-text target |
+| `--rule` | `#8E887E` | UI boundaries — 3.2:1, clears WCAG 1.4.11 |
+| `--marine` | `#12414C` | Structure and state |
+| `--flamingo` | `#9C1E45` | **Price only** |
 
-Three rules keep it from tipping into pastiche:
+Three rules:
 
-1. **Neon is information, never decoration.** Cyan means "you selected this."
-   Pink means "this is what it costs and when." Nothing is neon for atmosphere.
-2. **One gradient, one place.** A sunset bleeds out of the top edge at ~15%
-   opacity. That is the whole 80s reference.
-3. **The two neons touch exactly once**, in the wordmark.
+1. **The accent is chosen by exclusion**, per Michael Mann's rule for *Miami Vice* — no earth
+   tones, no red, no primaries. What survives is marine and one flamingo.
+2. **Hard shadows, never glow.** `box-shadow: 6px 6px 0` — a Deco eyebrow. Miami light is
+   knife-edge sun. There is no blur and no gradient anywhere in the app.
+3. **The pastel is the paper, not the ink.** The historic district's own approved paint palette
+   is ~250 near-white low-chroma tints with trim restricted to greys. Saturation belongs to
+   signage, and here that means price.
 
-Type is two families: **Space Grotesk** (display and body) and **IBM Plex Mono**
-(all data, tabular figures). Both are self-hosted via `@fontsource`, so the app
-renders identically offline and makes no request to Google.
+Type is **Jost** (Futura lineage, 1927) and **IBM Plex Mono**, self-hosted via `@fontsource`.
+Four steps only: 12 / 15 / 19 / 44, each ≥1.25× the last.
 
-Every text color pair clears WCAG AA 4.5:1 — `verify.mjs` asserts it by parsing
-the tokens straight out of `app.css`, so a future palette tweak that breaks
-contrast fails the run instead of shipping.
+Results are **rows, not cards** — NN/g lists four cases where cards are the wrong component and
+a 380-restaurant directory is all four. 104px rows, 8.5 per viewport.
+
+## Design lint
+
+```bash
+cd app && npm run build && node design-lint.mjs
+```
+
+Deterministic audit, no LLM judgment, non-zero exit on criticals. `SLOP/*` rules are the
+catalogued markers of generated UI; `SPEC/*` are numeric floors from Apple's HIG and WCAG 2.2
+(11px minimum type, 44px minimum target, 7:1 small text, 3:1 UI boundaries, ≥1.25× type steps).
 
 ## Notes
 
 - Review content is **deep-linked, never fetched**. Yelp, Google Places and
   Tripadvisor all forbid caching their content; each card links out instead.
 - Data snapshot date is shown in the masthead so you know how stale it is.
-- The palette is entirely CSS custom properties, so a light theme is a variable
-  swap in `app.css` rather than a rewrite.
+- Facet options show live counts and grey out at zero rather than disappearing, which is
+  Baymard's first line of defence against dead-end result sets.
+- `prepare_data.py` normalizes ALL-CAPS dish names (31% of the source) and strips instruction
+  lines the CMS stored as if they were dishes.

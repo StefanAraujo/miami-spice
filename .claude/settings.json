@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run dev)",
+      "Bash(npm run preview)",
+      "Bash(npm install)",
+      "Bash(node verify.mjs)",
+      "Bash(node design-lint.mjs)",
+      "Bash(node specimen/build-specimen.mjs)",
+      "Bash(python3 prepare_data.py:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Edit(app/src/data/spice.json)",
+      "Edit(scraper/restaurants.json)"
+    ]
+  }
+}
