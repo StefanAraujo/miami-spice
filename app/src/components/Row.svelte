@@ -192,7 +192,7 @@
      Deco sign plate. The one saturated object per row (Chanel's "one accessory"). */
   .price {
     display: inline-block;
-    font-size: var(--t-body);
+    font-size: var(--t-name);
     font-weight: 500;
     padding: var(--s1) var(--s3);
     background: var(--flamingo);

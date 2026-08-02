@@ -38,6 +38,12 @@
   function introSeenInit() { try { return localStorage.getItem('intro-seen') === '1' } catch { return false } }
   let introSeen = $state(introSeenInit())
   const dismissIntro = () => { introSeen = true; try { localStorage.setItem('intro-seen', '1') } catch {} }
+  // Persistent re-entry after the intro is dismissed (critique: no lasting help).
+  const reopenIntro = () => {
+    introSeen = false
+    try { localStorage.removeItem('intro-seen') } catch {}
+    window.scrollTo({ top: 0 })
+  }
   // Cold start shows the Discover front door (ROADMAP Phase 4). "Browse all" is
   // the escape hatch to the full list without picking anything first.
   let browseAll = $state(!isEmpty(_url.f))
@@ -84,15 +90,6 @@
     } catch {
       shareMsg = location.href
     }
-  }
-
-  // AM/PM colour mood — the one idea kept from the client's Vice reference. PM is
-  // a restrained Deco-at-night override (see VICE_DIRECTION.md), not neon synthwave.
-  let mood = $state(document.documentElement.dataset.theme === 'pm' ? 'pm' : 'am')
-  const setMood = (m) => {
-    mood = m
-    document.documentElement.dataset.theme = m
-    try { localStorage.setItem('mood', m) } catch {}
   }
 
   const results = $derived(runQuery(f, sort))
@@ -164,13 +161,13 @@
     return out
   })
 
-  const stamp = generatedAt ? new Date(generatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : null
+  // "Updated…" is stated once, in the intro/promo — not repeated here (critique:
+  // three near-duplicate freshness signals crowded the mobile masthead).
   const tagline = [
     `${restaurants.length} restaurants`,
     `${facets.cuisines.length} cuisines`,
     `${facets.hoods.length} neighborhoods`,
-    stamp && `updated ${stamp}`,
-  ].filter(Boolean).join('  ·  ')
+  ].join('  ·  ')
 
   // Value + honest scarcity (UX review gaps 6 & 8): frame the fixed price as a
   // 3-course *deal*, and state the season deadline as motivation, not metadata.
@@ -198,15 +195,11 @@
 <header class="masthead">
   <div class="wrap">
     <p class="eyebrow micro">Miami Beach · August – September</p>
-    <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome}>Miami Spice</button></h1>
+    <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
     <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
     <p class="tagline micro">{tagline}</p>
     <p class="promo micro">{promo}</p>
     <div class="masthead-tools">
-      <div class="mood" role="group" aria-label="Theme" title="Switch between the daytime and after-dark theme">
-        <button type="button" class="mono" aria-label="Daytime theme" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
-        <button type="button" class="mono" aria-label="After-dark theme" aria-pressed={mood === 'pm'} onclick={() => setMood('pm')}>PM</button>
-      </div>
       <button type="button" class="shortlist-btn micro" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
         Shortlist{#if shortlist.length}<span class="badge mono">{shortlist.length}</span>{/if}
@@ -392,6 +385,7 @@
 
 <footer class="wrap">
   <p class="micro">Unofficial · menus shift mid-season · confirm before you go</p>
+  <button type="button" class="about-link micro" onclick={reopenIntro}>About this directory</button>
 </footer>
 
 <style>
@@ -500,20 +494,6 @@
   }
   .sl-action:hover { border-color: var(--rule); color: var(--ink); }
 
-  .mood {
-    display: inline-flex;
-    border: 1px solid var(--rule);
-  }
-  .mood button {
-    min-height: var(--tap);
-    min-width: 52px;
-    padding: 0 var(--s3);
-    font-size: var(--t-meta);
-    letter-spacing: 0.14em;
-    color: var(--soft);
-  }
-  .mood button + button { border-left: 1px solid var(--rule); }
-  .mood button[aria-pressed='true'] { background: var(--marine); color: var(--card); }
 
   .layout {
     display: grid;
@@ -673,6 +653,15 @@
 
   footer { padding: var(--s7) var(--s6); text-align: center; }
   footer p { margin: 0; letter-spacing: 0.08em; }
+  .about-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    margin-top: var(--s2);
+    color: var(--marine);
+    letter-spacing: 0.1em;
+  }
+  .about-link:hover { text-decoration: underline; }
 
   @media (max-width: 860px) {
     .wrap { padding: 0 var(--s5); }

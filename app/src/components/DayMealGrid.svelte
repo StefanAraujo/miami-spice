@@ -28,7 +28,7 @@
         title="{DAY_FULL[d]}{counts.days?.[d] !== undefined ? ` — ${counts.days[d]} restaurants` : ''}"
         disabled={!days.includes(d) && counts.days?.[d] === 0}
         onclick={() => (days = toggle(days, d))}
-      >{DAY_LABEL[d].slice(0, 1)}</button>
+      >{DAY_LABEL[d].slice(0, 2)}</button>
     {/each}
   </div>
 

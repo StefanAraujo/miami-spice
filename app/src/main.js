@@ -16,10 +16,8 @@ import '@fontsource/poiret-one/400.css'
 import './app.css'
 import App from './App.svelte'
 
-// Apply the saved AM/PM mood before the app paints, so a PM reload never flashes
-// the light field first. localStorage can throw under strict privacy modes.
-try {
-  if (localStorage.getItem('mood') === 'pm') document.documentElement.dataset.theme = 'pm'
-} catch {}
+// Night-only — "Ocean Drive After Dark." The app has a single dark theme; set it
+// before paint so there is never a flash of anything else.
+document.documentElement.dataset.theme = 'pm'
 
 export default mount(App, { target: document.getElementById('app') })

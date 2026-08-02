@@ -107,7 +107,7 @@ enforced by `design-lint.mjs`.
 - Depth is hard sun — a zero-blur offset shadow — never a glow or gradient.
 - One saturated object per screen (the flamingo price), protected by palette discipline.
 - Square corners, hairline rules, racing stripes; a Poiret-One Deco wordmark over a Jost body.
-- Dual AM/PM theme that swaps only light, never layout.
+- A single deep-marine **night** theme — the sun is already down on Ocean Drive.
 
 ## Colors
 
@@ -142,10 +142,12 @@ makes it the memory anchor; spend it anywhere else and the isolation collapses.
 the field, never behind body text, never blurred. That is Miami's real light budget: neon
 tubing over a pale wall, not a neon sky.
 
-**The Dual-Theme Rule.** Every colour is overridden *by name* under `:root[data-theme='pm']`, so
-the whole app recolours with zero component changes. PM: paper `#0e1a1f`, card `#16262c`, ink
-`#f2f4ee`, soft `#9fb0ac`, rule `#6f827e`, hair `#26363b`, marine & signal `#7fe3ef` (Vice cyan),
-flamingo `#ff6fae` (hot pink). AM is the default. Every pair clears its contrast floor in both.
+**The Night Rule.** The app is night-only — "Ocean Drive After Dark," sun already down.
+The active palette is the deep-marine set: paper `#0e1a1f`, card `#16262c`, ink `#f2f4ee`,
+soft `#a6bcb7`, rule `#6f827e`, hair `#26363b`, marine & signal `#7fe3ef` (Vice cyan),
+flamingo `#ff6fae` (hot pink). Every small-text pair clears Apple's 7:1 on both field and card.
+(The lighter "Ocean Drive AM" tokens above remain defined in `app.css` as a dormant base the
+night theme overrides — kept for a possible daytime mode, but there is no AM in the product.)
 
 ## Typography
 
