@@ -121,6 +121,14 @@
     stamp && `updated ${stamp}`,
   ].filter(Boolean).join('  ·  ')
 
+  // Value + honest scarcity (UX review gaps 6 & 8): frame the fixed price as a
+  // 3-course *deal*, and state the season deadline as motivation, not metadata.
+  const SEASON_END = new Date(2026, 8, 30)   // Sep 30 2026 (month index 8 = September)
+  const daysLeft = Math.max(0, Math.ceil((SEASON_END.getTime() - Date.now()) / 86400000))
+  const promo = daysLeft > 0
+    ? `3-course prix fixe · $40 / $50 / $65 · Restaurant Week ends in ${daysLeft} days`
+    : '3-course prix fixe · $40 / $50 / $65'
+
   /**
    * Baymard/NN/g: render a batch, lazy-load one more, then hand over to an
    * explicit button. Infinite scroll makes people scan superficially and is the
@@ -142,6 +150,7 @@
     <h1 class="wordmark">Miami Spice</h1>
     <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
     <p class="tagline micro">{tagline}</p>
+    <p class="promo micro">{promo}</p>
     <div class="masthead-tools">
       <div class="mood" role="group" aria-label="Colour mood">
         <button type="button" class="mono" aria-pressed={mood === 'am'} onclick={() => setMood('am')}>AM</button>
@@ -336,6 +345,7 @@
   .racing i:nth-child(2) { background: var(--flamingo); }
 
   .tagline { margin: var(--s4) 0 0; letter-spacing: 0.08em; }
+  .promo { margin: var(--s2) 0 0; letter-spacing: 0.08em; color: var(--marine); }
 
   /* Two moods, one system — the reference's framing, our restraint. A hard-edged
      segmented control, not a glowing pill. Each half clears Apple's 44pt target. */

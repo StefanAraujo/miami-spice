@@ -16,7 +16,7 @@
     <header>
       <span class="meal micro">{MEAL_LABEL[menu.meal] ?? menu.meal}</span>
       <span class="stripes" aria-hidden="true"></span>
-      {#if menu.price}<span class="price mono">${menu.price}</span>{/if}
+      {#if menu.price}<span class="price mono">{menu.courses.filter((c) => c.of > 0).length} courses · ${menu.price}</span>{/if}
     </header>
 
     {#each menu.courses.filter((c) => c.of > 0) as c}

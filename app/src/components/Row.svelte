@@ -95,6 +95,8 @@
           <a class="cta mono" href={r.reserve} target="_blank" rel="noopener">Book on {r.platform || 'their site'}</a>
         {/if}
         {#if r.maps}<a class="mono" href={r.maps} target="_blank" rel="noopener">Directions</a>{/if}
+        {#if r.gsearch}<a class="mono" href={r.gsearch} target="_blank" rel="noopener">Ratings on Google</a>{/if}
+        {#if r.yelp}<a class="mono" href={r.yelp} target="_blank" rel="noopener">Yelp</a>{/if}
         <a class="mono" href={r.url} target="_blank" rel="noopener">Details</a>
       </div>
     </div>
