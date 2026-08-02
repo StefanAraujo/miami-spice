@@ -18,6 +18,8 @@
   // the escape hatch to the full list without picking anything first.
   let browseAll = $state(false)
   let view = $state('list')   // 'list' | 'map' — both driven by the same filtered results
+  let course = $state('all')  // 'all' | 'starters' | 'mains' | 'desserts' — the teaser lens
+  const COURSES = [['all', 'All'], ['starters', 'Starters'], ['mains', 'Mains'], ['desserts', 'Desserts']]
 
   // AM/PM colour mood — the one idea kept from the client's Vice reference. PM is
   // a restrained Deco-at-night override (see VICE_DIRECTION.md), not neon synthwave.
@@ -204,9 +206,15 @@
         {/if}
       </div>
     {:else}
+      <div class="courses" role="group" aria-label="Course lens">
+        {#each COURSES as [k, label]}
+          <button type="button" class="micro" aria-pressed={course === k} onclick={() => (course = k)}>{label}</button>
+        {/each}
+      </div>
+
       <ul class="list">
         {#each visible as r (r.id)}
-          <Row {r} />
+          <Row {r} {course} />
         {/each}
       </ul>
 
@@ -363,6 +371,28 @@
   .chips .x { font-size: var(--t-body); line-height: 1; opacity: 0.75; }
   .chips .clear { background: none; color: var(--soft); border: 1px solid var(--hair); }
   .chips .clear:hover { color: var(--flamingo); border-color: var(--flamingo); }
+
+  /* fit-content + max-width keeps the segmented control from pushing the page
+     wide at 320px (WCAG 1.4.10); if it can't fit, it scrolls inside itself. */
+  .courses {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    overflow-x: auto;
+    border: 1px solid var(--hair);
+    margin: var(--s4) 0 var(--s2);
+  }
+  .courses button {
+    flex: 0 0 auto;
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    font-size: var(--t-meta);
+    letter-spacing: 0.14em;
+    color: var(--soft);
+    background: var(--card);
+  }
+  .courses button + button { border-left: 1px solid var(--hair); }
+  .courses button[aria-pressed='true'] { background: var(--marine); color: var(--card); }
 
   .list { list-style: none; margin: 0; padding: 0; }
 

@@ -15,22 +15,38 @@
    * Secondary actions live in the expanded panel; moving them off the row is
    * what buys the density.
    */
-  let { r } = $props()
+  let { r, course = 'all' } = $props()
   let open = $state(false)
 
   const panelId = $derived(`menu-${r.id}`)
   const byMeal = (a, b) => MEAL_ORDER.indexOf(a.meal) - MEAL_ORDER.indexOf(b.meal)
 
+  // Total dishes on offer — the "how much choice do I get" number the official
+  // site buries. Built in the script (not the markup) to dodge Svelte's leading-
+  // whitespace trim inside {#if}.
+  const choiceCount = $derived((r.menus || []).reduce((n, m) => n + m.courses.reduce((s, c) => s + c.of, 0), 0))
+
   // Tier 2: every differentiator collapsed onto one dot-separated line.
-  const meta = $derived([r.cuisines.join(', ') || 'Restaurant', r.tier, r.hood].filter(Boolean).join('  ·  '))
+  const meta = $derived(
+    [r.cuisines.join(', ') || 'Restaurant', r.tier, r.hood, choiceCount ? `${choiceCount} dishes` : null]
+      .filter(Boolean).join('  ·  '),
+  )
   const offers = $derived([...r.offers].sort(byMeal))
   const menus = $derived([...r.menus].sort(byMeal))
 
-  /** One distinctive dish — the thing the official site buries behind a click. */
+  // The course "lens" from the strip re-points the teaser at that course.
+  const COURSE_PAT = { starters: /appet|starter/i, mains: /entree|main/i, desserts: /dessert/i }
+
+  /** One or two distinctive dishes — follows the selected course when one is set. */
   const teaser = $derived.by(() => {
-    const m = menus[0]
-    const course = m?.courses.find((c) => /entree/i.test(c.name) && c.of) ?? m?.courses.find((c) => c.of)
-    return course?.items?.[0] ?? null
+    const pat = COURSE_PAT[course]
+    for (const m of menus) {
+      const c = pat
+        ? m.courses.find((x) => pat.test(x.name) && x.of)
+        : (m.courses.find((x) => /entree/i.test(x.name) && x.of) ?? m.courses.find((x) => x.of))
+      if (c?.items?.length) return c.items.slice(0, 2).join('  ·  ')
+    }
+    return null
   })
 </script>
 
