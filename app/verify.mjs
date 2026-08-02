@@ -82,7 +82,7 @@ check('cuisine tile → Italian count', await count(), expectItalian)
 // Clear returns to the front door; Browse all reaches the full list.
 await page.getByRole('button', { name: 'Clear all' }).click()
 await page.waitForTimeout(80)
-await page.getByRole('button', { name: /^Browse all \d+ restaurants$/ }).click()
+await page.getByRole('button', { name: /^Browse all \d+/ }).click()
 await page.waitForTimeout(80)
 check('all restaurants on load', await count(), expectAll)
 

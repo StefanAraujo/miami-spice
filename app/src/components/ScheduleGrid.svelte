@@ -22,7 +22,7 @@
   <thead>
     <tr>
       <td class="corner"></td>
-      {#each DAYS as d}<th scope="col" class="day micro">{DAY_LABEL[d].slice(0, 1)}</th>{/each}
+      {#each DAYS as d}<th scope="col" class="day micro">{DAY_LABEL[d].slice(0, 2)}</th>{/each}
     </tr>
   </thead>
   <tbody>

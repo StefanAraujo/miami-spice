@@ -28,8 +28,10 @@
   const choiceCount = $derived((r.menus || []).reduce((n, m) => n + m.courses.reduce((s, c) => s + c.of, 0), 0))
 
   // Tier 2: every differentiator collapsed onto one dot-separated line.
+  // No $$$ tier here: it collides with the numeric prix-fixe chip ("is $$$$ the
+  // price?"). The chip carries price; the meta carries what/where/how-much-choice.
   const meta = $derived(
-    [r.cuisines.join(', ') || 'Restaurant', r.tier, r.hood, choiceCount ? `${choiceCount} dishes` : null]
+    [r.cuisines.join(', ') || 'Restaurant', r.hood, choiceCount ? `${choiceCount} dishes` : null]
       .filter(Boolean).join('  ·  '),
   )
   const offers = $derived([...r.offers].sort(byMeal))
@@ -80,7 +82,11 @@
       {#if teaser}<span class="teaser">{teaser}</span>{/if}
     </span>
     <span class="side">
-      <span class="price mono">{priceRange(r)}</span>
+      {#if r.min_price != null}
+        <span class="price mono">{priceRange(r)}</span>
+      {:else}
+        <span class="noprice mono">Menu only</span>
+      {/if}
       <span class="when mono">{offers.map(offerLine).join('  ·  ')}</span>
     </span>
     <span class="chev" aria-hidden="true"></span>
@@ -194,6 +200,9 @@
     box-shadow: var(--eyebrow);
   }
 
+  /* No prix-fixe price on record: a quiet mono note, never the flamingo chip. */
+  .noprice { display: inline-block; font-size: var(--t-body); color: var(--soft); }
+
   .when { display: block; font-size: var(--t-meta); color: var(--soft); margin-top: var(--s1); }
 
   .chev {
@@ -259,6 +268,10 @@
     padding: 0 var(--s5);
     box-shadow: 4px 4px 0 rgba(18, 65, 76, 0.18);
   }
+  /* The CTA is marine-on-marine, so the generic .actions a:hover (which sets text
+     to marine) would make the label vanish. Keep it card-coloured; carry hover
+     feedback in the offset, not the text colour. */
+  .actions .cta:hover { color: var(--card); transform: translate(-1px, -1px); }
 
   @media (max-width: 720px) {
     .main { grid-template-columns: minmax(0, 1fr) 20px; gap: var(--s3); align-items: start; }

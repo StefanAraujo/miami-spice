@@ -174,7 +174,7 @@ await page.goto('http://localhost:4399/', { waitUntil: 'networkidle' })
 
 // Cold start shows the Discover front door; audit the actual result list, where
 // the density / row-contrast / target floors apply.
-const browse = page.getByRole('button', { name: /^Browse all \d+ restaurants$/ })
+const browse = page.getByRole('button', { name: /^Browse all \d+/ })
 if (await browse.count()) { await browse.click(); await page.waitForTimeout(150) }
 
 const audit = await page.evaluate(() => {

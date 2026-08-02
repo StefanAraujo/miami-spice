@@ -100,6 +100,11 @@
   })
 
   const clearAll = () => { f = emptyFilters(); browseAll = false }
+  // The wordmark is the persistent way back to the front door (UX review: no Home).
+  const goHome = () => {
+    f = emptyFilters(); sort = 'relevance'; course = 'all'
+    browseAll = false; showShortlist = false; pickedId = null
+  }
 
   const drop = (facet) => {
     if (facet === 'availability') f = { ...f, days: [], meals: [] }
@@ -163,7 +168,7 @@
 <header class="masthead">
   <div class="wrap">
     <p class="eyebrow micro">Miami Beach · August – September</p>
-    <h1 class="wordmark">Miami Spice</h1>
+    <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome}>Miami Spice</button></h1>
     <div class="racing" aria-hidden="true"><i></i><i></i><i></i></div>
     <p class="tagline micro">{tagline}</p>
     <p class="promo micro">{promo}</p>
@@ -214,6 +219,7 @@
   <main>
     {#if pickedRow}
       <section class="pick-view">
+        <h2 class="sr-only">Tonight's pick</h2>
         <div class="bar">
           <p class="count"><span class="micro">Tonight's pick</span></p>
           <div class="bar-right">
@@ -227,6 +233,7 @@
       </section>
     {:else if showShortlist}
       <section class="shortlist-view">
+        <h2 class="sr-only">Your shortlist</h2>
         <div class="bar">
           <p class="count"><strong class="mono">{shortlist.length}</strong><span class="micro">saved</span></p>
           <div class="bar-right">
@@ -254,6 +261,7 @@
     {:else if discovering}
       <Discover onPick={applyPreset} onBrowseAll={() => (browseAll = true)} onSurprise={pickForUs} />
     {:else}
+    <h2 class="sr-only">Results</h2>
     <div class="bar">
       <p class="count" aria-live="polite">
         <strong class="mono">{results.length}</strong>
@@ -359,6 +367,9 @@
     line-height: 1;
     margin: 0;
   }
+
+  .wordmark-btn { font: inherit; letter-spacing: inherit; text-transform: inherit; color: inherit; }
+  .wordmark-btn:hover { color: var(--marine); }
 
   /* Full-bleed hard horizon line — the app's one signature graphic. */
   .horizon {

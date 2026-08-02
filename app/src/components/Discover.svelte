@@ -19,9 +19,17 @@
   const TODAY = DAYS[(new Date().getDay() + 6) % 7]   // getDay 0=Sun; our DAYS start Mon
 
   const rank = (list, key) => list.map((v) => ({ v, c: n({ [key]: [v] }) })).sort((a, b) => b.c - a.c)
-  const cuisines = rank(facets.cuisines, 'cuisines').slice(0, 10)
-  const cities = rank(facets.cities || [], 'cities').slice(0, 8)
-  const hoods = rank(facets.hoods, 'hoods').slice(0, 8)
+  const cuisines = rank(facets.cuisines, 'cuisines')
+  const cities = rank(facets.cities || [], 'cities')
+  const hoods = rank(facets.hoods, 'hoods')
+
+  // Progressive disclosure (UX review P2): the front door was ~40 tiles at once
+  // for a group that's already struggling to decide. Cap each long lane; expand
+  // on demand. And the decisive "pick for us" moves to the TOP (see markup).
+  const CAP = 6
+  let expanded = $state({})
+  const shown = (list, key) => (expanded[key] ? list : list.slice(0, CAP))
+  const toggle = (key) => (expanded = { ...expanded, [key]: !expanded[key] })
 
   const timing = [
     { label: 'Open tonight', sub: DAY_FULL[TODAY], filters: { meals: ['dinner'], days: [TODAY] } },
@@ -40,32 +48,41 @@
 
 <section class="discover">
   <h2>What are you in the mood for?</h2>
-  <p class="sub">Start from a cuisine, a neighborhood, a time, or the occasion — or browse all {total}.</p>
+  <p class="sub">Can't decide? Let us pick — or start from a craving, a place, a time, or the occasion.</p>
+
+  <div class="decide decide-lead">
+    <button class="pick-btn mono" type="button" onclick={onSurprise}>Pick one for us</button>
+    <button class="browse mono" type="button" onclick={() => onPick(timing[0].filters, timing[0].sort)}>Open tonight<span class="tsub">{DAY_FULL[TODAY]}</span></button>
+    <button class="browse mono" type="button" onclick={onBrowseAll}>Browse all {total}</button>
+  </div>
 
   <div class="lane">
     <span class="micro">By cuisine</span>
     <div class="tiles">
-      {#each cuisines as { v, c }}
+      {#each shown(cuisines, 'cuisines') as { v, c }}
         <button class="tile" type="button" onclick={() => onPick({ cuisines: [v] })}>{v}<span class="n mono">{c}</span></button>
       {/each}
+      {#if cuisines.length > CAP}<button class="more-tiles micro" type="button" onclick={() => toggle('cuisines')}>{expanded.cuisines ? 'Show fewer' : `+${cuisines.length - CAP} more`}</button>{/if}
     </div>
   </div>
 
   <div class="lane">
     <span class="micro">By city</span>
     <div class="tiles">
-      {#each cities as { v, c }}
+      {#each shown(cities, 'cities') as { v, c }}
         <button class="tile" type="button" onclick={() => onPick({ cities: [v] })}>{v}<span class="n mono">{c}</span></button>
       {/each}
+      {#if cities.length > CAP}<button class="more-tiles micro" type="button" onclick={() => toggle('cities')}>{expanded.cities ? 'Show fewer' : `+${cities.length - CAP} more`}</button>{/if}
     </div>
   </div>
 
   <div class="lane">
     <span class="micro">By neighborhood</span>
     <div class="tiles">
-      {#each hoods as { v, c }}
+      {#each shown(hoods, 'hoods') as { v, c }}
         <button class="tile" type="button" onclick={() => onPick({ hoods: [v] })}>{v}<span class="n mono">{c}</span></button>
       {/each}
+      {#if hoods.length > CAP}<button class="more-tiles micro" type="button" onclick={() => toggle('hoods')}>{expanded.hoods ? 'Show fewer' : `+${hoods.length - CAP} more`}</button>{/if}
     </div>
   </div>
 
@@ -98,10 +115,6 @@
     </div>
   </div>
 
-  <div class="decide">
-    <button class="pick-btn mono" type="button" onclick={onSurprise}>Can’t decide? Pick one for us</button>
-    <button class="browse mono" type="button" onclick={onBrowseAll}>Browse all {total} restaurants</button>
-  </div>
 </section>
 
 <style>
@@ -147,4 +160,7 @@
   .pick-btn { background: var(--marine); color: var(--card); box-shadow: var(--eyebrow); }
   .browse { border: 1px solid var(--rule); color: var(--soft); }
   .browse:hover { border-color: var(--ink); color: var(--ink); }
+  .decide-lead { margin: 0 0 var(--s6); }
+  .decide .tsub { margin-left: var(--s2); font-style: italic; opacity: 0.8; }
+  .more-tiles { min-height: var(--tap); padding: 0 var(--s3); color: var(--marine); letter-spacing: 0.1em; }
 </style>
