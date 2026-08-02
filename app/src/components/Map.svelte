@@ -10,7 +10,7 @@
    * Basemap is CARTO Positron (light) / Dark Matter (night) so it tracks the theme.
    * Tiles are the only network call in the whole app and only load on this view.
    */
-  let { results = [] } = $props()
+  let { results = [], onOpen } = $props()
 
   let el
   let map
@@ -32,6 +32,12 @@
         { subdomains: 'abcd', maxZoom: 19, attribution: '© OpenStreetMap contributors © CARTO' },
       ).addTo(map)
       layer = L.layerGroup().addTo(map)
+      // Make a pin a decision surface, not just a locator (UX review): its popup
+      // carries a button that opens the restaurant's full detail in the app.
+      map.on('popupopen', (e) => {
+        const btn = e.popup.getElement()?.querySelector('.mp-open')
+        if (btn) btn.onclick = () => { onOpen?.(Number(btn.dataset.id)); map.closePopup() }
+      })
     }
 
     // Re-sync markers whenever the filtered results change.
@@ -43,7 +49,8 @@
       L.circleMarker([r.lat, r.lng], { radius: 6, color: marine, weight: 1, fillColor: marine, fillOpacity: 0.75 })
         .bindPopup(
           `<strong>${esc(r.name)}</strong><br>${esc(r.cuisines.join(', '))} · ` +
-          `<span style="color:${flamingo}">${esc(priceRange(r))}</span>`,
+          `<span style="color:${flamingo}">${esc(priceRange(r))}</span><br>` +
+          `<button type="button" class="mp-open" data-id="${r.id}">See menu &amp; availability</button>`,
         )
         .addTo(layer)
     }
@@ -68,4 +75,17 @@
   }
   /* Leaflet paints its own controls; keep them square and on-palette. */
   .map :global(.leaflet-bar a) { color: var(--marine); }
+  .map :global(.mp-open) {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    margin-top: var(--s2);
+    padding: 0 var(--s3);
+    background: var(--marine);
+    color: var(--card);
+    border: none;
+    font-family: var(--f-mono);
+    font-size: var(--t-meta);
+    cursor: pointer;
+  }
 </style>

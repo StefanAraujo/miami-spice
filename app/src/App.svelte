@@ -24,7 +24,7 @@
       cuisines: list('cuisines'), hoods: list('hoods'), cities: list('cities'),
       prices: nums('prices'), flags: list('flags'), mood: p.get('mood') || null,
     }
-    return { f, sort: p.get('sort') || 'relevance', picks: nums('picks') }
+    return { f, sort: p.get('sort') || 'relevance', picks: nums('picks'), saved: p.get('saved') === '1' }
   }
   const _url = parseUrl()
 
@@ -57,8 +57,9 @@
   // the AM/PM mood. A ?picks=id,id link opens straight into someone else's shortlist.
   function storedShortlist() { try { return JSON.parse(localStorage.getItem('shortlist') || '[]') } catch { return [] } }
   let shortlist = $state(_url.picks.length ? _url.picks : storedShortlist())
-  // A link carrying only picks (no filters) is a shared shortlist — open to it.
-  let showShortlist = $state(_url.picks.length > 0 && isEmpty(_url.f))
+  // A link shared FROM the shortlist (saved=1), or one carrying only picks, opens
+  // straight to the shortlist — even if filters ride along.
+  let showShortlist = $state(_url.saved || (_url.picks.length > 0 && isEmpty(_url.f)))
   let shareMsg = $state('')
 
   // Keep the URL in sync with the full state (filters + sort + shortlist), so the
@@ -73,6 +74,7 @@
     if (f.mood) p.set('mood', f.mood)
     if (sort !== 'relevance') p.set('sort', sort)
     if (shortlist.length) p.set('picks', shortlist.join(','))
+    if (showShortlist) p.set('saved', '1')   // so a shortlist share opens to the list
     const qs = p.toString()
     try { history.replaceState(null, '', qs ? `${location.pathname}?${qs}` : location.pathname) } catch {}
   })
@@ -109,6 +111,7 @@
   // 380-row list. Scored from data we already have; a peak + a place to stop.
   const TODAY = DAYS[(new Date().getDay() + 6) % 7]
   let pickedId = $state(null)
+  let pickIsTonight = $state(true)
   function pickForUs() {
     const openTonight = restaurants.filter((r) => r.serves.includes(`dinner@${TODAY}`))
     const pool = (openTonight.length ? openTonight : restaurants)
@@ -116,9 +119,25 @@
       .sort((a, b) => b.s - a.s)
       .slice(0, 15)
     pickedId = pool[Math.floor(Math.random() * pool.length)]?.r?.id ?? null
+    pickIsTonight = true
     showShortlist = false
   }
+  // Opening a restaurant from a map pin reuses the single-restaurant detail view.
+  const openFromMap = (id) => { pickedId = id; pickIsTonight = false; showShortlist = false }
   const pickedRow = $derived(pickedId != null ? getById(pickedId) : null)
+
+  // Say WHY, so "Pick for us" reads as a reasoned choice, not a dice roll (critique).
+  const pickReason = $derived.by(() => {
+    const r = pickedRow
+    if (!r) return ''
+    const bits = []
+    if (r.serves?.includes(`dinner@${TODAY}`)) bits.push('open for dinner tonight')
+    if (r.michelin) bits.push('Michelin-recognised')
+    const dishes = (r.menus || []).reduce((n, m) => n + m.courses.reduce((s, c) => s + c.of, 0), 0)
+    if (dishes) bits.push(`${dishes} dishes to choose from`)
+    if (r.max_price === 65) bits.push('a full $65 prix-fixe')
+    return bits.join(' · ')
+  })
 
   $effect(() => {
     void f
@@ -251,14 +270,15 @@
   <main>
     {#if pickedRow}
       <section class="pick-view">
-        <h2 class="sr-only">Tonight's pick</h2>
+        <h2 class="sr-only">{pickIsTonight ? "Tonight's pick" : 'Selected restaurant'}</h2>
         <div class="bar">
-          <p class="count"><span class="micro">Tonight's pick</span></p>
+          <p class="count"><span class="micro">{pickIsTonight ? "Tonight's pick" : 'From the map'}</span></p>
           <div class="bar-right">
-            <button type="button" class="sl-action micro" onclick={pickForUs}>Pick another</button>
+            {#if pickIsTonight}<button type="button" class="sl-action micro" onclick={pickForUs}>Pick another</button>{/if}
             <button type="button" class="sl-action micro" onclick={() => { pickedId = null; browseAll = true }}>Browse all</button>
           </div>
         </div>
+        {#if pickReason}<p class="pickwhy micro">Why this one: {pickReason}.</p>{/if}
         <ul class="list">
           <Row r={pickedRow} initialOpen={true} saved={savedSet.has(pickedRow.id)} onTogglePin={togglePin} />
         </ul>
@@ -335,7 +355,7 @@
     {/if}
 
     {#if view === 'map'}
-      <Map {results} />
+      <Map {results} onOpen={openFromMap} />
     {:else if results.length === 0}
       <div class="empty">
         <p class="lead">Nothing matches all of those at once.</p>
@@ -448,6 +468,7 @@
   .intro-x:hover { border-color: var(--marine); }
 
   .moodhint { margin: var(--s3) 0 0; color: var(--soft); letter-spacing: 0.06em; }
+  .pickwhy { margin: var(--s3) 0 0; color: var(--marine); letter-spacing: 0.06em; }
 
   /* Two moods, one system — the reference's framing, our restraint. A hard-edged
      segmented control, not a glowing pill. Each half clears Apple's 44pt target. */

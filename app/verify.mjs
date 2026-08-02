@@ -198,6 +198,11 @@ await page.waitForTimeout(150)
 check('URL filter restores results', await count(), rs.filter((r) => r.cuisines.includes('Italian')).length)
 check('URL filter skips the front door', await page.locator('.discover').count(), 0)
 
+// A link shared from the shortlist (saved=1) opens to the shortlist even with filters.
+await page.goto('http://localhost:4321/?picks=14621&cuisines=Italian&saved=1', { waitUntil: 'networkidle' })
+await page.waitForTimeout(150)
+check('shortlist-share link opens the shortlist', await page.locator('.shortlist-view .row').count(), 1)
+
 check('no console errors', errors.length, 0)
 if (errors.length) console.log(errors.slice(0, 5))
 
