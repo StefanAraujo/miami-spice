@@ -89,7 +89,7 @@ export const MOODS = {
   seafood: { label: 'Seafood', cuisines: ['Seafood', 'Japanese', 'Peruvian', 'Spanish'], flags: [], keywords: ['salmon', 'tuna', 'branzino', 'snapper', 'octopus', 'shrimp', 'oyster', 'ceviche', 'crab', 'lobster'] },
   steak: { label: 'Steak & fire', cuisines: ['Steakhouse', 'Argentinean', 'Brazilian'], flags: [], keywords: ['steak', 'filet', 'wagyu', 'picanha', 'ribeye', 'churrasco', 'skirt', 'chop', 'short rib'] },
   comfort: { label: 'Comfort', cuisines: ['American', 'Italian'], flags: [], keywords: ['burger', 'pasta', 'gnocchi', 'meatball', 'fried chicken', 'mac', 'pizza', 'frites', 'risotto'] },
-  adventurous: { label: 'Adventurous', cuisines: ['Korean', 'Thai', 'Vietnamese', 'Moroccan', 'Indian'], flags: [], keywords: ['octopus', 'uni', 'sweetbread', 'tongue', 'bone marrow', 'escargot', 'kimchi', 'curry', 'harissa'] },
+  adventurous: { label: 'Adventurous', cuisines: ['Korean', 'Thai', 'Vietnamese', 'Moroccan', 'Indian', 'Peruvian', 'Spanish', 'Caribbean', 'Pan-Asian', 'Chinese'], flags: [], keywords: ['octopus', 'uni', 'sweetbread', 'tongue', 'bone marrow', 'escargot', 'kimchi', 'curry', 'harissa', 'oxtail', 'tripe', 'foie', 'caviar', 'lamb', 'goat', 'duck', 'rabbit', 'tataki', 'tiradito', 'ceviche'] },
   sweet: { label: 'Sweet tooth', cuisines: ['Bakery & Sweets'], flags: [], keywords: ['chocolate', 'tiramisu', 'cheesecake', 'flan', 'gelato', 'churros', 'tres leches', 'key lime', 'dulce'] },
 }
 

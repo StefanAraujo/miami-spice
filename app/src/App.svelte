@@ -662,5 +662,16 @@
     .bar-right { flex: 1; min-width: 0; justify-content: flex-end; }
     .sortsel { min-width: 0; }
     .sortsel select { max-width: 100%; text-overflow: ellipsis; }
+
+    /* The masthead was eating ~43% of the first mobile screen (critique). Tighten
+       its rhythm so the actionable content sits closer to the fold. */
+    .masthead { padding-top: var(--s5); }
+    .eyebrow { margin-bottom: var(--s2); }
+    .racing { margin-top: var(--s3); }
+    .tagline { margin-top: var(--s2); }
+    .promo { margin-top: var(--s1); }
+    .masthead-tools { margin-top: var(--s3); }
+    .horizon { margin-top: var(--s5); }
+    .intro { margin-top: var(--s4); padding: var(--s3); }
   }
 </style>
