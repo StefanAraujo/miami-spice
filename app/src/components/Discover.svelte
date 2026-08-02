@@ -1,5 +1,5 @@
 <script>
-  import { facets, runQuery, emptyFilters, DAYS } from '../lib/search.js'
+  import { facets, runQuery, emptyFilters, DAYS, MOODS } from '../lib/search.js'
 
   /**
    * The front door (ROADMAP Phase 4). NN/g frames the homepage as a "safe harbor"
@@ -34,6 +34,7 @@
     { label: 'Solo & value', filters: { prices: [40] }, sort: 'price_asc' },
     { label: 'Al-fresco', filters: { flags: ['outdoor'] } },
   ]
+  const moods = Object.entries(MOODS).map(([id, m]) => ({ id, label: m.label, c: n({ mood: id }) }))
   const total = n({})
 </script>
 
@@ -64,6 +65,15 @@
     <div class="tiles">
       {#each hoods as { v, c }}
         <button class="tile" type="button" onclick={() => onPick({ hoods: [v] })}>{v}<span class="n mono">{c}</span></button>
+      {/each}
+    </div>
+  </div>
+
+  <div class="lane">
+    <span class="micro">By mood</span>
+    <div class="tiles">
+      {#each moods as m}
+        <button class="tile" type="button" onclick={() => onPick({ mood: m.id })}>{m.label}<span class="n mono">{m.c}</span></button>
       {/each}
     </div>
   </div>

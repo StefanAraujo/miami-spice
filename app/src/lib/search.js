@@ -68,12 +68,41 @@ export const emptyFilters = () => ({
   cities: [],
   prices: [],
   flags: [],
+  mood: null,
 })
 
 export const isEmpty = (f) =>
-  !f.query.trim() &&
+  !f.query.trim() && !f.mood &&
   !f.days.length && !f.meals.length && !f.cuisines.length &&
   !f.hoods.length && !f.cities.length && !f.prices.length && !f.flags.length
+
+/**
+ * Mood / craving — the "what am I feeling" door. Not a facet: a soft lens that
+ * filters to restaurants that fit and sorts by how well. Each mood is cuisine +
+ * flag membership (strong signals) plus dish-name keywords (a bounded bonus, so
+ * one stray "salad" can't make a steakhouse read "light"). Taxonomy from
+ * REVAMP_IA §4, every set measured against the data.
+ */
+export const MOODS = {
+  light: { label: 'Light & fresh', cuisines: ['Japanese', 'Mediterranean', 'Peruvian', 'Greek', 'Seafood'], flags: ['vegan', 'low-glycemic', 'seed-oil-free'], keywords: ['ceviche', 'crudo', 'tartare', 'tiradito', 'poke', 'hamachi', 'branzino', 'gazpacho'] },
+  rich: { label: 'Rich & indulgent', cuisines: ['Steakhouse', 'Italian', 'French'], flags: ['michelin'], keywords: ['wagyu', 'truffle', 'foie', 'short rib', 'risotto', 'lobster', 'braised', 'burrata', 'bone marrow'] },
+  seafood: { label: 'Seafood', cuisines: ['Seafood', 'Japanese', 'Peruvian', 'Spanish'], flags: [], keywords: ['salmon', 'tuna', 'branzino', 'snapper', 'octopus', 'shrimp', 'oyster', 'ceviche', 'crab', 'lobster'] },
+  steak: { label: 'Steak & fire', cuisines: ['Steakhouse', 'Argentinean', 'Brazilian'], flags: [], keywords: ['steak', 'filet', 'wagyu', 'picanha', 'ribeye', 'churrasco', 'skirt', 'chop', 'short rib'] },
+  comfort: { label: 'Comfort', cuisines: ['American', 'Italian'], flags: [], keywords: ['burger', 'pasta', 'gnocchi', 'meatball', 'fried chicken', 'mac', 'pizza', 'frites', 'risotto'] },
+  adventurous: { label: 'Adventurous', cuisines: ['Korean', 'Thai', 'Vietnamese', 'Moroccan', 'Indian'], flags: [], keywords: ['octopus', 'uni', 'sweetbread', 'tongue', 'bone marrow', 'escargot', 'kimchi', 'curry', 'harissa'] },
+  sweet: { label: 'Sweet tooth', cuisines: ['Bakery & Sweets'], flags: [], keywords: ['chocolate', 'tiramisu', 'cheesecake', 'flan', 'gelato', 'churros', 'tres leches', 'key lime', 'dulce'] },
+}
+
+/** {score, inMood}. inMood requires a real signal, not one stray keyword. */
+export function moodMatch(r, moodId) {
+  const m = MOODS[moodId]
+  if (!m) return { score: 0, inMood: false }
+  const cui = m.cuisines.filter((c) => r.cuisines.includes(c)).length
+  const fl = m.flags.filter((x) => r.flags.includes(x)).length
+  const text = (r.dish_text || '').toLowerCase()
+  const kw = m.keywords.reduce((n, k) => n + (text.includes(k) ? 1 : 0), 0)
+  return { score: 3 * cui + 2 * fl + Math.min(kw, 5), inMood: cui > 0 || fl > 0 || kw >= 2 }
+}
 
 const someIn = (values, selected) => selected.some((s) => values.includes(s))
 const everyIn = (values, selected) => selected.every((s) => values.includes(s))
@@ -132,6 +161,15 @@ export function runQuery(f, sort = 'relevance') {
   const ids = textMatchIds(f.query)
   const pool = ids ? ids.map(getById).filter(Boolean) : restaurants
   const hits = pool.filter((r) => matchesFacets(r, f))
+
+  // A mood overrides the sort: keep only what fits, ordered by fit.
+  if (f.mood) {
+    return hits
+      .map((r) => ({ r, ...moodMatch(r, f.mood) }))
+      .filter((x) => x.inMood)
+      .sort((a, b) => b.score - a.score || a.r.name.localeCompare(b.r.name))
+      .map((x) => x.r)
+  }
 
   const key = sort === 'relevance' && !ids ? 'name' : sort
   const cmp = SORTS[key]?.cmp

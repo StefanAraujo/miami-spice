@@ -52,6 +52,14 @@ const expectVegOutdoor = rs.filter((r) => ['vegetarian', 'outdoor'].every((g) =>
 // Cold start now shows the Discover front door, not the list (ROADMAP Phase 4).
 check('discover front door on load', await page.locator('.discover').count() > 0, true)
 
+// A mood tile is a soft lens: it should narrow the list, not empty it or no-op.
+await page.locator('.discover').getByRole('button', { name: /^Steak & fire\s*\d+$/ }).click()
+await page.waitForTimeout(120)
+const steak = await count()
+check('mood tile narrows results', steak > 0 && steak < expectAll, true)
+await page.getByRole('button', { name: 'Clear all' }).click()
+await page.waitForTimeout(80)
+
 // A cuisine tile resolves to the same count as the cuisine facet — the tile's
 // number is a real query, asserted against an independent pass.
 const expectItalian = rs.filter((r) => r.cuisines.includes('Italian')).length

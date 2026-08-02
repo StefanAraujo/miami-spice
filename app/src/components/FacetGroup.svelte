@@ -1,7 +1,7 @@
 <script>
   let {
     label, options, selected = $bindable(), counts = {},
-    format = (v) => v, collapsible = false, limit = 8,
+    format = (v) => v, collapsible = false, limit = 8, note = '',
   } = $props()
 
   let expanded = $state(false)
@@ -19,6 +19,7 @@
 
 <section class="group" data-facet={label}>
   <h3 class="micro">{label}</h3>
+  {#if note}<p class="note">{note}</p>{/if}
 
   <div class="opts">
     {#each shown as o}
@@ -47,6 +48,9 @@
   .group { display: grid; gap: var(--s3); margin-bottom: var(--s6); }
 
   h3 { margin: 0; padding-bottom: var(--s2); border-bottom: 1px solid var(--rule); }
+
+  /* Telegraph the AND logic — dietary flags are requirements, not alternatives. */
+  .note { margin: 0; font-size: var(--t-meta); color: var(--soft); font-style: italic; }
 
   .opts { display: flex; flex-wrap: wrap; gap: var(--s1); }
 

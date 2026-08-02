@@ -7,7 +7,7 @@
   import {
     facets, generatedAt, restaurants,
     emptyFilters, isEmpty, runQuery, relaxations, facetCounts,
-    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel,
+    SORTS, DAY_LABEL, MEAL_LABEL, flagLabel, MOODS,
   } from './lib/search.js'
 
   let f = $state(emptyFilters())
@@ -67,6 +67,7 @@
   const chips = $derived.by(() => {
     const out = []
     if (f.query.trim()) out.push({ label: `“${f.query.trim()}”`, remove: () => (f = { ...f, query: '' }) })
+    if (f.mood) out.push({ label: `Mood: ${MOODS[f.mood].label}`, remove: () => (f = { ...f, mood: null }) })
     for (const d of f.days) out.push({ label: DAY_LABEL[d], remove: () => (f = { ...f, days: f.days.filter((x) => x !== d) }) })
     for (const m of f.meals) out.push({ label: MEAL_LABEL[m] ?? m, remove: () => (f = { ...f, meals: f.meals.filter((x) => x !== m) }) })
     for (const c of f.cuisines) out.push({ label: c, remove: () => (f = { ...f, cuisines: f.cuisines.filter((x) => x !== c) }) })
@@ -139,7 +140,8 @@
       <FacetGroup label="City" options={facets.cities} bind:selected={f.cities}
         counts={counts.cities} collapsible limit={8} />
       <FacetGroup label="Dietary & amenities" options={facets.flags} bind:selected={f.flags}
-        counts={counts.flags} format={flagLabel} collapsible limit={12} />
+        counts={counts.flags} format={flagLabel} collapsible limit={12}
+        note="All selected are required" />
     </div>
   </aside>
 
