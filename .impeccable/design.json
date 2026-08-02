@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-02T00:00:00Z",
+  "title": "Design System: Miami Spice",
+  "extensions": {
+    "colorMeta": {
+      "marine": {
+        "role": "primary",
+        "displayName": "Marine",
+        "canonical": "#12414c",
+        "night": "#7fe3ef",
+        "tonalRamp": [
+          "#0f353e",
+          "#1a5d6d",
+          "#25869c",
+          "#30aecb",
+          "#5dc1d9",
+          "#8cd3e4",
+          "#bbe5ef",
+          "#eaf7fa"
+        ]
+      },
+      "flamingo": {
+        "role": "primary",
+        "displayName": "Flamingo",
+        "canonical": "#9c1e45",
+        "night": "#ff6fae",
+        "tonalRamp": [
+          "#400c1c",
+          "#711632",
+          "#a21f48",
+          "#d3295d",
+          "#df5781",
+          "#e888a6",
+          "#f1b9ca",
+          "#fbeaef"
+        ]
+      },
+      "signal": {
+        "role": "secondary",
+        "displayName": "Vice Cyan (Deep)",
+        "canonical": "#0c5460",
+        "night": "#7fe3ef",
+        "tonalRamp": [
+          "#083b44",
+          "#0f6978",
+          "#1596ac",
+          "#1cc3df",
+          "#4dd2e9",
+          "#81dfef",
+          "#b5ecf6",
+          "#e8f9fc"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Heron Plume Paper",
+        "canonical": "#e9e6de",
+        "night": "#0e1a1f",
+        "tonalRamp": [
+          "#2e2a1f",
+          "#514a36",
+          "#74694d",
+          "#978965",
+          "#afa487",
+          "#c6beaa",
+          "#ddd9cd",
+          "#f5f3f0"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Terrazzo Card",
+        "canonical": "#f5f3ed",
+        "night": "#16262c",
+        "tonalRamp": [
+          "#312c1b",
+          "#574d30",
+          "#7c6e45",
+          "#a2905a",
+          "#b7a97e",
+          "#ccc2a4",
+          "#e1dbc9",
+          "#f6f4ef"
+        ]
+      },
+      "sunk": {
+        "role": "neutral",
+        "displayName": "Sunk Well",
+        "canonical": "#e2ded4",
+        "night": "#0a1418",
+        "tonalRamp": [
+          "#2e291f",
+          "#504936",
+          "#73694e",
+          "#968865",
+          "#aea387",
+          "#c6beaa",
+          "#ddd9cd",
+          "#f5f3f0"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Deco Ink",
+        "canonical": "#161a19",
+        "night": "#f2f4ee",
+        "tonalRamp": [
+          "#232928",
+          "#3e4946",
+          "#586965",
+          "#738883",
+          "#92a39f",
+          "#b2bebb",
+          "#d2d9d7",
+          "#f1f3f3"
+        ]
+      },
+      "soft": {
+        "role": "neutral",
+        "displayName": "Soft Slate",
+        "canonical": "#464b47",
+        "night": "#9fb0ac",
+        "tonalRamp": [
+          "#252825",
+          "#414642",
+          "#5d645f",
+          "#79827b",
+          "#979e99",
+          "#b6bab6",
+          "#d4d7d4",
+          "#f2f3f2"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule Grey",
+        "canonical": "#8e887e",
+        "night": "#6f827e",
+        "tonalRamp": [
+          "#292724",
+          "#48453f",
+          "#67625a",
+          "#868075",
+          "#a19c94",
+          "#bdb9b3",
+          "#d8d6d2",
+          "#f3f2f1"
+        ]
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#cfcabe",
+        "night": "#26363b",
+        "tonalRamp": [
+          "#2c2920",
+          "#4e4839",
+          "#6f6752",
+          "#91856b",
+          "#aaa18c",
+          "#c3bcad",
+          "#dbd8cf",
+          "#f4f3f0"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display (Poiret One)",
+        "purpose": "Wordmark and hero numbers only."
+      },
+      "headline": {
+        "displayName": "Headline (Poiret One)",
+        "purpose": "Section heads and the discovery prompt."
+      },
+      "title": {
+        "displayName": "Title (Jost 600)",
+        "purpose": "Restaurant names; the price chip figure."
+      },
+      "body": {
+        "displayName": "Body (Jost)",
+        "purpose": "Row body, filters, teasers."
+      },
+      "label": {
+        "displayName": "Label (IBM Plex Mono)",
+        "purpose": "Uppercase micro-labels, day tokens, counts."
+      }
+    },
+    "shadows": [
+      {
+        "name": "eyebrow",
+        "value": "6px 6px 0 rgba(18,65,76,0.1)",
+        "purpose": "The only shadow — a hard, zero-blur Deco sunshade slab. AM theme."
+      },
+      {
+        "name": "eyebrow-pm",
+        "value": "6px 6px 0 rgba(127,227,239,0.14)",
+        "purpose": "The eyebrow at night, tinted Vice-cyan. Still zero blur."
+      }
+    ],
+    "motion": [
+      {
+        "name": "theme-swap",
+        "value": "background .2s ease, color .2s ease",
+        "purpose": "The only ambient transition — the AM/PM recolour. Nulled under prefers-reduced-motion."
+      },
+      {
+        "name": "focus",
+        "value": "none",
+        "purpose": "Focus outline is never transitioned, so it appears instantly (WCAG 2.4.13)."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "560px"
+      },
+      {
+        "name": "md",
+        "value": "720px"
+      },
+      {
+        "name": "lg",
+        "value": "860px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary CTA",
+      "kind": "button",
+      "refersTo": "cta-primary",
+      "description": "The confident action — Book on OpenTable, \"Pick one for us.\" Marine fill, hard eyebrow.",
+      "html": "<button class=\"ds-cta\">Book on OpenTable</button>",
+      "css": ".ds-cta{display:inline-flex;align-items:center;min-height:44px;padding:0 24px;background:#12414c;color:#f5f3ed;border:none;box-shadow:6px 6px 0 rgba(18,65,76,.1);font-family:\"IBM Plex Mono\",monospace;font-size:15px;cursor:pointer;transition:transform .12s ease}.ds-cta:hover{transform:translate(-1px,-1px)}.ds-cta:focus-visible{outline:2px solid #12414c;outline-offset:3px}"
+    },
+    {
+      "name": "Price Chip",
+      "kind": "custom",
+      "refersTo": "price-chip",
+      "description": "The one saturated object per screen — flamingo signage plate, price only.",
+      "html": "<span class=\"ds-price\">$40–$65</span>",
+      "css": ".ds-price{display:inline-block;padding:4px 12px;background:#9c1e45;color:#f5f3ed;box-shadow:6px 6px 0 rgba(18,65,76,.1);font-family:\"IBM Plex Mono\",monospace;font-size:15px;font-weight:500}"
+    },
+    {
+      "name": "Facet Pill",
+      "kind": "chip",
+      "refersTo": "facet",
+      "description": "A filter option with a live count. Square, hairline, ≥44px. Selected = marine fill.",
+      "html": "<div style=\"display:flex;gap:2px\"><button class=\"ds-facet\">Italian <span class=\"ds-facet-n\">72</span></button><button class=\"ds-facet ds-facet-on\">Seafood <span class=\"ds-facet-n\">24</span></button></div>",
+      "css": ".ds-facet{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;background:#f5f3ed;border:1px solid #cfcabe;color:#464b47;font-family:\"Jost\",sans-serif;font-size:15px;cursor:pointer}.ds-facet:hover{border-color:#8e887e;color:#161a19}.ds-facet-n{font-family:\"IBM Plex Mono\",monospace;font-size:12px;color:#464b47}.ds-facet-on{background:#12414c;border-color:#12414c;color:#f5f3ed}.ds-facet-on .ds-facet-n{color:#f5f3ed;opacity:.75}"
+    },
+    {
+      "name": "AM/PM Segmented Toggle",
+      "kind": "custom",
+      "refersTo": "facet-selected",
+      "description": "The sundown toggle — one press-selected cell in marine. Same idiom as List/Map and the course strip.",
+      "html": "<div class=\"ds-seg\"><button>AM</button><button class=\"on\">PM</button></div>",
+      "css": ".ds-seg{display:inline-flex;border:1px solid #8e887e}.ds-seg button{min-height:44px;min-width:56px;padding:0 12px;background:transparent;border:none;color:#464b47;font-family:\"IBM Plex Mono\",monospace;font-size:12px;letter-spacing:.14em;cursor:pointer}.ds-seg button+button{border-left:1px solid #8e887e}.ds-seg .on{background:#12414c;color:#f5f3ed}"
+    },
+    {
+      "name": "Applied Filter Chip",
+      "kind": "chip",
+      "refersTo": "facet-selected",
+      "description": "A removable applied filter. Marine fill with an ×; every discovery pick becomes one.",
+      "html": "<button class=\"ds-chip\">Brickell <span aria-hidden=\"true\">×</span></button>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 12px;background:#12414c;color:#f5f3ed;border:none;font-family:\"Jost\",sans-serif;font-size:15px;cursor:pointer}.ds-chip span{opacity:.75}"
+    },
+    {
+      "name": "Search Input",
+      "kind": "input",
+      "refersTo": "facet",
+      "description": "Square, hairline, mono, ≥44px. Border shifts to rule on focus — no glow.",
+      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Search a name, cuisine, dish…\" />",
+      "css": ".ds-input{width:280px;min-height:44px;padding:0 12px;background:#f5f3ed;border:1px solid #cfcabe;color:#161a19;font-family:\"IBM Plex Mono\",monospace;font-size:15px}.ds-input::placeholder{color:#464b47;opacity:.75}.ds-input:hover,.ds-input:focus{border-color:#8e887e;outline:none}"
+    },
+    {
+      "name": "Result Row",
+      "kind": "card",
+      "refersTo": "cta-primary",
+      "description": "The signature unit — three tiers, a bookmark gutter, flamingo price, hairline separator. The whole row is the disclosure target.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-pin\">⌂</span><span class=\"ds-rowtext\"><span class=\"ds-name\">COTE Miami</span><span class=\"ds-meta\">Steakhouse · $$$ · Design District · 12 dishes</span></span><span class=\"ds-side\"><span class=\"ds-price2\">$65</span><span class=\"ds-when\">Dinner · Daily</span></span></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:44px 1fr auto;gap:32px;align-items:center;padding:16px 0;border-bottom:1px solid #cfcabe;font-family:\"Jost\",sans-serif}.ds-pin{display:inline-flex;align-items:center;justify-content:center;min-height:44px;color:#464b47}.ds-name{display:block;font-size:19px;font-weight:600;color:#161a19}.ds-meta{display:block;font-family:\"IBM Plex Mono\",monospace;font-size:12px;color:#464b47;margin-top:4px}.ds-side{text-align:right}.ds-price2{display:inline-block;padding:4px 12px;background:#9c1e45;color:#f5f3ed;box-shadow:6px 6px 0 rgba(18,65,76,.1);font-family:\"IBM Plex Mono\",monospace;font-size:15px}.ds-when{display:block;font-family:\"IBM Plex Mono\",monospace;font-size:12px;color:#464b47;margin-top:12px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Ocean Drive After Dark",
+    "overview": "The system is the arc of a Miami Beach day compressed into one toggle. By day the field is the district’s regulated near-white with structure in marine and a single flamingo for price; by night the same room becomes a deep-marine after-hours where the two Vice hues surface exactly where the daytime accents lived — as neon signage over the wall, never as the wall. Nothing about the composition changes across the toggle; only the light does. This is “Miami Vice” reached by exclusion — no earth tones, no primaries, no glow — Apple-precise in discipline and Art-Deco in its devices, and deliberately the opposite of the neon-on-black synthwave that reads as machine-made.",
+    "keyCharacteristics": [
+      "Near-white (or deep-marine) field; color lives only in signage, on a tiny fraction of pixels.",
+      "Depth is hard sun — a zero-blur offset shadow — never a glow or gradient.",
+      "One saturated object per screen (the flamingo price), protected by palette discipline.",
+      "Square corners, hairline rules, racing stripes; a Poiret-One Deco wordmark over a Jost body.",
+      "Dual AM/PM theme that swaps only light, never layout."
+    ],
+    "rules": [
+      {
+        "name": "The Price-Only Rule",
+        "body": "flamingo is used for price and nothing else; its scarcity is what makes it the memory anchor.",
+        "section": "colors"
+      },
+      {
+        "name": "The Signal Rule",
+        "body": "Saturation lives only in signage — accents touch ≤5% of any screen, never the field, never behind body text, never blurred.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dual-Theme Rule",
+        "body": "Every colour is overridden by name under data-theme=pm, so the whole app recolours with zero component changes; AM is default.",
+        "section": "colors"
+      },
+      {
+        "name": "The Five-Step Rule",
+        "body": "Exactly five type sizes — 12/15/19/30/44–56 — each ≥1.25× the last; never a sixth.",
+        "section": "typography"
+      },
+      {
+        "name": "The Two-Caps Rule",
+        "body": "Uppercase appears in exactly two roles — the .micro label and the wordmark.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hard-Sun Rule",
+        "body": "Elevation is a hard offset slab with zero blur — never a halo. A blurred coloured shadow is the AI-slop tell the lint bans.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Rule",
+        "body": "Nothing is rounded; if a control needs to read softer, change its weight or value, not its corners.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Rows-Not-Cards Rule",
+        "body": "Results stay rows (~104px, ≥5 per 900px viewport); secondary actions move into the expanded panel. Cards would fail the density floor.",
+        "section": "layout"
+      }
+    ],
+    "dos": [
+      "Do route every colour through a var(); raw hex outside app.css is a lint finding.",
+      "Do express depth with the zero-blur eyebrow (6px 6px 0) and tonal steps between surfaces.",
+      "Do keep results as rows at ~104px, ≥5 per 900px viewport.",
+      "Do reserve flamingo for price and let a single saturated object anchor each screen.",
+      "Do keep uppercase to the two roles and type to the five sizes.",
+      "Do disable-and-grey zero-count options; never remove them.",
+      "Do meet the floors in both themes: 11px type, 44px target, 7:1 small text, 3:1 UI boundary."
+    ],
+    "donts": [
+      "Don’t use blur, glow, gradients, glassmorphism, or a radial aurora background.",
+      "Don’t put neon on the field: the Vice hues are signage over the wall, never the wall.",
+      "Don’t round corners, add a third uppercase role, or introduce a sixth type size.",
+      "Don’t use flamingo for anything but price, or add a second isolated accent.",
+      "Don’t reach for a card grid, Space Grotesk / Inter / Instrument Serif, or pure #000/#fff.",
+      "Don’t work around a lint rule — edit the rule and say why."
+    ]
+  }
+}
