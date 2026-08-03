@@ -308,7 +308,7 @@
         <div class="bar">
           <p class="count"><span class="micro">{pickIsTonight ? "Tonight's pick" : 'From the map'}</span></p>
           <div class="bar-right">
-            {#if pickIsTonight}<button type="button" class="sl-action micro" onclick={pickForUs}>Pick another</button>{/if}
+            {#if pickIsTonight}<button type="button" class="sl-action micro" onclick={pickForUs}>Pick another for us</button>{/if}
             <button type="button" class="sl-action micro" onclick={() => { pickedId = null; browseAll = true }}>Browse all</button>
           </div>
         </div>

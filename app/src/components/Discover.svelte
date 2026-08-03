@@ -28,6 +28,9 @@
   // on demand. And the decisive "pick for us" moves to the TOP (see markup).
   const CAP = 6
   let expanded = $state({})
+  // Cut the cold-start load: the two most redundant lanes (timing — "Open tonight"
+  // already leads the decide row — and occasion) hide behind one button (critique).
+  let showMore = $state(false)
   const shown = (list, key) => (expanded[key] ? list : list.slice(0, CAP))
   const toggle = (key) => (expanded = { ...expanded, [key]: !expanded[key] })
 
@@ -95,25 +98,31 @@
     </div>
   </div>
 
-  <div class="lane">
-    <span class="micro">When you're going</span>
-    <div class="tiles">
-      {#each timing as t}
-        <button class="tile" type="button" onclick={() => onPick(t.filters, t.sort)}>
-          {t.label}{#if t.sub}<span class="tsub">{t.sub}</span>{/if}<span class="n mono">{n(t.filters)}</span>
-        </button>
-      {/each}
+  {#if !showMore}
+    <button class="more-ways" type="button" onclick={() => (showMore = true)}>
+      More ways to start — timing &amp; occasion<span class="arw" aria-hidden="true">→</span>
+    </button>
+  {:else}
+    <div class="lane">
+      <span class="micro">When you're going</span>
+      <div class="tiles">
+        {#each timing as t}
+          <button class="tile" type="button" onclick={() => onPick(t.filters, t.sort)}>
+            {t.label}{#if t.sub}<span class="tsub">{t.sub}</span>{/if}<span class="n mono">{n(t.filters)}</span>
+          </button>
+        {/each}
+      </div>
     </div>
-  </div>
 
-  <div class="lane">
-    <span class="micro">The occasion</span>
-    <div class="tiles">
-      {#each occasions as o}
-        <button class="tile" type="button" onclick={() => onPick(o.filters, o.sort)}>{o.label}<span class="n mono">{n(o.filters)}</span></button>
-      {/each}
+    <div class="lane">
+      <span class="micro">The occasion</span>
+      <div class="tiles">
+        {#each occasions as o}
+          <button class="tile" type="button" onclick={() => onPick(o.filters, o.sort)}>{o.label}<span class="n mono">{n(o.filters)}</span></button>
+        {/each}
+      </div>
     </div>
-  </div>
+  {/if}
 
 </section>
 
@@ -192,4 +201,17 @@
   .decide-lead { margin: 0 0 var(--s6); }
   .decide .tsub { margin-left: var(--s2); opacity: 0.8; }
   .more-tiles { min-height: var(--tap); padding: 0 var(--s3); color: var(--marine); }
+  .more-ways {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    border-radius: var(--r-full);
+    background: var(--sunk);
+    color: var(--marine);
+    font-size: var(--t-body);
+    font-weight: 590;
+  }
+  .more-ways:hover { background: var(--marine-wash); }
 </style>

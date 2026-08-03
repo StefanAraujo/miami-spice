@@ -280,9 +280,28 @@ def transform(r):
     }
 
 
+def dedupe(rows):
+    """Drop CMS double-listings — the same place under two Algolia ids (e.g. Il
+    Pastaio di Eataly, ids 61161/61162: identical name, address, schedule, menus).
+    Identity is (name, address); genuine same-name chains at different addresses are
+    kept. Keep the record with the most menu depth, then the lowest id, so the choice
+    is deterministic across re-scrapes."""
+    best = {}
+    for r in rows:
+        key = (r["name"].strip().lower(), (r.get("address") or "").strip().lower())
+        depth = sum(c["of"] for m in r.get("menus", []) for c in m["courses"])
+        prev = best.get(key)
+        if prev is None or (depth, -r["id"]) > (prev["_depth"], -prev["id"]):
+            r["_depth"] = depth
+            best[key] = r
+    for r in best.values():
+        r.pop("_depth", None)
+    return list(best.values())
+
+
 def main():
     src = json.loads(SRC.read_text(encoding="utf-8"))
-    rows = [transform(r) for r in src["restaurants"]]
+    rows = dedupe([transform(r) for r in src["restaurants"]])
     rows.sort(key=lambda r: r["name"])
 
     facets = {
