@@ -107,6 +107,17 @@ check('course ladder rows visible', fracs.length > 0, true)
 console.log('      ladder:', fracs.map(x=>x.replace(/\s+/g,'')).join(' '))
 await page.screenshot({ path: 'verify-course-ladder.png' })
 
+// Meal detail popup (the notes gap fix): opening a meal reveals per-dish
+// descriptions, which the course ladder itself never shows. The sheet portals to
+// <body>, so it is matched globally, not inside .row.
+await page.locator('.row').first().locator('.fullmenu').first().click()
+await page.waitForTimeout(150)
+check('menu sheet opens with dish descriptions', await page.locator('.sheet .dnote').count() > 0, true)
+await page.screenshot({ path: 'verify-menu-sheet.png' })
+await page.keyboard.press('Escape')
+await page.waitForTimeout(120)
+check('menu sheet closes on Escape', await page.locator('.sheet').count(), 0)
+
 // Shortlist: pinning a row saves it; the shortlist view shows the saved rows.
 await page.locator('.row').first().locator('.pin').click()
 await page.waitForTimeout(80)

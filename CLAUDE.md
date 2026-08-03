@@ -133,6 +133,12 @@ If you disagree with a lint rule, **edit the rule and say why**. Do not work aro
 - ~31% of dish names arrive ALL CAPS from the CMS and are title-cased in `prepare_data.py` with
   Italian/Spanish particle handling. Restaurant names are deliberately untouched — AVIV and KOKO
   are brand capitals, not shouting.
+- **Course `items` are `{name, note}` objects, not bare strings.** `prepare_data.py`'s
+  `flatten_menus()` carries the per-dish description `note` (present on ~90% of dishes) alongside the
+  `name`. `CourseLadder` shows names; the `MenuSheet` popup shows names + descriptions. Consumers must
+  read `item.name` (Row teaser/signature, CourseLadder). `note` is deliberately kept OUT of the search
+  `dish_text` (names only) — indexing descriptions would let a free-text query match a word never in
+  any dish *name* and break the facet+text "contradiction" tests in `verify.mjs`.
 - Svelte trims leading whitespace inside `{#if}` blocks. Build display strings in the script
   block rather than interpolating around markup, or you get "NEIGHBORHOODS· DATA FROM".
 - Review content is **deep-linked, never fetched**. Yelp, Google Places and Tripadvisor all

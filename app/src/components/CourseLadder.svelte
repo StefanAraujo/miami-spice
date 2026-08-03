@@ -1,14 +1,18 @@
 <script>
   import { MEAL_LABEL } from '../lib/search.js'
+  import MenuSheet from './MenuSheet.svelte'
 
   /**
    * The signature element. Three fixed rows per menu with the choose-count as a
    * visible fraction, because how much choice you actually get is the thing that
-   * varies between restaurants and the official site buries it.
-   *
-   * This is where the visual boldness is spent; everything around it stays quiet.
+   * varies between restaurants and the official site buries it. Each meal opens a
+   * full-menu popup (MenuSheet) with every dish AND its description.
    */
-  let { menus = [] } = $props()
+  let { menus = [], restaurant = '' } = $props()
+
+  // Dishes are {name, note}; the ladder shows names, the sheet shows descriptions.
+  const names = (items) => items.map((i) => i.name)
+  let sheetMenu = $state(null)
 </script>
 
 {#each menus as menu, i}
@@ -26,14 +30,23 @@
           {c.choose}<span class="of">of</span>{c.of}
         </span>
         <span class="items">
-          {#each c.items as item, j}{item}{#if j < c.items.length - 1}<span class="sep" aria-hidden="true">·</span>{/if}{/each}
+          {#each names(c.items) as item, j}{item}{#if j < c.items.length - 1}<span class="sep" aria-hidden="true">·</span>{/if}{/each}
         </span>
       </div>
     {/each}
+
+    <button type="button" class="fullmenu" onclick={() => (sheetMenu = menu)}>
+      See the full {MEAL_LABEL[menu.meal] ?? menu.meal} menu, with descriptions
+      <span class="arw" aria-hidden="true">→</span>
+    </button>
   </section>
 {:else}
   <p class="none">No menu published yet — check the restaurant's page.</p>
 {/each}
+
+{#if sheetMenu}
+  <MenuSheet menu={sheetMenu} {restaurant} onClose={() => (sheetMenu = null)} />
+{/if}
 
 <style>
   .menu { margin-top: var(--s5); }
@@ -66,9 +79,26 @@
   .frac .of { color: var(--soft); font-size: var(--t-meta); margin: 0 var(--s1); }
 
   .items { font-size: var(--t-body); color: var(--soft); line-height: 1.6; }
-  .sep { color: var(--hair); margin: 0 var(--s2); }
+  /* The separator must be legible between dish names, not a near-invisible hairline
+     colour that made the list read as one run-on string (critique P2). */
+  .sep { color: var(--rule); margin: 0 var(--s2); }
 
   .none { font-size: var(--t-body); color: var(--soft); margin: 0; }
+
+  /* The affordance into the full-menu popup — where the dish descriptions live. */
+  .fullmenu {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    min-height: var(--tap);
+    margin-top: var(--s2);
+    padding: 0 var(--s4) 0 0;
+    color: var(--marine);
+    font-size: var(--t-body);
+    font-weight: 590;
+  }
+  .fullmenu .arw { transition: none; }
+  .fullmenu:hover { color: var(--ink); }
 
   @media (max-width: 560px) {
     .course { grid-template-columns: 1fr; gap: 2px; padding: var(--s2) 0; }

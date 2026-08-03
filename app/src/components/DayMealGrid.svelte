@@ -48,6 +48,9 @@
   </div>
 
   <p class="summary mono" class:active={days.length || meals.length}>{summary}</p>
+  {#if days.length && meals.length}
+    <p class="rulehint">Counts spots serving {meals.length > 1 ? 'each meal you pick' : 'that meal'} on at least one day you pick.</p>
+  {/if}
 </div>
 
 <style>
@@ -94,4 +97,5 @@
 
   .summary { margin: var(--s2) 0 0; font-size: var(--t-meta); color: var(--soft); }
   .summary.active { color: var(--marine); }
+  .rulehint { margin: var(--s1) 0 0; font-size: var(--t-meta); color: var(--soft); line-height: 1.4; }
 </style>

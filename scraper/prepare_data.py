@@ -190,19 +190,40 @@ def clean_items(names):
     return [normalize_case(n) for n in names if n and not INSTRUCTION.match(n)]
 
 
+def clean_note(s):
+    """A dish description note: trim and collapse whitespace, drop empties.
+
+    Kept out of the search `dishes` list on purpose — indexing descriptions would
+    let a free-text query match a word that never appears in any dish *name*
+    (e.g. an Italian spot whose note mentions "sashimi"), which the facet+text
+    tests treat as a contradiction. Notes are display-only."""
+    return " ".join((s or "").split())
+
+
 def flatten_menus(menus):
-    """Compact menu + a flat dish list for the search index."""
+    """Compact menu + a flat dish list for the search index.
+
+    Each course item is an object {name, note?} so the UI can show *what a dish is*
+    (a per-dish description present on ~90% of source items), not just its name.
+    The detail popup (MenuSheet) reads `note`; the row teaser reads `name`."""
     out, dishes = [], []
     for m in menus or []:
         courses = []
         for c in m.get("courses") or []:
-            names = clean_items([i["dish"] for i in c.get("items", []) if i.get("dish")])
-            dishes += names
+            items = []
+            for i in c.get("items", []):
+                dish = i.get("dish")
+                if not dish or INSTRUCTION.match(dish):
+                    continue
+                name = normalize_case(dish)
+                note = clean_note(i.get("note"))
+                items.append({"name": name, "note": note} if note else {"name": name})
+                dishes.append(name)
             courses.append({
                 "name": c.get("course", ""),
                 "choose": c.get("choose", 1),
-                "of": len(names),
-                "items": names,
+                "of": len(items),
+                "items": items,
             })
         if courses:
             out.append({"meal": m["meal"].lower(), "price": m.get("price"), "courses": courses})

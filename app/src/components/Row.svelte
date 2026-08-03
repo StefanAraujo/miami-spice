@@ -1,6 +1,7 @@
 <script>
   import CourseLadder from './CourseLadder.svelte'
   import ScheduleGrid from './ScheduleGrid.svelte'
+  import ViceMark from './ViceMark.svelte'
   import { priceRange, offerLine, flagLabel, MEAL_ORDER } from '../lib/search.js'
 
   /**
@@ -36,6 +37,10 @@
   )
   const offers = $derived([...r.offers].sort(byMeal))
   const menus = $derived([...r.menus].sort(byMeal))
+  // The closed row shows only the primary offer (dinner if served, else the first);
+  // the full day×meal matrix lives in the expanded grid, so the side column stays
+  // scannable and the price keeps its anchor (critique P3).
+  const primaryOffer = $derived(r.offers.find((o) => o.meal === 'dinner') || offers[0])
 
   // The course "lens" from the strip re-points the teaser at that course.
   const COURSE_PAT = { starters: /appet|starter/i, mains: /entree|main/i, desserts: /dessert/i }
@@ -47,7 +52,7 @@
       const c = pat
         ? m.courses.find((x) => pat.test(x.name) && x.of)
         : (m.courses.find((x) => /entree/i.test(x.name) && x.of) ?? m.courses.find((x) => x.of))
-      if (c?.items?.length) return c.items.slice(0, 2).join('  ·  ')
+      if (c?.items?.length) return c.items.slice(0, 2).map((i) => i.name).join('  ·  ')
     }
     return null
   })
@@ -56,7 +61,7 @@
   const signature = $derived.by(() => {
     for (const m of menus) {
       const c = m.courses.find((x) => /entree|main/i.test(x.name) && x.of) ?? m.courses.find((x) => x.of)
-      if (c?.items?.length) return c.items[0]
+      if (c?.items?.length) return c.items[0].name
     }
     return null
   })
@@ -87,7 +92,9 @@
       {:else}
         <span class="noprice mono">Menu only</span>
       {/if}
-      <span class="when mono">{offers.map(offerLine).join('  ·  ')}</span>
+      {#if primaryOffer}
+        <span class="when mono">{offerLine(primaryOffer)}{#if offers.length > 1}<span class="more"> · +{offers.length - 1} more</span>{/if}</span>
+      {/if}
     </span>
     <span class="chev" aria-hidden="true"></span>
     </button>
@@ -97,6 +104,8 @@
     <div class="panel" id={panelId}>
       {#if r.image && !imgError}
         <img class="hero" src={r.image} alt="" loading="lazy" onerror={() => (imgError = true)} />
+      {:else}
+        <div class="hero hero-fallback" aria-hidden="true"><ViceMark size={64} /></div>
       {/if}
       {#if signature}
         <p class="signature"><span class="siglbl micro">The dish to order</span>{signature}</p>
@@ -107,7 +116,7 @@
         <ScheduleGrid {offers} />
       {/if}
 
-      <CourseLadder {menus} />
+      <CourseLadder {menus} restaurant={r.name} />
 
       {#if r.flags.length}
         <p class="flags micro">{r.flags.map(flagLabel).join('  ·  ')}</p>
@@ -206,6 +215,7 @@
   .noprice { display: inline-block; font-size: var(--t-body); color: var(--soft); }
 
   .when { display: block; font-size: var(--t-meta); color: var(--soft); margin-top: 3px; }
+  .when .more { opacity: 0.7; }
 
   .chev {
     width: 9px; height: 9px;
@@ -235,9 +245,18 @@
     object-fit: cover;
     border-radius: var(--r-md);
     /* A neutral surface behind the image so a slow or failed load reads as an
-       intentional panel, not a void; onerror still removes it entirely. */
+       intentional panel, not a void; onerror swaps in the branded tile below. */
     background: var(--sunk);
     margin-bottom: var(--s5);
+  }
+  /* No image on record: a branded Miami-sun tile, so the panel always has a visual
+     anchor and a Vice moment where the eye lands (critique P3 · image fallback). */
+  .hero-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--marine-wash);
+    color: var(--marine);
   }
 
   /* Appetite carried by language: name the one dish worth coming for. */

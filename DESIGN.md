@@ -284,6 +284,24 @@ corners to zero.
   served/not-served so nothing depends on colour alone. Reuses the disable-not-remove vocabulary;
   the price column collapses on mobile. Never a control — a data display.
 
+### Menu detail popup — `MenuSheet` (signature component)
+- The full-menu sheet answers "what exactly is on the brunch menu." Opened per meal from the
+  `CourseLadder` ("See the full [meal] menu, with descriptions"), it shows every course, the
+  choose-count, and each dish with its **description note** (carried through `prepare_data.py`;
+  the course ladder shows names only — progressive disclosure: teaser → ladder → sheet). A real
+  modal: portalled to `<body>`, focus moved in and restored, Esc + backdrop close, background
+  scroll locked, `role="dialog"` + `aria-modal`. Bottom-sheet on mobile, centered ≥640px, rising
+  in on open. Its header is a deliberate Vice moment — the meal title over a `--marine-wash` band
+  with the flamingo price sitting inside it (the two hues together, on purpose).
+
+### The Miami sun — `ViceMark`
+- The "push Vice harder" mark: a flat, banded sunset over a horizon line, authored SVG, **solid
+  `currentColor` fills only — no gradient, no glow** (the banned synthwave tells). Coloured by the
+  cyan **tint**, never the price flamingo, so the price-only rule stands. Used as the masthead
+  brand mark beside the wordmark, the image-fallback tile (a branded anchor when a restaurant has
+  no photo, replacing the void), and the results empty-state mark. This is how "Vice" is made
+  audible without betraying the anti-slop floor: colour and flat geometry, not neon.
+
 ## Do's and Don'ts
 
 ### Do:

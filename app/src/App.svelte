@@ -4,6 +4,7 @@
   import Map from './components/Map.svelte'
   import DayMealGrid from './components/DayMealGrid.svelte'
   import FacetGroup from './components/FacetGroup.svelte'
+  import ViceMark from './components/ViceMark.svelte'
   import {
     facets, generatedAt, restaurants,
     emptyFilters, isEmpty, runQuery, relaxations, facetCounts,
@@ -247,7 +248,10 @@
      right, and a quiet subtitle carries the facts. Sentence case, soft, no ornament. -->
 <header class="masthead">
   <div class="wrap topbar">
-    <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
+    <div class="brand">
+      <span class="brandmark" aria-hidden="true"><ViceMark size={42} /></span>
+      <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
+    </div>
     <div class="masthead-tools">
       <button type="button" class="shortlist-btn" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
@@ -389,6 +393,7 @@
       <Map {results} onOpen={openFromMap} />
     {:else if results.length === 0}
       <div class="empty">
+        <span class="empty-mark" aria-hidden="true"><ViceMark size={52} /></span>
         <p class="lead">Nothing matches all of those at once.</p>
         {#if relax.length}
           <p class="fix micro">Loosen one and results come back</p>
@@ -444,6 +449,8 @@
 
   .masthead { padding: var(--s8) 0 0; }
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
+  .brand { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+  .brandmark { flex: none; color: var(--marine); }
 
   /* The large title — SF at full display strength, heavy and tight. This is the
      bolder move: the app's name commands the top of the page. */
@@ -666,6 +673,7 @@
     border-radius: var(--r-lg);
     box-shadow: var(--eyebrow);
   }
+  .empty-mark { display: block; color: var(--marine); margin-bottom: var(--s4); }
   .empty .lead { font-size: var(--t-title); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 var(--s3); }
   .empty .fix { margin: 0 0 var(--s3); }
   .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); justify-items: start; }
