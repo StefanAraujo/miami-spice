@@ -132,7 +132,9 @@
   /* Pin lives in a fixed left gutter so names still share one x-coordinate. It's
      a separate control from the row disclosure (no nested buttons). */
   .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; border-radius: var(--r-md); }
-  .row-head:hover { background: var(--marine-wash); }
+  /* Highlight to the neutral elevated surface, not a tint — an Apple list-row hover
+     that keeps the soft secondary text above the 7:1 dark-mode target. */
+  .row-head:hover { background: var(--card); }
   .pin {
     display: inline-flex;
     align-items: center;
@@ -187,13 +189,14 @@
 
   .side { text-align: right; white-space: nowrap; }
 
-  /* The one saturated object per row: a flamingo price pill. Rounded and flat —
-     colour alone carries it now, no hard slab. */
+  /* The one saturated object per row: a flamingo price pill. Rounded and flat,
+     turned up — heavier and a touch larger so the single accent carries the row. */
   .price {
     display: inline-block;
     font-size: var(--t-name);
-    font-weight: 600;
-    padding: 3px var(--s3);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding: 4px var(--s4);
     border-radius: var(--r-sm);
     background: var(--flamingo);
     color: var(--card);

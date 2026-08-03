@@ -120,15 +120,28 @@
 <style>
   .discover { padding: var(--s5) 0 var(--s7); }
 
+  /* One authored moment: the front door rises in on arrival — a strong ease-out
+     from an already-visible default, settling to its resting state. Honoured only
+     when motion is welcome; the global reduce-motion rule collapses it to instant. */
+  @media (prefers-reduced-motion: no-preference) {
+    .discover { animation: door-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    @keyframes door-rise {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+
+  /* The front-door hero — display type at full strength, the scroll's first peak. */
   h2 {
     font-family: var(--f-display);
-    font-weight: 700;
-    font-size: var(--t-section);
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    margin: 0 0 var(--s2);
+    font-weight: 800;
+    font-size: var(--t-hero);
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+    margin: 0 0 var(--s3);
+    max-width: 18ch;
   }
-  .sub { margin: 0 0 var(--s6); color: var(--soft); font-size: var(--t-name); }
+  .sub { margin: 0 0 var(--s6); color: var(--soft); font-size: var(--t-name); max-width: 60ch; }
 
   .lane { margin-bottom: var(--s6); }
   .lane > .micro { display: block; margin-bottom: var(--s3); }
@@ -162,7 +175,17 @@
     font-size: var(--t-body);
     font-weight: 590;
   }
-  .pick-btn { background: var(--marine); color: var(--card); box-shadow: var(--eyebrow); }
+  /* The decisive default, turned up: a taller, heavier primary that leads the row. */
+  .pick-btn {
+    min-height: 52px;
+    padding: 0 var(--s6);
+    font-size: var(--t-name);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    background: var(--marine);
+    color: var(--card);
+    box-shadow: var(--eyebrow);
+  }
   .pick-btn:hover { filter: brightness(1.08); }
   .browse { background: var(--sunk); color: var(--ink); }
   .browse:hover { background: var(--marine-wash); color: var(--marine); }

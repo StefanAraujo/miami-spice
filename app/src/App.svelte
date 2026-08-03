@@ -442,16 +442,17 @@
 <style>
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s6); }
 
-  .masthead { padding: var(--s7) 0 0; }
+  .masthead { padding: var(--s8) 0 0; }
   .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
 
-  /* The large title — SF at display weight, tight tracking, sentence case. */
+  /* The large title — SF at full display strength, heavy and tight. This is the
+     bolder move: the app's name commands the top of the page. */
   .wordmark {
     font-family: var(--f-display);
-    font-weight: 700;
+    font-weight: 800;
     font-size: var(--t-display);
-    letter-spacing: -0.025em;
-    line-height: 1.05;
+    letter-spacing: -0.035em;
+    line-height: 1;
     margin: 0;
   }
   .wordmark-btn { display: inline-flex; align-items: center; min-height: var(--tap); font: inherit; letter-spacing: inherit; color: inherit; }
@@ -574,7 +575,7 @@
   }
 
   .count { margin: 0; display: flex; align-items: baseline; gap: var(--s2); }
-  .count strong { font-size: var(--t-title); font-weight: 700; letter-spacing: -0.02em; }
+  .count strong { font-size: var(--t-section); font-weight: 800; letter-spacing: -0.03em; }
 
   .bar-right { display: flex; align-items: center; gap: var(--s2); }
 

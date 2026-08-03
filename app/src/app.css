@@ -21,9 +21,10 @@
   --eyebrow: 0 1px 2px rgba(0, 0, 0, 0.28);       /* resting elevation */
   --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);   /* floating cards / overlays */
 
-  /* Apple text ramp: a fuller set than the Deco four, weight-and-size driven. */
+  /* Apple text ramp: a fuller set than the Deco four, weight-and-size driven.
+     Display runs to a commanding 60px — the app's voice at full strength. */
   --t-meta: 13px; --t-body: 15px; --t-name: 17px; --t-title: 22px;
-  --t-section: 28px; --t-display: clamp(2rem, 5vw, 2.75rem);
+  --t-section: 28px; --t-hero: clamp(2.25rem, 5vw, 3rem); --t-display: clamp(2.75rem, 6.5vw, 3.75rem);
 
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
   --tap: 44px;                    /* Apple: "at least 44x44 pt" */
