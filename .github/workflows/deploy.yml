@@ -1,7 +1,11 @@
 name: Deploy to GitHub Pages
 
-# Builds the Vite app in app/ and publishes app/dist to GitHub Pages on every push
-# to master. The site is fully static (no backend), so this is all it needs.
+# Publishes TWO versions to the one Pages site on every push to master:
+#   /            = master (v1, "Apple form · Vice night")
+#   /v2/         = the v2 branch (Midnight Poster)
+# Both are static Vite builds with base './' (path-agnostic), so v2 works under the
+# /v2/ subpath with no config change. The in-app "switch design" links hop between
+# them, carrying the query string so the same content shows in either look.
 
 on:
   push:
@@ -13,7 +17,6 @@ permissions:
   pages: write
   id-token: write
 
-# One deploy at a time; a newer push supersedes an in-flight run.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -21,26 +24,38 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
     steps:
+      # v1 — master, checked out at the repo root.
       - uses: actions/checkout@v4
+
+      # v2 — the poster branch, checked out into ./v2src.
+      - uses: actions/checkout@v4
+        with:
+          ref: v2
+          path: v2src
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm
-          cache-dependency-path: app/package-lock.json
 
-      - name: Install dependencies
+      - name: Build v1 (master → site root)
         working-directory: app
-        # Playwright is a devDependency used only by verify.mjs; the browser binary
-        # is never needed for the build, so skip its download to keep CI fast.
-        env:
-          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
-        run: npm ci
+        run: |
+          npm ci
+          npm run build
 
-      - name: Build
-        working-directory: app
-        run: npm run build
+      - name: Build v2 (poster → /v2)
+        working-directory: v2src/app
+        run: |
+          npm ci
+          npm run build
+
+      - name: Assemble the combined site
+        run: |
+          mkdir -p app/dist/v2
+          cp -r v2src/app/dist/. app/dist/v2/
 
       - uses: actions/configure-pages@v5
 

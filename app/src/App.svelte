@@ -253,6 +253,8 @@
       <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
     </div>
     <div class="masthead-tools">
+      <a class="design-switch" href="v2/" title="Try the Midnight Poster design, keeping your search"
+        onclick={(e) => { e.preventDefault(); location.assign('v2/' + location.search) }}>Midnight poster ↗</a>
       <button type="button" class="shortlist-btn" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
         Shortlist{#if shortlist.length}<span class="badge mono">{shortlist.length}</span>{/if}
@@ -500,7 +502,22 @@
   .pickwhy { margin: var(--s3) 0 0; color: var(--marine); }
 
   /* The masthead tools row — the shortlist action, right-aligned in the nav. */
-  .masthead-tools { display: flex; align-items: center; gap: var(--s3); }
+  .masthead-tools { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+  /* Jump to the v2 (Midnight Poster) design at the /v2/ URL, carrying the live
+     search so the same content shows in the other look. */
+  .design-switch {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    border-radius: var(--r-full);
+    background: var(--marine-wash);
+    color: var(--marine);
+    font-size: var(--t-body);
+    font-weight: 590;
+    text-decoration: none;
+  }
+  .design-switch:hover { background: var(--marine); color: var(--card); }
   .shortlist-btn {
     display: inline-flex;
     align-items: center;
