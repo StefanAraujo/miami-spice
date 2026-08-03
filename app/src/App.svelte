@@ -33,6 +33,13 @@
   let sort = $state(_url.sort)
   let shown = $state(40)
   let filtersOpen = $state(false)
+  let railEl
+  // On mobile the filter drawer opens ABOVE the "Filters" button, so tapping it
+  // looks like nothing happened. Scroll the search + facets into view on open.
+  function toggleFilters() {
+    filtersOpen = !filtersOpen
+    if (filtersOpen) requestAnimationFrame(() => railEl?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
   // First-run orientation — light and dismissible (UX review: Help & Docs gap).
   // Shown until "Got it," then remembered; the honest edge, stated once for a
   // friend who opens a shared link cold.
@@ -281,7 +288,7 @@
 {/if}
 
 <div class="wrap layout">
-  <aside class="rail" class:open={filtersOpen}>
+  <aside class="rail" class:open={filtersOpen} bind:this={railEl}>
     <div class="rail-inner">
       <label class="search">
         <span class="sr-only">Search restaurants, cuisines or dishes</span>
@@ -373,7 +380,7 @@
             {#each Object.entries(SORTS) as [k, v]}<option value={k}>{v.label}</option>{/each}
           </select>
         </label>
-        <button type="button" class="toggle micro" onclick={() => (filtersOpen = !filtersOpen)}>
+        <button type="button" class="toggle micro" onclick={toggleFilters}>
           {filtersOpen ? 'Close' : chips.length ? `Filters · ${chips.length}` : 'Filters'}
         </button>
       </div>
