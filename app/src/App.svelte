@@ -256,6 +256,8 @@
       </button>
     </h1>
     <div class="masthead-tools">
+      <a class="design-switch" href="../" title="Switch to the classic design, keeping your search"
+        onclick={(e) => { e.preventDefault(); location.assign('../' + location.search) }}>Classic ↗</a>
       <button type="button" class="shortlist-btn" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
         Shortlist{#if shortlist.length}<span class="badge mono">{shortlist.length}</span>{/if}
@@ -452,7 +454,7 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s6); }
 
   .masthead { padding: var(--s8) 0 0; }
-  .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s4); }
+  .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s4); flex-wrap: wrap; row-gap: var(--s3); }
 
   /* The sliced wordmark — geometric caps, MIAMI in ink over SPICE in cyan, with a
      hard flat pink offset behind SPICE (the logo's misregistration, one clean move). */
@@ -525,7 +527,24 @@
   .pickwhy { margin: var(--s3) 0 0; color: var(--marine); }
 
   /* The masthead tools row — the shortlist action, right-aligned in the nav. */
-  .masthead-tools { display: flex; align-items: center; gap: var(--s3); }
+  .masthead-tools { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+  /* Jump to the v1 (classic) design at the parent URL, carrying the live search so
+     the same content shows in the other look. */
+  .design-switch {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--tap);
+    padding: 0 var(--s4);
+    border: 2px solid var(--flamingo);
+    color: var(--flamingo);
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
+    text-decoration: none;
+  }
+  .design-switch:hover { background: var(--flamingo); color: var(--on-color); }
   .shortlist-btn {
     display: inline-flex;
     align-items: center;
