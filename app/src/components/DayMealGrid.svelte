@@ -63,16 +63,16 @@
   .day {
     min-height: var(--tap);
     min-width: var(--tap);
+    font-family: var(--f-display);
     font-size: var(--t-meta);
-    font-weight: 590;
+    font-weight: 700;
     color: var(--ink);
-    background: var(--sunk);
-    border: 1px solid transparent;
-    border-radius: var(--r-md);
+    background: transparent;
+    border: 2px solid var(--rule);
   }
-  .day:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
-  .day.on { background: var(--marine); color: var(--card); }
-  .day:disabled { opacity: 0.4; cursor: default; }
+  .day:hover:not(:disabled) { border-color: var(--marine); color: var(--marine); }
+  .day.on { background: var(--marine); border-color: var(--marine); color: var(--on-color); }
+  .day:disabled { opacity: 0.35; cursor: default; }
 
   .meals { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s2); }
 
@@ -81,21 +81,21 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s4);
+    font-family: var(--f-display);
     font-size: var(--t-body);
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ink);
-    background: var(--sunk);
-    border: 1px solid transparent;
-    border-radius: var(--r-full);
+    background: transparent;
+    border: 2px solid var(--rule);
   }
-  .meal:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
-  .meal.on { background: var(--marine); color: var(--card); }
-  .meal:disabled { opacity: 0.4; cursor: default; }
+  .meal:hover:not(:disabled) { border-color: var(--marine); color: var(--marine); }
+  .meal.on { background: var(--marine); border-color: var(--marine); color: var(--on-color); }
+  .meal:disabled { opacity: 0.35; cursor: default; }
 
-  .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
-  .meal.on .n { color: var(--card); opacity: 0.75; }
+  .n { font-family: var(--f-body); font-size: var(--t-meta); font-weight: 600; color: var(--soft); margin-left: var(--s2); }
+  .meal.on .n { color: var(--on-color); }
 
-  .summary { margin: var(--s2) 0 0; font-size: var(--t-meta); color: var(--soft); }
+  .summary { margin: var(--s3) 0 0; font-size: var(--t-meta); color: var(--soft); }
   .summary.active { color: var(--marine); }
   .rulehint { margin: var(--s1) 0 0; font-size: var(--t-meta); color: var(--soft); line-height: 1.4; }
 </style>

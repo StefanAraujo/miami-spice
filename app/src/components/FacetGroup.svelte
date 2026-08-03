@@ -60,22 +60,22 @@
     justify-content: center;
     min-height: var(--tap);          /* Apple: at least 44x44 pt */
     padding: 0 var(--s4);
+    font-family: var(--f-display);
     font-size: var(--t-body);
-    font-weight: 500;
+    font-weight: 600;
     color: var(--ink);
-    background: var(--sunk);
-    border: 1px solid transparent;
-    border-radius: var(--r-full);
+    background: transparent;
+    border: 2px solid var(--rule);
   }
-  .opts button:hover:not(:disabled) { background: var(--marine-wash); color: var(--marine); }
-  .opts button.on { background: var(--marine); color: var(--card); }
+  .opts button:hover:not(:disabled) { border-color: var(--marine); color: var(--marine); }
+  .opts button.on { background: var(--marine); border-color: var(--marine); color: var(--on-color); }
 
   /* Baymard: zero options are disabled and greyed, never removed — removing them
      makes the list jump and destroys the user's spatial memory of it. */
-  .opts button:disabled { opacity: 0.4; cursor: default; }
+  .opts button:disabled { opacity: 0.35; cursor: default; }
 
-  .n { font-size: var(--t-meta); color: var(--soft); margin-left: var(--s2); }
-  .opts button.on .n { color: var(--card); opacity: 0.8; }
+  .n { font-family: var(--f-body); font-size: var(--t-meta); font-weight: 600; color: var(--soft); margin-left: var(--s2); }
+  .opts button.on .n { color: var(--on-color); }
 
   .more {
     justify-self: start;

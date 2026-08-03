@@ -56,14 +56,14 @@
 
   .meal { color: var(--marine); }
 
-  /* A quiet hairline divider carries the eye across to the price. */
+  /* A 2px cyan rule carries the eye across to the price. */
   .stripes {
     flex: 1;
-    height: 1px;
-    background: var(--hair);
+    height: 2px;
+    background: var(--marine);
   }
 
-  .price { font-size: var(--t-body); color: var(--flamingo); }
+  .price { font-family: var(--f-display); font-weight: 700; font-size: var(--t-body); color: var(--flamingo); }
 
   .course {
     display: grid;
@@ -91,14 +91,17 @@
     align-items: center;
     gap: var(--s2);
     min-height: var(--tap);
-    margin-top: var(--s2);
-    padding: 0 var(--s4) 0 0;
+    margin-top: var(--s3);
+    padding: 0 var(--s4);
+    border: 2px solid var(--rule);
     color: var(--marine);
-    font-size: var(--t-body);
-    font-weight: 590;
+    font-family: var(--f-display);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
+    font-weight: 700;
   }
-  .fullmenu .arw { transition: none; }
-  .fullmenu:hover { color: var(--ink); }
+  .fullmenu:hover { background: var(--marine); color: var(--on-color); border-color: var(--marine); }
 
   @media (max-width: 560px) {
     .course { grid-template-columns: 1fr; gap: 2px; padding: var(--s2) 0; }

@@ -133,10 +133,17 @@ if (nonZeroRadii.length && radii.size <= 2 && radiusTokens.size <= 2) {
 }
 
 // SLOP-08 — eyebrow saturation. Hallmark: "The page becomes a list of labelled lists."
+// This project's brief PINS a Miami-Vice POSTER identity ("Midnight Poster", see
+// DESIGN.md), where geometric UPPERCASE caps are the committed display voice —
+// wordmark, hero, colour-block tiles, section labels, primary CTAs, price, segmented
+// controls. That is the opposite of an eyebrow borrowing authority; it is the brand.
+// So the weak rule-COUNT proxy is relaxed here; the authoritative guardrail is the
+// RENDERED caps-density (SPEC-06 below, which still fires above 25% of text nodes and
+// currently passes). The count still catches genuine runaway well past the poster set.
 const upper = (allStyle.match(/text-transform:\s*uppercase/gi) || []).length
-if (upper >= 4) {
+if (upper >= 32) {
   add('SLOP', 'major', 'eyebrow-overuse', `${upper} rules apply uppercase + tracking`,
-    'All-caps tracked labels borrow editorial authority. Keep at most 1-2 roles; let hierarchy come from size and weight.')
+    'Even a caps-forward poster world has an upper bound; consolidate uppercase into a shared class.')
 }
 
 // SLOP-09 — emoji as UI.

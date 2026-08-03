@@ -50,7 +50,7 @@
 </script>
 
 <section class="discover">
-  <h2>What are you in the mood for?</h2>
+  <h2>What are you in the <span class="c">mood</span> for?</h2>
   <p class="sub">Can't decide? Let us pick — or start from a craving, a place, a time, or the occasion.</p>
 
   <div class="decide decide-lead">
@@ -140,39 +140,51 @@
     }
   }
 
-  /* The front-door hero — display type at full strength, the scroll's first peak. */
+  /* The front-door hero — huge geometric caps, the poster's first peak. */
   h2 {
     font-family: var(--f-display);
-    font-weight: 800;
+    font-weight: 700;
+    text-transform: uppercase;
     font-size: var(--t-hero);
-    letter-spacing: -0.035em;
-    line-height: 1.02;
-    margin: 0 0 var(--s3);
-    max-width: 18ch;
+    letter-spacing: -0.02em;
+    line-height: 0.92;
+    margin: 0 0 var(--s4);
+    max-width: 16ch;
   }
-  .sub { margin: 0 0 var(--s6); color: var(--soft); font-size: var(--t-name); max-width: 60ch; }
+  h2 :global(.c) { color: var(--marine); }
+  .sub { margin: 0 0 var(--s6); color: var(--soft); font-size: var(--t-name); max-width: 58ch; line-height: 1.4; }
 
   .lane { margin-bottom: var(--s6); }
-  .lane > .micro { display: block; margin-bottom: var(--s3); }
+  .lane > .micro { display: block; margin-bottom: var(--s3); color: var(--soft); }
 
   .tiles { display: flex; flex-wrap: wrap; gap: var(--s2); }
 
+  /* Color-blocked tiles — the poster wall. Outline by default; every 4th fills cyan,
+     every 4th+2 fills pink, so the lanes read as a flat tri-colour composition. */
   .tile {
     display: inline-flex;
     align-items: baseline;
     gap: var(--s2);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-full);
+    background: transparent;
+    border: 2px solid var(--rule);
     color: var(--ink);
-    font-size: var(--t-body);
-    font-weight: 500;
+    font-family: var(--f-display);
+    font-size: var(--t-meta);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
-  .tile:hover { background: var(--marine-wash); border-color: transparent; color: var(--marine); }
-  .tile .n { font-size: var(--t-meta); color: var(--soft); }
-  .tile .tsub { font-size: var(--t-meta); color: var(--soft); }
+  .tile:hover { border-color: var(--marine); color: var(--marine); }
+  .tile .n { font-family: var(--f-body); font-size: var(--t-meta); font-weight: 600; color: var(--soft); }
+  .tile .tsub { font-family: var(--f-body); font-size: var(--t-meta); font-weight: 400; text-transform: none; letter-spacing: normal; color: var(--soft); }
+  .tiles .tile:nth-child(4n+1) { background: var(--marine); border-color: var(--marine); color: var(--on-color); }
+  .tiles .tile:nth-child(4n+1):hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .tiles .tile:nth-child(4n+1) .n { color: var(--on-color); }
+  .tiles .tile:nth-child(4n+3) { background: var(--flamingo); border-color: var(--flamingo); color: var(--on-color); }
+  .tiles .tile:nth-child(4n+3):hover { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .tiles .tile:nth-child(4n+3) .n { color: var(--on-color); }
 
   .decide { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: center; margin-top: var(--s2); }
   .pick-btn, .browse {
@@ -180,26 +192,26 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s5);
-    border-radius: var(--r-full);
-    font-size: var(--t-body);
-    font-weight: 590;
-  }
-  /* The decisive default, turned up: a taller, heavier primary that leads the row. */
-  .pick-btn {
-    min-height: 52px;
-    padding: 0 var(--s6);
-    font-size: var(--t-name);
+    font-family: var(--f-display);
     font-weight: 700;
-    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
+  }
+  /* The decisive default — a big cyan block with a hard ink offset, leading the row. */
+  .pick-btn {
+    min-height: 54px;
+    padding: 0 var(--s6);
+    font-size: var(--t-body);
     background: var(--marine);
-    color: var(--card);
+    color: var(--on-color);
     box-shadow: var(--eyebrow);
   }
-  .pick-btn:hover { filter: brightness(1.08); }
-  .browse { background: var(--sunk); color: var(--ink); }
-  .browse:hover { background: var(--marine-wash); color: var(--marine); }
+  .pick-btn:hover { background: var(--ink); color: var(--paper); }
+  .browse { border: 2px solid var(--rule); color: var(--ink); }
+  .browse:hover { border-color: var(--marine); color: var(--marine); }
   .decide-lead { margin: 0 0 var(--s6); }
-  .decide .tsub { margin-left: var(--s2); opacity: 0.8; }
+  .decide .tsub { margin-left: var(--s2); color: var(--flamingo); }
   .more-tiles { min-height: var(--tap); padding: 0 var(--s3); color: var(--marine); }
   .more-ways {
     display: inline-flex;
@@ -207,11 +219,13 @@
     gap: var(--s2);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    border-radius: var(--r-full);
-    background: var(--sunk);
+    border: 2px solid var(--rule);
     color: var(--marine);
-    font-size: var(--t-body);
-    font-weight: 590;
+    font-family: var(--f-display);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
+    font-weight: 700;
   }
   .more-ways:hover { background: var(--marine-wash); }
 </style>

@@ -23,12 +23,11 @@
   $effect(() => {
     if (!el) return
     if (!map) {
-      const dark = document.documentElement.dataset.theme === 'pm'
+      // The app is a single dark theme ("Midnight Poster"), so the basemap is always
+      // CARTO Dark Matter — it must match the near-dark ground, never light tiles.
       map = L.map(el, { scrollWheelZoom: true, attributionControl: true }).setView([25.79, -80.2], 11)
       L.tileLayer(
-        dark
-          ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-          : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
         { subdomains: 'abcd', maxZoom: 19, attribution: '© OpenStreetMap contributors © CARTO' },
       ).addTo(map)
       layer = L.layerGroup().addTo(map)
@@ -70,8 +69,7 @@
     height: 70vh;
     min-height: 460px;
     margin-top: var(--s5);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-lg);
+    border: 2px solid var(--rule);
     overflow: hidden;
     box-shadow: var(--eyebrow);
   }
@@ -83,12 +81,13 @@
     min-height: 40px;
     margin-top: var(--s2);
     padding: 0 var(--s4);
-    border-radius: var(--r-full);
     background: var(--marine);
-    color: var(--card);
+    color: var(--on-color);
     border: none;
-    font-family: var(--f-body);
-    font-weight: 590;
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
     font-size: var(--t-meta);
     cursor: pointer;
   }

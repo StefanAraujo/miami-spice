@@ -140,10 +140,9 @@
 
   /* Pin lives in a fixed left gutter so names still share one x-coordinate. It's
      a separate control from the row disclosure (no nested buttons). */
-  .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; border-radius: var(--r-md); }
-  /* Highlight to the neutral elevated surface, not a tint — an Apple list-row hover
-     that keeps the soft secondary text above the 7:1 dark-mode target. */
-  .row-head:hover { background: var(--card); }
+  .row-head { display: grid; grid-template-columns: var(--tap) 1fr; align-items: stretch; }
+  /* Hover pulls the row onto the elevated surface and lights a cyan left edge. */
+  .row-head:hover { background: var(--card); box-shadow: inset 3px 0 0 var(--marine); }
   .pin {
     display: inline-flex;
     align-items: center;
@@ -173,17 +172,18 @@
 
   .name {
     display: block;
+    font-family: var(--f-display);
     font-size: var(--t-name);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.25;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
   }
 
   .meta {
     display: block;
     font-size: var(--t-meta);
     color: var(--soft);
-    margin-top: 3px;
+    margin-top: 5px;
   }
 
   .teaser {
@@ -198,17 +198,17 @@
 
   .side { text-align: right; white-space: nowrap; }
 
-  /* The one saturated object per row: a flamingo price pill. Rounded and flat,
-     turned up — heavier and a touch larger so the single accent carries the row. */
+  /* The one saturated object per row: a hot-pink price block. Hard-edged, geometric
+     caps figures — the single accent that carries the row. */
   .price {
     display: inline-block;
+    font-family: var(--f-display);
     font-size: var(--t-name);
     font-weight: 700;
-    letter-spacing: -0.01em;
-    padding: 4px var(--s4);
-    border-radius: var(--r-sm);
+    letter-spacing: 0;
+    padding: 5px var(--s3);
     background: var(--flamingo);
-    color: var(--card);
+    color: var(--on-color);
   }
 
   /* No prix-fixe price on record: a quiet note, never the flamingo pill. */
@@ -219,33 +219,29 @@
 
   .chev {
     width: 9px; height: 9px;
-    border-right: 2px solid var(--rule);
-    border-bottom: 2px solid var(--rule);
+    border-right: 2px solid var(--marine);
+    border-bottom: 2px solid var(--marine);
     transform: rotate(45deg);
     justify-self: end;
   }
   .row.open .chev { transform: rotate(225deg); }
 
-  /* The expanded detail — a soft, rounded, elevated card. */
+  /* The expanded detail — an elevated card with a hard ink offset (neo-brutalist). */
   .panel {
-    margin: 0 0 var(--s4);
+    margin: 0 0 var(--s5);
     padding: var(--s5);
     background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-lg);
+    border: 2px solid var(--rule);
     box-shadow: var(--eyebrow);
   }
 
-  /* One earned image on the detail state (UX review gap 1) — bounded, rounded,
-     never a grid. Degrades to nothing if the CDN is unreachable. */
+  /* One earned image on the detail state — bounded, hard-framed, never a grid.
+     Degrades to the branded tile below if the CDN is unreachable. */
   .hero {
     display: block;
     width: 100%;
     height: 200px;
     object-fit: cover;
-    border-radius: var(--r-md);
-    /* A neutral surface behind the image so a slow or failed load reads as an
-       intentional panel, not a void; onerror swaps in the branded tile below. */
     background: var(--sunk);
     margin-bottom: var(--s5);
   }
@@ -260,8 +256,8 @@
   }
 
   /* Appetite carried by language: name the one dish worth coming for. */
-  .signature { margin: 0 0 var(--s5); font-size: var(--t-name); line-height: 1.35; color: var(--ink); }
-  .signature .siglbl { display: block; color: var(--marine); margin-bottom: var(--s1); }
+  .signature { margin: 0 0 var(--s5); font-family: var(--f-display); font-size: var(--t-title); line-height: 1.1; color: var(--ink); }
+  .signature .siglbl { display: block; font-size: var(--t-meta); color: var(--marine); margin-bottom: var(--s2); }
 
   .sched-h { margin: 0 0 var(--s3); }
 
@@ -274,30 +270,31 @@
     align-items: center;
     margin-top: var(--s5);
     padding-top: var(--s4);
-    border-top: 1px solid var(--hair);
+    border-top: 2px solid var(--rule);
   }
   .actions a {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s4);
-    border-radius: var(--r-full);
-    font-family: var(--f-body);
-    font-size: var(--t-body);
-    font-weight: 500;
+    border: 2px solid var(--rule);
+    font-family: var(--f-display);
+    font-size: var(--t-meta);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
     text-decoration: none;
-    color: var(--marine);
+    color: var(--ink);
   }
-  .actions a:hover { background: var(--marine-wash); }
+  .actions a:hover { border-color: var(--marine); color: var(--marine); }
   .actions .cta {
-    color: var(--card);
+    color: var(--on-color);
     background: var(--marine);
+    border-color: var(--marine);
     padding: 0 var(--s5);
-    font-weight: 590;
     box-shadow: var(--eyebrow);
   }
-  /* The CTA is filled tint; hover brightens it rather than shifting layout. */
-  .actions .cta:hover { color: var(--card); background: var(--marine); filter: brightness(1.08); }
+  .actions .cta:hover { color: var(--paper); background: var(--ink); border-color: var(--ink); }
 
   @media (max-width: 720px) {
     .main { grid-template-columns: minmax(0, 1fr) 20px; gap: var(--s3); align-items: start; }

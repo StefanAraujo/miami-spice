@@ -1,235 +1,280 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-02T00:00:00Z",
+  "generatedAt": "2026-08-03T00:00:00Z",
   "title": "Design System: Miami Spice",
   "extensions": {
     "colorMeta": {
       "paper": {
         "role": "neutral",
-        "displayName": "Marine Night (Paper)",
-        "canonical": "#0e1a1f",
+        "displayName": "Paper (Night Ground)",
+        "canonical": "#0a0d0e",
         "tonalRamp": [
-          "#182c35",
-          "#294d5b",
-          "#3b6d82",
-          "#4c8da9",
-          "#72a9c0",
-          "#99c1d1",
-          "#c3dae4",
-          "#eaf2f5"
+          "#05080a",
+          "#0a0d0e",
+          "#1a2226",
+          "#2d3a3f",
+          "#4a5a5f",
+          "#78888c",
+          "#aebbbd",
+          "#e8eeee"
         ]
       },
       "card": {
         "role": "neutral",
-        "displayName": "Elevated Card",
-        "canonical": "#16262c",
+        "displayName": "Card (Lifted Surface)",
+        "canonical": "#12181a",
         "tonalRamp": [
-          "#192c33",
-          "#2c4c58",
-          "#3f6d7e",
-          "#528da3",
-          "#77a8bb",
-          "#9cc0ce",
-          "#c5dae2",
-          "#ebf2f5"
+          "#080c0d",
+          "#12181a",
+          "#222c2f",
+          "#384649",
+          "#5a6a6e",
+          "#8a999c",
+          "#bcc8ca",
+          "#ecf1f1"
         ]
       },
       "sunk": {
         "role": "neutral",
-        "displayName": "Sunk Well",
-        "canonical": "#0b151a",
+        "displayName": "Sunk (Wells / Control Tracks)",
+        "canonical": "#05080a",
         "tonalRamp": [
-          "#172b36",
-          "#274b5d",
-          "#386b85",
-          "#498bac",
-          "#70a7c2",
-          "#97bfd3",
-          "#c2dae5",
-          "#e9f2f6"
+          "#030506",
+          "#05080a",
+          "#101619",
+          "#212b2f",
+          "#3b494d",
+          "#6b7a7e",
+          "#a4b1b4",
+          "#e6ebec"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Ink (Primary Text)",
-        "canonical": "#f2f4ee",
+        "displayName": "Ink (Primary Type + Hard Offset)",
+        "canonical": "#f2f3ee",
         "tonalRamp": [
-          "#292e1e",
-          "#475134",
-          "#65734a",
-          "#839560",
-          "#a0af83",
-          "#bac5a5",
-          "#d7ddca",
-          "#f1f3ec"
+          "#2b2c27",
+          "#48493f",
+          "#656659",
+          "#838474",
+          "#a1a294",
+          "#c0c1b5",
+          "#dbdcd3",
+          "#f2f3ee"
         ]
       },
       "soft": {
         "role": "neutral",
         "displayName": "Soft (Secondary Text)",
-        "canonical": "#a6bcb7",
+        "canonical": "#9fb0ad",
         "tonalRamp": [
-          "#212c29",
-          "#394c47",
-          "#516c66",
-          "#698c84",
-          "#8ba7a1",
-          "#abbfbb",
-          "#cedad7",
+          "#1e2523",
+          "#333e3b",
+          "#4a5754",
+          "#61706d",
+          "#859491",
+          "#a7b5b2",
+          "#cbd5d3",
           "#eef2f1"
         ]
       },
       "rule": {
         "role": "neutral",
-        "displayName": "Rule (Control Boundary)",
-        "canonical": "#33454c",
+        "displayName": "Rule (2px Hard Borders)",
+        "canonical": "#3c4749",
         "tonalRamp": [
-          "#1f2a2e",
-          "#35484f",
-          "#4c6771",
-          "#628592",
-          "#85a2ad",
-          "#a6bbc4",
-          "#cbd7dc",
-          "#edf1f3"
+          "#1a2021",
+          "#262f30",
+          "#333e40",
+          "#3c4749",
+          "#5a696b",
+          "#869495",
+          "#b8c2c3",
+          "#e9edee"
         ]
       },
       "hair": {
         "role": "neutral",
-        "displayName": "Hairline Separator",
-        "canonical": "#21343b",
+        "displayName": "Hair (Row Separators)",
+        "canonical": "#20282a",
         "tonalRamp": [
-          "#1b2b31",
-          "#304b55",
-          "#446b79",
-          "#588a9d",
-          "#7ca6b6",
-          "#a0bfca",
-          "#c7d9e0",
-          "#ebf2f4"
+          "#12181a",
+          "#20282a",
+          "#2e393b",
+          "#3d4b4e",
+          "#5b6c70",
+          "#889799",
+          "#bac4c5",
+          "#eaeeef"
         ]
       },
       "marine": {
         "role": "primary",
-        "displayName": "Marine (Vice Cyan Tint)",
-        "canonical": "#7fe3ef",
+        "displayName": "Marine (Electric-Cyan Structural Tint)",
+        "canonical": "#1be7ff",
         "tonalRamp": [
-          "#083e44",
-          "#0f6b76",
-          "#1598a8",
-          "#1bc5da",
-          "#4ad7e8",
-          "#7ce2ef",
-          "#b2eef5",
-          "#e4f9fc"
+          "#022a30",
+          "#044a54",
+          "#067789",
+          "#0aa8c0",
+          "#1be7ff",
+          "#5ceeff",
+          "#9df4ff",
+          "#d8fbff"
         ]
       },
       "signal": {
         "role": "primary",
         "displayName": "Signal (Cyan, alias of Marine)",
-        "canonical": "#7fe3ef",
+        "canonical": "#1be7ff",
         "tonalRamp": [
-          "#083e44",
-          "#0f6b76",
-          "#1598a8",
-          "#1bc5da",
-          "#4ad7e8",
-          "#7ce2ef",
-          "#b2eef5",
-          "#e4f9fc"
+          "#022a30",
+          "#044a54",
+          "#067789",
+          "#0aa8c0",
+          "#1be7ff",
+          "#5ceeff",
+          "#9df4ff",
+          "#d8fbff"
         ]
       },
       "marine-wash": {
         "role": "primary",
-        "displayName": "Marine Wash (Tint at Low Opacity)",
-        "canonical": "#14323a",
+        "displayName": "Marine Wash (Cyan at Low Light — Image Fallback)",
+        "canonical": "#0e2f36",
         "tonalRamp": [
-          "#143139",
-          "#225563",
-          "#30798c",
-          "#3f9db6",
-          "#67b6cb",
-          "#91cad9",
-          "#bfe0e9",
-          "#e8f4f7"
+          "#081b20",
+          "#0e2f36",
+          "#12454f",
+          "#185f6d",
+          "#2b8496",
+          "#56aabb",
+          "#93cdd8",
+          "#d6eef2"
         ]
       },
       "flamingo": {
         "role": "primary",
-        "displayName": "Flamingo (Price Only)",
-        "canonical": "#ff6fae",
+        "displayName": "Flamingo (Hot Pink — Price Only)",
+        "canonical": "#ff6ec7",
         "tonalRamp": [
-          "#4d0021",
-          "#85003a",
-          "#bd0053",
-          "#f5006b",
-          "#ff338c",
-          "#ff6bac",
-          "#ffa8ce",
-          "#ffe0ee"
+          "#3d0121",
+          "#6b0740",
+          "#9b1064",
+          "#ce2a8f",
+          "#ff6ec7",
+          "#ff92d5",
+          "#ffb6e3",
+          "#ffe0f4"
+        ]
+      },
+      "purple": {
+        "role": "accent",
+        "displayName": "Purple (Categorical — Mood / Occasion)",
+        "canonical": "#c86bff",
+        "tonalRamp": [
+          "#26063d",
+          "#430a6b",
+          "#631299",
+          "#8a2fca",
+          "#c86bff",
+          "#d78fff",
+          "#e6b6ff",
+          "#f5e2ff"
+        ]
+      },
+      "orange": {
+        "role": "accent",
+        "displayName": "Orange / Tomato (Categorical — Mood / Occasion)",
+        "canonical": "#ff824d",
+        "tonalRamp": [
+          "#3d1305",
+          "#6b2408",
+          "#9c380f",
+          "#d15625",
+          "#ff824d",
+          "#ff9f76",
+          "#ffbda0",
+          "#ffe2d3"
+        ]
+      },
+      "on-color": {
+        "role": "neutral",
+        "displayName": "On-Color (Deep Type on a Cyan / Pink Block)",
+        "canonical": "#06110f",
+        "tonalRamp": [
+          "#030807",
+          "#06110f",
+          "#0f2320",
+          "#1c3a35",
+          "#315a53",
+          "#5e857c",
+          "#9bbbb2",
+          "#dceeeb"
         ]
       }
     },
     "typographyMeta": {
       "display": {
-        "displayName": "Display (SF Pro Display 700)",
-        "purpose": "The wordmark and large title. clamp(2rem, 5vw, 2.75rem), tracking -0.025em."
+        "displayName": "Display (Futura 700 caps, clamp(3rem, 8vw, 5rem))",
+        "purpose": "The sliced MIAMI / SPICE wordmark. Geometric caps, tracking -0.02em, line-height 0.82. UPPERCASE — the poster voice."
+      },
+      "hero": {
+        "displayName": "Hero (Futura 700 caps, clamp(2.5rem, 6.5vw, 4rem))",
+        "purpose": "The giant mood headline — \"WHAT ARE YOU IN THE MOOD FOR?\" UPPERCASE, over the colour-blocked discover wall."
       },
       "section": {
-        "displayName": "Section (SF Pro Display 700, 28px)",
-        "purpose": "The discovery prompt — \"What are you in the mood for?\""
-      },
-      "title": {
-        "displayName": "Title (SF Pro Display 700, 22px)",
-        "purpose": "The result count and the empty-state lead."
+        "displayName": "Section (Futura 700, 40px)",
+        "purpose": "The result-count number, set in cyan. Geometric caps figures."
       },
       "name": {
-        "displayName": "Name (SF Pro Text 600, 17px)",
-        "purpose": "Restaurant names; the price figure."
+        "displayName": "Name (Futura 700, 20px)",
+        "purpose": "Restaurant names, the \"dish to order\" signature line, and price figures."
       },
       "body": {
         "displayName": "Body (SF Pro Text 400, 15px)",
-        "purpose": "Row body, filters, teasers, subtitle."
+        "purpose": "Dish descriptions, teasers, row meta, prose — sentence case, where SF legibility beats the poster shout."
       },
-      "caption": {
-        "displayName": "Caption / .micro (SF Pro Text 590, 13px)",
-        "purpose": "Section labels, counts, meta — a sentence-case secondary label, never an uppercase eyebrow."
+      "label": {
+        "displayName": "Label / .micro (Futura 700 caps, 13px, tracked 0.08em)",
+        "purpose": "Section labels, counts, control labels. The display voice at its quietest — UPPERCASE, guardrailed by rendered caps-density < 25%."
       }
     },
     "radiiMeta": [
-      { "name": "r-sm", "value": "8px", "purpose": "Segmented thumbs and the price pill." },
-      { "name": "r-md", "value": "12px", "purpose": "Controls and search fields." },
-      { "name": "r-lg", "value": "20px", "purpose": "Rows and expanded panels." },
-      { "name": "r-full", "value": "980px", "purpose": "Chips, facet pills, tiles, buttons." }
+      { "name": "r-sm", "value": "0", "purpose": "Zero by identity — a poster is cut, not softened. Hard corners everywhere." },
+      { "name": "r-md", "value": "0", "purpose": "Zero. Controls and search fields are hard-cornered; form is drawn with 2px borders." },
+      { "name": "r-lg", "value": "0", "purpose": "Zero. Rows and expanded panels are cut sheets, not rounded cards." },
+      { "name": "r-full", "value": "0", "purpose": "Zero. Even chips and tiles stay hard-edged; the Cut Rule allows no rounding." }
     ],
     "shadows": [
       {
         "name": "eyebrow",
-        "value": "0 1px 3px rgba(0,0,0,0.5)",
-        "purpose": "Resting elevation — the row's expanded panel, the CTA, price-adjacent surfaces, the map frame, the intro card. Soft neutral offset, never a colored glow."
+        "value": "4px 4px 0 var(--ink)",
+        "purpose": "The resting hard ink offset (neo-brutalist) — the primary CTA, the expanded row panel, the empty state, the map frame. FLAT, zero blur, never a coloured glow."
       },
       {
         "name": "shadow-lg",
-        "value": "0 16px 50px rgba(0,0,0,0.6)",
-        "purpose": "Floating overlays and sheets; the segmented-control thumb reads against it. Soft neutral offset, never a colored glow."
+        "value": "8px 8px 0 var(--ink)",
+        "purpose": "The menu-sheet's deeper hard ink offset — a cut sheet casting a hard shadow. FLAT, zero blur, never a coloured glow."
       }
     ],
     "motion": [
       {
         "name": "ease-authored",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "The one authored ease. Entrances rise and fade in on this curve (overlays, sheets, the ViceMark)."
+        "purpose": "The one authored ease. Entrances rise and fade in on this curve (overlays, the MenuSheet, the ViceMark)."
       },
       {
         "name": "reduced-motion",
         "value": "collapse",
-        "purpose": "prefers-reduced-motion collapses entrances (rise/fade) to near-instant; focus outlines are never transitioned (WCAG 2.4.13)."
+        "purpose": "prefers-reduced-motion collapses the rise/fade entrances to near-instant; focus outlines are never transitioned (WCAG 2.4.13)."
       }
     ],
     "breakpoints": [
       { "name": "mobile", "value": "560px", "purpose": "At or below: single column, bottom-sheet modals." },
-      { "name": "rail-collapse", "value": "860px", "purpose": "At or below: filter rail collapses to a drawer behind a Filters toggle." },
-      { "name": "sheet-center", "value": "640px", "purpose": "At or above: MenuSheet centers instead of docking as a bottom sheet." }
+      { "name": "rail-collapse", "value": "860px", "purpose": "At or below: the 216px filter rail collapses to a drawer behind a Filters toggle." },
+      { "name": "sheet-center", "value": "640px", "purpose": "At or above: the MenuSheet centers instead of docking as a bottom sheet." }
     ]
   },
   "components": [
@@ -237,138 +282,126 @@
       "name": "Primary CTA",
       "kind": "button",
       "refersTo": "cta-primary",
-      "description": "The confident action — Book on OpenTable, \"Pick one for us.\" Marine (tint) fill, card text, full pill, soft neutral eyebrow. Hover brightens the fill; never shifts layout.",
+      "description": "The confident action — Book on OpenTable, \"Pick one for us.\" Flat cyan fill, deep --on-color caps label, hard corners, a hard 4px ink offset (neo-brutalist). Hover inverts to an ink fill; focus is a 2px cyan outline at 3px offset, never a border (a border would shift layout).",
       "html": "<button class=\"ds-cta\">Book on OpenTable</button>",
-      "css": ".ds-cta{display:inline-flex;align-items:center;min-height:44px;padding:0 24px;background:#7fe3ef;color:#16262c;border:none;border-radius:980px;box-shadow:0 1px 3px rgba(0,0,0,.5);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:15px;font-weight:600;letter-spacing:-.01em;cursor:pointer;transition:filter .2s cubic-bezier(.16,1,.3,1)}.ds-cta:hover{filter:brightness(1.08)}.ds-cta:focus-visible{outline:2px solid #7fe3ef;outline-offset:3px}"
+      "css": ".ds-cta{display:inline-flex;align-items:center;min-height:44px;padding:0 24px;background:#1be7ff;color:#06110f;border:none;border-radius:0;box-shadow:4px 4px 0 #f2f3ee;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .2s cubic-bezier(.16,1,.3,1)}.ds-cta:hover{background:#f2f3ee;color:#0a0d0e}.ds-cta:focus-visible{outline:2px solid #1be7ff;outline-offset:3px}"
     },
     {
-      "name": "Price Pill",
+      "name": "Price Block",
       "kind": "custom",
-      "refersTo": "price-pill",
-      "description": "The one saturated object per screen — the flamingo price pill, price only. Rounded --r-sm, card text.",
+      "refersTo": "price-block",
+      "description": "The one saturated object per row — the flat hot-pink price block, price and price alone (the Price-Only Rule). Hard corners, deep --on-color figures in SF Mono.",
       "html": "<span class=\"ds-price\">$65</span>",
-      "css": ".ds-price{display:inline-block;padding:3px 12px;background:#ff6fae;color:#16262c;border-radius:8px;font-family:ui-monospace,'SF Mono',SFMono-Regular,Menlo,monospace;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}"
+      "css": ".ds-price{display:inline-block;padding:5px 12px;background:#ff6ec7;color:#06110f;border-radius:0;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;font-variant-numeric:tabular-nums}"
     },
     {
       "name": "Facet Pill",
       "kind": "chip",
       "refersTo": "facet",
-      "description": "A filter option with a live mono count. --sunk fill, full pill, ink label, >=44px. Hover washes to --marine-wash with tint text; selected = marine (tint) fill + card text. Zero-count options are disabled and greyed, never removed.",
+      "description": "A dense functional filter option with a live mono count. Transparent fill, 2px --rule border, hard corners, sentence-case Futura (not caps — scannability wins on the rail), >=44px. Hover lights the border cyan; selected = flat cyan fill + deep --on-color. Zero-count options are disabled and greyed, never removed (Baymard spatial memory).",
       "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-facet\">Italian <span class=\"ds-facet-n\">72</span></button><button class=\"ds-facet ds-facet-on\">Seafood <span class=\"ds-facet-n\">24</span></button></div>",
-      "css": ".ds-facet{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;background:#0b151a;border:none;border-radius:980px;color:#f2f4ee;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em;cursor:pointer;transition:background .2s cubic-bezier(.16,1,.3,1)}.ds-facet:hover{background:#14323a;color:#7fe3ef}.ds-facet-n{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;color:#a6bcb7;font-variant-numeric:tabular-nums}.ds-facet-on{background:#7fe3ef;color:#16262c}.ds-facet-on .ds-facet-n{color:#16262c;opacity:.7}"
+      "css": ".ds-facet{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;background:transparent;border:2px solid #3c4749;border-radius:0;color:#f2f3ee;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em;cursor:pointer;transition:border-color .2s cubic-bezier(.16,1,.3,1)}.ds-facet:hover{border-color:#1be7ff}.ds-facet-n{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;color:#9fb0ad;font-variant-numeric:tabular-nums}.ds-facet-on{background:#1be7ff;border-color:#1be7ff;color:#06110f}.ds-facet-on .ds-facet-n{color:#06110f;opacity:.7}"
     },
     {
-      "name": "Segmented Control",
+      "name": "Discovery Tile",
       "kind": "custom",
-      "refersTo": "segmented-thumb",
-      "description": "iOS pattern — a --sunk track (--r-md, 3px inset) with a soft neutral --card thumb (--r-sm, eyebrow) on the selected segment. List/Map view and the course strip. Neutral thumb for exclusive choices; tint fill is reserved for multi-select.",
-      "html": "<div class=\"ds-seg\"><button>List</button><button class=\"on\">Map</button></div>",
-      "css": ".ds-seg{display:inline-flex;gap:0;padding:3px;background:#0b151a;border-radius:12px}.ds-seg button{min-height:38px;min-width:56px;padding:0 16px;background:transparent;border:none;border-radius:8px;color:#a6bcb7;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em;cursor:pointer}.ds-seg .on{background:#16262c;color:#f2f4ee;box-shadow:0 1px 3px rgba(0,0,0,.5)}"
-    },
-    {
-      "name": "Applied Filter Chip",
-      "kind": "chip",
-      "refersTo": "facet-selected",
-      "description": "A removable applied filter. Marine (tint) fill, card text, an x, full pill; every discovery/mood/occasion selection resolves to one so nothing is a hidden query.",
-      "html": "<button class=\"ds-chip\">Brickell <span aria-hidden=\"true\">×</span></button>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;background:#7fe3ef;color:#16262c;border:none;border-radius:980px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em;cursor:pointer}.ds-chip span{opacity:.7}"
-    },
-    {
-      "name": "Search Input",
-      "kind": "input",
-      "refersTo": "facet",
-      "description": "Apple's filled search field — --sunk fill, transparent border, --r-md, >=44px. On focus the background lifts to --card and the border shifts to --marine. No glow.",
-      "html": "<input class=\"ds-input\" type=\"search\" placeholder=\"Search a name, cuisine, dish…\" />",
-      "css": ".ds-input{width:280px;min-height:44px;padding:0 16px;background:#0b151a;border:1px solid transparent;border-radius:12px;color:#f2f4ee;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em}.ds-input::placeholder{color:#a6bcb7}.ds-input:focus{background:#16262c;border-color:#7fe3ef;outline:none}"
+      "refersTo": "tile-cyan",
+      "description": "A poster-wall tile — hard block, Futura caps label, a soft mono count. Outline by default; every 4th fills flat cyan and every 4th+2 fills flat pink, so the lanes read as a flat tri-colour composition. No gradient, no glow.",
+      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-tile\">DATE NIGHT <span class=\"ds-tile-n\">38</span></button><button class=\"ds-tile ds-tile-cyan\">SEAFOOD <span class=\"ds-tile-n\">61</span></button><button class=\"ds-tile ds-tile-pink\">STEAK <span class=\"ds-tile-n\">44</span></button></div>",
+      "css": ".ds-tile{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;background:transparent;border:2px solid #3c4749;border-radius:0;color:#f2f3ee;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;cursor:pointer}.ds-tile-n{font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:13px;font-weight:400;color:#9fb0ad;letter-spacing:0;font-variant-numeric:tabular-nums}.ds-tile-cyan{background:#1be7ff;border-color:#1be7ff;color:#06110f}.ds-tile-cyan .ds-tile-n{color:#06110f;opacity:.7}.ds-tile-pink{background:#ff6ec7;border-color:#ff6ec7;color:#06110f}.ds-tile-pink .ds-tile-n{color:#06110f;opacity:.7}"
     },
     {
       "name": "Result Row",
       "kind": "card",
-      "refersTo": "cta-primary",
-      "description": "The signature unit — three tiers (name / cuisine-hood-dishes meta / course-aware teaser), a bookmark pin in a fixed left gutter, the flamingo price pill and availability on the right, a single --hair bottom border. The whole row is the disclosure control and washes to --marine-wash on hover.",
-      "html": "<div class=\"ds-row\"><span class=\"ds-pin\">⌂</span><span class=\"ds-rowtext\"><span class=\"ds-name\">COTE Miami</span><span class=\"ds-meta\">Steakhouse · Design District · 12 dishes</span></span><span class=\"ds-side\"><span class=\"ds-price2\">$65</span><span class=\"ds-when\">Dinner · Fri, Sat</span></span></div>",
-      "css": ".ds-row{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;padding:16px 8px;border-bottom:1px solid #21343b;border-radius:20px;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;cursor:pointer;transition:background .2s cubic-bezier(.16,1,.3,1)}.ds-row:hover{background:#14323a}.ds-pin{display:inline-flex;align-items:center;justify-content:center;min-height:44px;color:#a6bcb7}.ds-name{display:block;font-size:17px;font-weight:600;letter-spacing:-.015em;color:#f2f4ee}.ds-meta{display:block;font-size:13px;color:#a6bcb7;margin-top:4px}.ds-side{text-align:right}.ds-price2{display:inline-block;padding:3px 12px;background:#ff6fae;color:#16262c;border-radius:8px;font-family:ui-monospace,'SF Mono',Menlo,monospace;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}.ds-when{display:block;font-size:13px;color:#a6bcb7;margin-top:8px}"
+      "refersTo": "facet",
+      "description": "The signature unit — three tiers (name in Futura caps-weight sentence case / Cuisine-Hood-dishes meta in SF soft / a course-aware teaser), a bookmark pin in a fixed left gutter, the flat hot-pink price block and the primary offer on the right, a 1px --hair bottom separator. Hover pulls the row onto the --card surface and lights a 3px cyan left edge. Hard corners; the whole row is the disclosure control.",
+      "html": "<div class=\"ds-row\"><span class=\"ds-pin\">&#9750;</span><span class=\"ds-rowtext\"><span class=\"ds-name\">COTE Miami</span><span class=\"ds-meta\">Steakhouse &middot; Design District &middot; 12 dishes</span></span><span class=\"ds-side\"><span class=\"ds-price2\">$65</span><span class=\"ds-when\">Dinner &middot; Fri, Sat</span></span></div>",
+      "css": ".ds-row{display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;padding:16px 8px;border-bottom:1px solid #20282a;border-left:3px solid transparent;border-radius:0;cursor:pointer;transition:background .2s cubic-bezier(.16,1,.3,1),border-color .2s cubic-bezier(.16,1,.3,1)}.ds-row:hover{background:#12181a;border-left-color:#1be7ff}.ds-pin{display:inline-flex;align-items:center;justify-content:center;min-height:44px;color:#9fb0ad}.ds-name{display:block;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:20px;font-weight:700;letter-spacing:-.01em;color:#f2f3ee}.ds-meta{display:block;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:13px;color:#9fb0ad;margin-top:4px}.ds-side{text-align:right}.ds-price2{display:inline-block;padding:5px 12px;background:#ff6ec7;color:#06110f;border-radius:0;font-family:'Futura','Avenir Next','Century Gothic',system-ui,sans-serif;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}.ds-when{display:block;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;font-size:13px;color:#9fb0ad;margin-top:8px}"
     }
   ],
   "narrative": {
-    "northStar": "Apple form · Vice night",
-    "overview": "The colour soul is Miami Vice after dark; the form is a native Apple app. Apple HIG form — SF system faces, continuous rounded corners, soft neutral depth, generous rhythm, sentence case, iOS-grade controls, rows-not-cards — carries a Miami Vice night soul: a deep-marine after-hours field, the Vice cyan as the single interactive tint, and one hot-pink flamingo reserved for price. The two Vice hues surface only as the system tint and one saturated object, never as the wall itself. This is \"Miami Vice\" reached by exclusion, per Michael Mann's production rule — no earth tones, no primaries, no glow — deliberately the opposite of the neon-on-black synthwave that reads as machine-made. The 2026-08-02 redesign retired the Tropical Deco pass (hard offset slabs, square corners, racing stripes, a Poiret-One uppercase wordmark over Jost), kept as historical anti-reference in DESIGN_REVIEW.md / VICE_DIRECTION.md. The product ships night-only (:root[data-theme='pm'], forced in main.js); :root holds a dormant light fallback.",
+    "northStar": "Midnight Poster",
+    "overview": "Miami Vice as a flat, geometric POSTER at night — not a soft app, and not the neon-glow synthwave cliche. The ground is deep and nearly unlit; electric cyan (#1be7ff) is the structural tint; one hot pink (#ff6ec7) is reserved for price; purple (#c86bff) and tomato (#ff824d) are a categorical accent layer for mood/occasion. Chunky geometric display caps (Futura lineage) carry the brand and the headlines; SF carries the dense body so a 379-row list stays scannable. Everything is hard-edged and flat: 2px --rule borders, flat colour blocks, a tri-colour rule (cyan/pink/ink), and a single sliced/offset wordmark — the reference logo's fragmentation distilled to one confident move. No gradient, no glow, no soft rounding. The depth device is a hard ink offset (neo-brutalist, 4px 4px 0 var(--ink)), never a blurred halo. This world is brief-pinned by the owner's Miami-Vice palette and sliced-caps poster logo; it replaces the retired \"Apple form · Vice night\" (soft-round, SF, sentence-case) and, before that, \"Tropical Deco\" — both held only as historical anti-reference. Single theme on :root; the app ships one dark world.",
     "keyCharacteristics": [
-      "Deep-marine night field; colour lives only in the cyan system tint and the one flamingo price.",
-      "Depth is soft and neutral — a low-blur rgba(0,0,0,…) offset, never a hard slab, never a colored glow.",
-      "Continuous rounded corners — three radius steps plus a pill — Apple's soft geometry.",
-      "SF system type, sentence case, a fuller Apple text ramp; no web fonts, no uppercase eyebrows.",
-      "iOS controls: filled tracks with a soft neutral thumb; tint-filled selection; >=44pt targets.",
-      "Rows, not cards — a 380-item comparison directory, ~8.7 per 900px viewport."
+      "Deep near-dark ground; colour lives in cyan structure, one flamingo price, and flat colour blocks.",
+      "Depth is a hard ink offset (4px 4px 0) — flat, geometric, never a gradient or glow.",
+      "Zero rounding: a poster is cut, not softened. 2px --rule borders draw the form.",
+      "Futura-lineage geometric caps for brand/headings/labels/names/price; SF for the dense body.",
+      "One saturated object per row (the hot-pink price block), plus a colour-blocked tile wall.",
+      "Rows, not cards — a 379-item comparison directory at ~8.5 per 900px viewport."
     ],
     "rules": [
       {
         "name": "The Price-Only Rule",
-        "body": "--flamingo is used for price and nothing else. Its scarcity makes it the memory anchor; spend it anywhere else and the isolation collapses.",
+        "body": "#ff6ec7 is used for price and nothing else — the scarcest ink points at the one thing the eye hunts for in a directory of $40/$50/$65 tiers. Spend it anywhere else and the isolation collapses.",
         "section": "colors"
       },
       {
         "name": "The Tint Rule",
-        "body": "Cyan is the single interactive tint — selection, links, filled controls, the primary CTA — exactly as an Apple app uses one accent. It never becomes the field and is never blurred into a glow.",
+        "body": "Cyan is the single structural interactive colour: fills, selection, links, CTAs, the segmented fill, the sheet header band. It never becomes a glow; it fills flat blocks and draws 2px edges.",
         "section": "colors"
       },
       {
-        "name": "The Night Rule",
-        "body": "The app is night-only — the deep-marine set ships. Every small-text pair clears Apple's 7:1 on both field and card; the lighter :root tokens remain a dormant, AA-clean fallback with no daytime mode in the product.",
+        "name": "The Exclusion Rule",
+        "body": "Per Michael Mann's Miami Vice production rule — no earth tones, no red, no primaries. What survives is cyan, one flamingo, and the purple/tomato two-hue accent layer, held back so the composition stays flat cyan/pink/ink, never a rainbow.",
         "section": "colors"
       },
       {
-        "name": "The Apple-Ramp Rule",
-        "body": "Six weight-and-size steps — 13 / 15 / 17 / 22 / 28 / display(32–44) — with fewer than three adjacent pairs under 1.15×. Hierarchy is made by weight and tracking as much as size.",
+        "name": "The Caps-Voice Rule",
+        "body": "Uppercase geometric caps are the brand's display voice — wordmark, hero, tiles, section labels, primary CTAs, price, segmented controls. This is intentional poster language, not an eyebrow. Its guardrail is the rendered caps-density (design-lint SPEC-06, under 25% of text nodes): dense functional controls — rail facets, day/meal — stay sentence case so the caps signal keeps meaning and the list stays scannable.",
         "section": "typography"
       },
       {
-        "name": "The Sentence-Case Rule",
-        "body": "Uppercase text-transform is retired entirely. Labels lead in sentence case; a re-introduced uppercase role risks the eyebrow-overuse tell. The content, not the label, carries emphasis.",
+        "name": "The Two-Face Rule",
+        "body": "Futura for the poster (brand, headings, labels, names, figures); SF for the body (descriptions, teasers, meta, prose). Never set a paragraph of running copy in caps.",
         "section": "typography"
-      },
-      {
-        "name": "The Soft-Neutral Rule",
-        "body": "Elevation is a soft neutral rgba(0,0,0,…) offset, never a hard slab and never a halo. A coloured blur is the banned slop tell; reach for tonal surface steps and hairlines first.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Continuous-Round Rule",
-        "body": "Everything is rounded; keep at least three distinct radii (--r-sm/md/lg + --r-full) in play or the uniform-radius tell fires. If a control needs to read tighter, change its radius step, not its corners to zero.",
-        "section": "shapes"
       },
       {
         "name": "The Rows-Not-Cards Rule",
-        "body": "A 380-item comparison directory hits all four NN/g cases where cards are wrong (search, comparison, homogeneous content, density). Results stay rows (~104px, >=5 per 900px viewport); secondary actions move into the expanded panel.",
+        "body": "A 379-item comparison directory hits all four NN/g cases where cards are wrong (search, comparison, homogeneous content, density). Results stay rows (~104px, ~8.5 per 900px viewport); secondary actions move into the expanded panel to buy density.",
         "section": "layout"
+      },
+      {
+        "name": "The Cut Rule",
+        "body": "Nothing is rounded — border-radius is 0 everywhere; a poster is cut, not softened. If a control needs to read softer, change its fill or weight, not its corners. Hard edges and 2px --rule borders are the geometry.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Hard-Offset Rule",
+        "body": "Elevation is a flat ink offset with zero blur — a cut sheet casting a hard shadow (--eyebrow 4px 4px 0, --shadow-lg 8px 8px 0). A blurred or coloured glow is the banned slop tell; reach for tonal surface steps and 2px borders first, and add the hard offset only where something genuinely lifts.",
+        "section": "elevation"
       }
     ],
     "dos": [
       "Do route every colour through a var(); raw hex outside app.css is a lint finding.",
-      "Do express depth with the soft neutral --eyebrow / --shadow-lg and tonal surface steps.",
-      "Do round continuously — keep >=3 distinct radii (--r-sm/md/lg + --r-full) in play.",
-      "Do keep results as rows at ~104px, >=5 per 900px viewport; move secondary actions into the expanded panel.",
-      "Do reserve --flamingo for price and let the single cyan tint carry all other interaction.",
-      "Do keep type sentence case on the Apple ramp (13 / 15 / 17 / 22 / 28 / display).",
+      "Do draw form with 2px --rule borders and flat colour blocks; hard corners everywhere.",
+      "Do express depth with the flat ink offset (4px 4px 0) and tonal surface steps.",
+      "Do reserve --flamingo for price; let cyan carry all other structure.",
+      "Do set the poster voice (brand, headings, labels, tiles, CTAs) in Futura caps, and the body (descriptions, teasers, meta) in sentence-case SF.",
+      "Do keep dense functional controls (rail facets, day/meal) sentence case for scannability.",
       "Do disable-and-grey zero-count options; never remove them.",
-      "Do keep every control's hit target >=44pt and meet the floors: 11px min type, 7:1 small text, 3:1 UI boundary."
+      "Do keep every hit target >=44pt and meet the floors: 11px min type, 7:1 small text."
     ],
     "donts": [
-      "Don't use a coloured glow, gradient text, glassmorphism, or a radial aurora background — every one is a catalogued AI-slop tell and a design-lint.mjs failure. Neutral rgba(0,0,0) shadows are fine.",
-      "Don't put neon on the field: the Vice hues are the tint and one price object, never the wall.",
-      "Don't re-introduce uppercase eyebrows, a hard zero-blur offset slab, square corners, or the retired Deco devices (horizon bar, racing stripes, Poiret wordmark).",
-      "Don't use --flamingo for anything but price, or a second isolated accent that dilutes it.",
-      "Don't reach for a card grid, a web font (Inter / Geist / Space Grotesk / Poppins), or pure #000/#fff.",
+      "Don't use a gradient, a coloured glow, glassmorphism, or a radial aurora — every one is a catalogued AI-slop tell and a design-lint.mjs failure. Flat colour only.",
+      "Don't round corners, or soften the hard ink offset into a blur.",
+      "Don't set a paragraph of running copy in caps, or let rendered caps-density pass 25%.",
+      "Don't use --flamingo for anything but price, or scatter purple/tomato beyond the categorical layer.",
+      "Don't reach for a card grid, a banned web font (Inter / Geist / Space Grotesk / Poppins), or pure #000/#fff.",
       "Don't work around a lint rule — if you disagree with it, edit the rule and say why."
     ],
     "newestComponents": [
       {
+        "name": "Sliced Wordmark",
+        "body": "The masthead identity — MIAMI in ink over SPICE in cyan with a hard flat pink offset, one clean misregistration. The reference logo's fragmentation distilled to a single confident move, set in Futura-lineage caps. A tri-colour rule (cyan / pink / ink) sits beneath it, the rule of three under the poster masthead."
+      },
+      {
         "name": "MenuSheet",
-        "body": "The accessible full-menu meal-detail modal. Opened per meal from the CourseLadder (\"See the full [meal] menu, with descriptions\"), it shows every course, the choose-count, and each dish with its description note. A real modal: portalled to <body>, focus moved in and restored, Esc + backdrop close, background scroll locked, role=dialog + aria-modal. Bottom-sheet on mobile, centered >=640px, rising in on open. Its header is a deliberate Vice moment — the meal title over a --marine-wash band with the flamingo price sitting inside it."
+        "body": "The accessible full-menu meal-detail modal. Opened per meal from the CourseLadder, it shows every course, the choose-count, and each dish with its description note. A real modal: portalled to <body>, focus trapped and restored, Esc + backdrop close, background scroll locked, role=dialog + aria-modal. Bottom-sheet on mobile, centered >=640px, rising in on open. A solid cyan header band carries the meal title with the hot-pink price block on it (the two hues together, on purpose); a 2px cyan frame and a hard 8px ink offset."
       },
       {
         "name": "ViceMark",
-        "body": "The flat cyan Miami-sun brand mark: a banded sunset over a horizon line, authored SVG, solid currentColor fills only — no gradient, no glow (the banned synthwave tells). Coloured by the cyan tint, never the price flamingo, so the price-only rule stands. Used as the masthead brand mark, the image-fallback tile, and the results empty-state mark."
+        "body": "The flat cyan Miami-sun brand mark: a banded sun over a horizon line, authored SVG, solid currentColor fills only — no gradient, no glow (the banned synthwave tells). Coloured by the cyan tint, never the price flamingo, so the Price-Only Rule stands. Used as the image-fallback tile and the results empty-state mark."
       }
     ]
   }

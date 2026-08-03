@@ -73,39 +73,45 @@ Combination rules, since they are the one non-obvious part:
 the facet being counted. Zero options are **disabled and greyed, never removed** — removing them
 makes the list jump and destroys the user's spatial memory of it.
 
-## Design standard — Apple form · Vice night
+## Design standard — Midnight Poster
 
-Full record in `DESIGN.md`. The 2026-08-02 redesign kept the Miami Vice *colour soul* but
-rebuilt the *form* in Apple's language. `DESIGN_REVIEW.md` / `VICE_DIRECTION.md` hold the
-retired Tropical Deco pass as historical anti-reference. The short version, easy to undo by accident:
+Full record in `DESIGN.md`. The 2026-08-03 redesign is a brief-pinned pivot: the owner supplied
+the Miami-Vice palette (colorswall #246639) and the sliced-caps poster logo and asked for a
+modern take. It replaced "Apple form · Vice night" (soft-round SF, retired) and, before that,
+Tropical Deco — both are historical anti-reference now. The short version, easy to undo by accident:
 
-- **Deep-marine night field, cyan tint, one flamingo for price.** Shipped theme is
-  `:root[data-theme='pm']`: `--paper #0e1a1f`, `--card #16262c` (elevated surface),
-  `--sunk #0b151a` (wells/controls), `--ink #f2f4ee`, `--soft #a6bcb7`, `--marine #7fe3ef`
-  (the system tint — links, selection, filled controls), `--flamingo #ff6fae` (price, nothing else).
-  `:root` is a dormant light fallback; the app forces night in `main.js`.
-- **The accent is chosen by exclusion**, per Michael Mann's rule for *Miami Vice*: no earth tones,
-  no red, no primaries. `--flamingo` is used for price and nothing else.
-- **Soft neutral depth, never a hard slab or a glow.** `--eyebrow` is now a soft blurred
-  offset (`0 1px 3px rgba(0,0,0,.5)`), `--shadow-lg` for overlays. Colour-blurred glows stay banned
-  (that is the slop tell); neutral `rgba(0,0,0,…)` shadows are the Apple elevation.
-- **Continuous rounded corners.** Three radius tokens — `--r-sm 8`, `--r-md 12`, `--r-lg 20`,
-  plus `--r-full` for pills. Keep ≥3 distinct radii or the uniform-radius tell fires.
-- **SF system faces, sentence case.** `-apple-system` stack for text/display, SF Mono for figures —
-  no web fonts. Type ramp 13 / 15 / 17 / 22 / 28 / display(clamp 32–44); keep <3 adjacent pairs
-  under 1.15×. `.micro` is a sentence-case secondary caption now, **not** an uppercase eyebrow.
-- **No uppercase eyebrows.** Uppercase `text-transform` is retired entirely — re-adding it risks the
-  eyebrow-overuse tell. Labels lead in sentence case; the content, not the label, carries weight.
-- **iOS controls.** Segmented controls (view / course) are a filled `--sunk` track with a soft
-  neutral `--card` thumb on the selected segment; multi-select facets/chips fill with `--marine`
-  tint. Every control keeps a ≥44pt hit target even when it reads slim.
-- **Rows, not cards.** NN/g lists four cases where cards are the wrong component — search,
-  comparison, homogeneous content, density — and a 380-item directory is all four.
-  Target ≥6 results per 900px viewport; currently 8.7.
+- **Deep near-dark ground, electric-cyan structure, one hot pink for price.** Single theme on
+  `:root` (no `data-theme` — `main.js` no longer sets one): `--paper #0a0d0e`, `--card #12181a`
+  (lifted surface), `--sunk #05080a` (wells), `--ink #f2f3ee`, `--soft #9fb0ad`, `--marine #1be7ff`
+  (the structural tint — fills, selection, links, CTAs), `--flamingo #ff6ec7` (price, nothing else),
+  `--purple #c86bff` + `--orange #ff824d` (categorical accent layer only), `--on-color #06110f`
+  (deep type on a cyan/pink block).
+- **The accent is chosen by exclusion**, per Michael Mann's *Miami Vice* rule: no earth tones, no
+  red, no primaries. `--flamingo` is price only; cyan carries everything else structural.
+- **Flat, hard-edged, neo-brutalist depth.** `border-radius` is `0` everywhere (a poster is cut,
+  not softened); form is drawn with **2px `--rule` borders** and flat colour blocks. Depth is a
+  hard ink offset — `--eyebrow: 4px 4px 0 var(--ink)`, `--shadow-lg: 8px 8px 0 var(--ink)`. No
+  gradient, no glow (the banned synthwave tells). The uniform-radius lint rule is scoped to allow
+  this deliberately hard world.
+- **Two faces.** Futura-lineage geometric **caps** (`--f-display`) for the poster voice — sliced
+  wordmark, hero, section labels, tiles, CTAs, restaurant names, price figures. **SF** (`--f-body`)
+  for the dense body — dish descriptions, teasers, row meta, prose. SF Mono for figures. No web
+  fonts (production may self-host Monument/Clash for non-Apple platforms).
+- **Caps is the brand voice, not an eyebrow — but bounded.** Uppercase is intentional here; its
+  guardrail is the **rendered** caps-density (design-lint SPEC-06, kept < 25% of text nodes). So
+  the dense functional controls — rail facets, day/meal — stay **sentence case** for scannability.
+  The eyebrow-overuse rule-count proxy is relaxed (threshold raised, reason documented in the rule).
+- **Signatures.** The sliced wordmark (MIAMI ink / SPICE cyan with a hard pink offset) and the
+  tri-colour rule (cyan/pink/ink) under the masthead. `ViceMark` is a flat cyan Miami-sun mark
+  (solid fills, no glow) for the image-fallback tile and empty state.
+- **Controls.** Segmented controls (view / course) are a 2px frame with a cyan-filled selected
+  segment; facets/day/meal are 2px-bordered, sentence case, cyan fill when selected. Discovery
+  tiles cycle cyan / pink / outline. Every control keeps a ≥44pt hit target.
+- **Rows, not cards.** A 379-item directory is all four NN/g anti-card cases. Target ≥6 results
+  per 900px viewport; currently 8.5.
 
 Floors enforced by `design-lint.mjs`, not by vigilance: 11px minimum type, 44px minimum tap
-target, 7:1 for small text, 3:1 for UI boundaries. Where Apple and WCAG disagree it takes the
-stricter — WCAG for contrast, Apple for target size.
+target, 7:1 for small text, 3:1 for UI boundaries.
 
 If you disagree with a lint rule, **edit the rule and say why**. Do not work around it.
 

@@ -123,42 +123,41 @@
     display: flex;
     flex-direction: column;
     background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-lg);
+    border: 2px solid var(--marine);
     box-shadow: var(--shadow-lg);
     overflow: hidden;
   }
 
-  /* The head is a Vice-forward moment: a marine tint wash under the meal title,
-     the flamingo price sitting inside it — the two hues together, on purpose. */
+  /* The head is the poster moment: a solid cyan band under the meal title, the hot
+     pink price block sitting inside it — the two hues together, on purpose. */
   .sheet-head {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--s4);
-    padding: var(--s5) var(--s5) var(--s4);
-    background: var(--marine-wash);
-    border-bottom: 1px solid var(--hair);
+    padding: var(--s5);
+    background: var(--marine);
   }
   .titles { min-width: 0; }
-  .rest { margin: 0 0 var(--s1); font-size: var(--t-meta); color: var(--soft); }
+  .rest { margin: 0 0 var(--s1); font-family: var(--f-display); text-transform: uppercase; letter-spacing: 0.06em; font-size: var(--t-meta); font-weight: 700; color: var(--on-color); opacity: 0.8; }
   .meal {
     margin: 0;
     font-family: var(--f-display);
-    font-weight: 800;
+    font-weight: 700;
+    text-transform: uppercase;
     font-size: var(--t-title);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
+    color: var(--on-color);
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: var(--s3);
   }
   .meal .price {
     font-size: var(--t-name);
     font-weight: 700;
-    color: var(--card);
+    color: var(--on-color);
     background: var(--flamingo);
-    border-radius: var(--r-sm);
-    padding: 2px var(--s2);
+    padding: 3px var(--s2);
   }
 
   .close {
@@ -169,10 +168,9 @@
     width: var(--tap);
     height: var(--tap);
     margin: calc(var(--s2) * -1) calc(var(--s3) * -1) 0 0;
-    border-radius: var(--r-full);
-    color: var(--ink);
+    color: var(--on-color);
   }
-  .close:hover { background: var(--sunk); }
+  .close:hover { background: var(--on-color); color: var(--marine); }
 
   .sheet-body { padding: var(--s5); overflow-y: auto; }
 
@@ -185,15 +183,15 @@
     gap: var(--s3);
     margin-bottom: var(--s3);
     padding-bottom: var(--s2);
-    border-bottom: 1px solid var(--hair);
+    border-bottom: 2px solid var(--rule);
   }
-  .cname { margin: 0; font-size: var(--t-name); font-weight: 700; color: var(--marine); letter-spacing: -0.01em; }
-  .choose { font-size: var(--t-meta); color: var(--soft); white-space: nowrap; }
+  .cname { margin: 0; font-family: var(--f-display); text-transform: uppercase; font-size: var(--t-name); font-weight: 700; color: var(--marine); letter-spacing: 0; }
+  .choose { font-family: var(--f-display); text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-meta); font-weight: 700; color: var(--soft); white-space: nowrap; }
 
   .dishes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s4); }
   .dish { display: block; }
   .dname { margin: 0; font-size: var(--t-body); font-weight: 590; color: var(--ink); }
-  .dnote { margin: 2px 0 0; font-size: var(--t-body); color: var(--soft); line-height: 1.45; }
+  .dnote { margin: 3px 0 0; font-size: var(--t-body); color: var(--soft); line-height: 1.45; }
 
-  .foot { margin: var(--s2) 0 0; color: var(--soft); }
+  .foot { margin: var(--s2) 0 0; font-family: var(--f-body); text-transform: none; letter-spacing: normal; font-weight: 400; font-size: var(--t-meta); color: var(--soft); }
 </style>

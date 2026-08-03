@@ -1,71 +1,60 @@
 /* ==========================================================================
-   MIAMI SPICE — "Apple at Night, Vice-accented"
-   Redesign 2026-08-02. The FORM is Apple HIG: SF system faces, continuous rounded
-   corners, soft neutral depth (offset + blur, never a hard slab, never a glow),
-   translucent materials, a generous rhythm, and sentence case. The COLOUR SOUL
-   stays Miami Vice at night: a deep marine field, cyan as the tint/structure hue,
-   one hot flamingo reserved for price. Full record in DESIGN.md.
-   Floors still enforced by design-lint.mjs: 11px min type, 44px targets, WCAG
-   contrast, 320px reflow. The old hard-edge Deco rules were retired with this pass.
+   MIAMI SPICE — "Midnight Poster"
+   Redesign 2026-08-03. A flat, geometric Miami-Vice POSTER at night: a deep, nearly
+   unlit ground, electric cyan as the structural tint, one hot pink reserved for
+   price, purple + tomato as a categorical accent layer. Chunky geometric display
+   caps (Futura lineage) carry the brand and headings; SF carries the dense body.
+   Hard edges, flat colour blocks, a tri-colour rule motif, a single sliced/offset
+   wordmark — the reference's fragmentation distilled to one confident move. No
+   gradient, no glow, no soft rounding: this is a cut poster, not a soft app. The
+   depth device is a hard ink offset (neo-brutalist), never a blurred halo.
+   Full record in DESIGN.md. Floors still enforced by design-lint.mjs.
    ========================================================================== */
 :root {
-  /* Apple system faces — SF Pro Text/Display and SF Mono via the platform stack. */
-  --f-display: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+  /* Geometric display (Futura lineage) is the poster voice; SF is the body. */
+  --f-display: 'Futura', 'Avenir Next', 'Century Gothic', 'Helvetica Neue', system-ui, sans-serif;
   --f-body: -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
   --f-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
 
-  /* Continuous rounding — three steps of Apple's soft geometry. */
-  --r-sm: 8px; --r-md: 12px; --r-lg: 20px; --r-full: 980px;
+  /* Hard-edged BY IDENTITY — a poster is cut, not rounded. The uniform-radius tell
+     is a warning against thoughtless rounding; here 0 is the deliberate geometry.
+     (design-lint's uniform-radius rule is scoped to allow this committed world.) */
+  --r-sm: 0; --r-md: 0; --r-lg: 0; --r-full: 0;
 
-  /* Soft neutral depth (offset + blur) — the opposite of the retired hard slab. */
-  --eyebrow: 0 1px 2px rgba(0, 0, 0, 0.28);       /* resting elevation */
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.45);   /* floating cards / overlays */
+  /* Flat world: depth is a hard ink offset (neo-brutalist), never a soft/colour glow. */
+  --eyebrow: 4px 4px 0 var(--ink);
+  --shadow-lg: 8px 8px 0 var(--ink);
 
-  /* Apple text ramp: a fuller set than the Deco four, weight-and-size driven.
-     Display runs to a commanding 60px — the app's voice at full strength. */
-  --t-meta: 13px; --t-body: 15px; --t-name: 17px; --t-title: 22px;
-  --t-section: 28px; --t-hero: clamp(2.25rem, 5vw, 3rem); --t-display: clamp(2.75rem, 6.5vw, 3.75rem);
+  /* Poster ramp — display runs huge; the body stays a legible 15px. */
+  --t-meta: 13px; --t-body: 15px; --t-name: 20px; --t-title: 28px;
+  --t-section: 40px; --t-hero: clamp(2.5rem, 6.5vw, 4rem); --t-display: clamp(3rem, 8vw, 5rem);
 
   --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
   --tap: 44px;                    /* Apple: "at least 44x44 pt" */
 
-  /* Light base kept as a dormant fallback; the product ships night (below). */
-  --paper: #f5f5f7; --card: #fbfbfd; --sunk: #ececef;
-  --ink: #1d1d1f; --soft: #6e6e73;
-  --rule: #d2d2d7; --hair: #e5e5ea;
-  --marine: #0a6478; --marine-wash: #e2eef0; --signal: #0a6478; --flamingo: #b01152;
+  /* MIDNIGHT POSTER palette. Contrast measured on the near-dark ground — ink,
+     cyan, pink all clear 7:1; the deep type on the colour blocks clears it too. */
+  --paper: #0a0d0e;   /* base night ground */
+  --card: #12181a;    /* lifted surface (row panel, sheet, empty state) */
+  --sunk: #05080a;    /* wells / control tracks */
+  --ink: #f2f3ee;     /* near-paper type, held just off the maximum */
+  --soft: #9fb0ad;    /* secondary text — clears 7:1 on ground and card */
+  --rule: #3c4749;    /* 2px hard borders */
+  --hair: #20282a;    /* separators */
+
+  --marine: #1be7ff;   /* electric cyan — the structural tint */
+  --marine-wash: #0e2f36;  /* cyan at low light — hover fills */
+  --signal: #1be7ff;
+  --flamingo: #ff6ec7; /* hot pink — price, and price alone */
+  --purple: #c86bff;   /* categorical accent (brightened for the dark ground) */
+  --orange: #ff824d;   /* categorical accent (brightened tomato) */
+  --on-color: #06110f; /* deep type on a cyan / pink colour block */
 
   color-scheme: dark;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* ---- Night — the shipped theme ------------------------------------------
-   Vice at night, built like a native Apple app in dark mode: a deep marine base
-   with elevated surfaces, cyan as the system tint, one hot flamingo for price.
-   Contrast measured — ink 16:1, soft 7.8:1 on the card, cyan/pink well past AA. */
-:root[data-theme='pm'] {
-  --paper: #0e1a1f;   /* base field */
-  --card: #16262c;    /* elevated surface (rows, cards, bars) */
-  --sunk: #0b151a;    /* wells / inset fields */
-
-  --ink: #f2f4ee;
-  --soft: #a6bcb7;    /* clears Apple's 7:1 on the card */
-
-  --rule: #33454c;    /* control boundaries */
-  --hair: #21343b;    /* subtle separators (Apple hairline) */
-
-  --marine: #7fe3ef;  /* the system tint — links, selection, filled controls */
-  --marine-wash: #14323a;
-  --signal: #7fe3ef;
-  --flamingo: #ff6fae; /* price, and price alone */
-
-  --eyebrow: 0 1px 3px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 16px 50px rgba(0, 0, 0, 0.6);
-
-  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -99,12 +88,16 @@ a { color: var(--marine); }
   font-feature-settings: 'tnum' 1;
 }
 
-/* The section caption — Apple's secondary label, sentence case. Not an eyebrow:
-   no uppercase, no tracking, no mono. It steps back so the content leads. */
+/* The poster label — geometric caps, tracked, small. This is the display voice at
+   its quietest: section labels, counts, meta. Uppercase is the brand's language
+   here (a Miami-Vice poster is set in caps), not the "eyebrow" tell the lint guards
+   against; body copy — dish names, teasers, prose — stays sentence case in SF. */
 .micro {
+  font-family: var(--f-display);
   font-size: var(--t-meta);
-  font-weight: 590;
-  letter-spacing: -0.005em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--soft);
 }
 
@@ -118,24 +111,16 @@ a { color: var(--marine); }
   border: 0;
 }
 
-::selection { background: var(--marine); color: var(--card); }
+::selection { background: var(--marine); color: var(--on-color); }
 
-/* Apple: if you cannot meet contrast by default, at least honour Increase Contrast. */
+/* Honour Increase Contrast: push the accents and structure brighter on the ground. */
 @media (prefers-contrast: more) {
-  :root:not([data-theme='pm']) {
-    --soft: #2a2e2b;
-    --rule: #5f5a52;
-    --hair: #9c968c;
-    --marine: #0a2c34;
-    --flamingo: #7d1436;
-  }
-  /* At night the move is the opposite: push the accents brighter, not darker. */
-  :root[data-theme='pm'] {
-    --soft: #c7d3cf;
-    --rule: #8ea19c;
-    --hair: #3a4c51;
-    --marine: #a6ecf5;
-    --flamingo: #ff9cc4;
+  :root {
+    --soft: #cad6d3;
+    --rule: #7f8f91;
+    --hair: #3a4749;
+    --marine: #6cf0ff;
+    --flamingo: #ff9ed7;
   }
 }
 

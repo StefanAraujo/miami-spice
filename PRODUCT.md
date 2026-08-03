@@ -75,10 +75,13 @@ Desserts), `serves` (`meal@DAY` availability tokens), the day×meal availability
 ## Brand Commitments
 
 - **Name:** "Miami Spice" — used unofficially.
-- **Binding visual constraint (owner-stated, recorded verbatim, not expanded here):** the theme
-  must be *purely "Miami Vice" captured* — the entire design and colour scheme — combined with
-  *Apple (HIG) design guidelines* for modern styling. The concrete visual world that satisfies
-  this belongs in `DESIGN.md` / new-work, not in this product record.
+- **Binding visual constraint (owner-stated):** the theme must be *purely "Miami Vice" captured* —
+  the entire design and colour scheme — rendered **modern**. The current committed world is
+  **"Midnight Poster"** (brief-pinned 2026-08-03 from the owner's colorswall #246639 palette and
+  the sliced-caps Miami Vice logo): a flat, geometric night poster — electric-cyan structure, one
+  hot-pink price, hard edges, Futura-lineage caps. It superseded the earlier "Apple form · Vice
+  night" (soft-round SF) take; the Apple-HIG rendition is retired, though its restraint discipline
+  carries forward. The concrete visual world lives in `DESIGN.md`, not this product record.
 - **Anti-AI-slop design discipline is binding**, not incidental: the `design-lint.mjs` floors and
   the "no neon glow, no gradient, hard-edged, restraint-first" standard
   (`DESIGN_REVIEW.md`, `VICE_DIRECTION.md`) are commitments. Note the deliberate reconciliation

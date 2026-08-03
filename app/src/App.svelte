@@ -236,22 +236,25 @@
   }
 </script>
 
-<!-- DIRECTION: "Apple form · Vice night" (2026-08-02 redesign). Form language is
-     Apple HIG — SF system type, continuous rounded corners, soft neutral depth,
-     translucent-grade layering, generous rhythm, sentence case, system-tint
-     controls. Colour soul stays Miami Vice at night: deep marine field, cyan tint,
-     one flamingo for price. All product truth, function, copy and constraints
-     preserved; the retired look was Tropical Deco (hard offset "eyebrow" slab,
-     Poiret/Jost, uppercase eyebrows). See DESIGN.md. -->
-
-<!-- An iOS-style large title: the wordmark leads, a system-tint action sits to the
-     right, and a quiet subtitle carries the facts. Sentence case, soft, no ornament. -->
+<!-- DIRECTION: "Midnight Poster" (2026-08-03 redesign).
+     THESIS: Miami Vice as a flat geometric poster at night, not a soft app and not
+       neon-glow synthwave; it refuses rounded corners and gradient chrome.
+     OWN-WORLD: near-dark ground, electric-cyan structural tint, one hot-pink price;
+       Futura-lineage caps for brand/headings, SF for the dense body; hard 2px edges,
+       flat colour blocks, a tri-colour rule, a single sliced/offset wordmark.
+     STORY: a visitor lands on a bold poster, picks a craving/mood/night from colour-
+       blocked tiles or "pick one for us," scans crisp rows, opens the full menu.
+     FIRST VIEWPORT: sliced MIAMI/SPICE wordmark top-left, tri-colour rule, then a
+       huge caps mood headline over the colour-blocked discover wall.
+     FORM: editorial poster / Swiss grid, brief-pinned by the user's reference.
+     FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md. -->
 <header class="masthead">
   <div class="wrap topbar">
-    <div class="brand">
-      <span class="brandmark" aria-hidden="true"><ViceMark size={42} /></span>
-      <h1 class="wordmark"><button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">Miami Spice</button></h1>
-    </div>
+    <h1 class="wordmark">
+      <button type="button" class="wordmark-btn" onclick={goHome} title="Back to start" aria-label="Miami Spice — back to start">
+        <span class="wm1">Miami</span><span class="wm2" data-text="Spice">Spice</span>
+      </button>
+    </h1>
     <div class="masthead-tools">
       <button type="button" class="shortlist-btn" aria-pressed={showShortlist}
         onclick={() => (showShortlist = !showShortlist)}>
@@ -259,9 +262,10 @@
       </button>
     </div>
   </div>
+  <div class="wrap"><div class="tri" aria-hidden="true"><i></i><i></i><i></i></div></div>
   <div class="wrap subhead">
-    <p class="tagline">{tagline}</p>
-    <p class="promo">{promo}</p>
+    <p class="tagline micro">{tagline}</p>
+    <p class="promo micro">{promo}</p>
   </div>
 </header>
 
@@ -448,26 +452,39 @@
   .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--s6); }
 
   .masthead { padding: var(--s8) 0 0; }
-  .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s4); }
-  .brand { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
-  .brandmark { flex: none; color: var(--marine); }
+  .topbar { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s4); }
 
-  /* The large title — SF at full display strength, heavy and tight. This is the
-     bolder move: the app's name commands the top of the page. */
+  /* The sliced wordmark — geometric caps, MIAMI in ink over SPICE in cyan, with a
+     hard flat pink offset behind SPICE (the logo's misregistration, one clean move). */
   .wordmark {
     font-family: var(--f-display);
-    font-weight: 800;
+    font-weight: 700;
     font-size: var(--t-display);
-    letter-spacing: -0.035em;
-    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    line-height: 0.82;
     margin: 0;
   }
-  .wordmark-btn { display: inline-flex; align-items: center; min-height: var(--tap); font: inherit; letter-spacing: inherit; color: inherit; }
-  .wordmark-btn:hover { color: var(--marine); }
+  .wordmark-btn { font: inherit; letter-spacing: inherit; color: inherit; text-align: left; }
+  .wm1 { display: block; color: var(--ink); }
+  .wm2 { display: block; color: var(--marine); position: relative; }
+  .wm2::before {
+    content: attr(data-text);
+    position: absolute; left: 0.06em; top: 0.06em;
+    color: var(--flamingo); z-index: -1;
+  }
+  .wordmark-btn:hover .wm1 { color: var(--marine); }
 
-  .subhead { margin-top: var(--s3); }
-  .tagline { margin: 0; font-size: var(--t-body); color: var(--soft); }
-  .promo { margin: var(--s1) 0 0; font-size: var(--t-body); color: var(--marine); }
+  /* The rule of three — the tri-colour bar under the masthead. */
+  .tri { display: flex; width: 300px; max-width: 60%; height: 9px; margin: var(--s4) auto 0 0; }
+  .tri i { flex: 1; }
+  .tri i:nth-child(1) { background: var(--marine); }
+  .tri i:nth-child(2) { background: var(--flamingo); }
+  .tri i:nth-child(3) { background: var(--ink); }
+
+  .subhead { margin-top: var(--s4); }
+  .tagline { margin: 0; }
+  .promo { margin: var(--s2) 0 0; color: var(--flamingo); }
 
   .intro {
     display: flex;
@@ -478,9 +495,7 @@
     margin-top: var(--s5);
     padding: var(--s4) var(--s5);
     background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-lg);
-    box-shadow: var(--eyebrow);
+    border: 2px solid var(--rule);
   }
   .intro p { margin: 0; font-size: var(--t-body); color: var(--soft); max-width: 66ch; }
   .intro-x {
@@ -489,13 +504,23 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s5);
-    border-radius: var(--r-full);
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
     background: var(--marine);
-    color: var(--card);
-    font-weight: 590;
+    color: var(--on-color);
   }
-  .intro-x:hover { filter: brightness(1.08); }
+  .intro-x:hover { background: var(--ink); color: var(--paper); }
 
+  /* Sentence-carrying captions opt out of the uppercase poster label. */
+  .moodhint, .pickwhy, .share-msg, .fix {
+    font-family: var(--f-body);
+    text-transform: none;
+    letter-spacing: normal;
+    font-weight: 400;
+  }
   .moodhint { margin: var(--s3) 0 0; color: var(--soft); }
   .pickwhy { margin: var(--s3) 0 0; color: var(--marine); }
 
@@ -507,42 +532,52 @@
     gap: var(--s2);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    border-radius: var(--r-full);
-    background: var(--sunk);
+    border: 2px solid var(--rule);
+    background: transparent;
     color: var(--ink);
-    font-size: var(--t-body);
-    font-weight: 500;
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
   }
-  .shortlist-btn:hover { background: var(--marine-wash); }
-  .shortlist-btn[aria-pressed='true'] { background: var(--marine); color: var(--card); }
-  .shortlist-btn .badge { background: var(--flamingo); color: var(--card); border-radius: var(--r-full); padding: 1px 8px; font-size: var(--t-meta); }
-  .shortlist-btn[aria-pressed='true'] .badge { background: var(--card); color: var(--marine); }
+  .shortlist-btn:hover { border-color: var(--marine); color: var(--marine); }
+  .shortlist-btn[aria-pressed='true'] { background: var(--marine); border-color: var(--marine); color: var(--on-color); }
+  .shortlist-btn .badge { background: var(--flamingo); color: var(--on-color); padding: 1px 8px; font-size: var(--t-meta); }
+  .shortlist-btn[aria-pressed='true'] .badge { background: var(--on-color); color: var(--flamingo); }
 
   .share-btn {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
-    padding: 0 var(--s4);
-    border-radius: var(--r-full);
+    padding: 0 var(--s5);
     background: var(--marine);
-    color: var(--card);
-    font-weight: 590;
+    color: var(--on-color);
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
     box-shadow: var(--eyebrow);
   }
-  .share-btn:hover { filter: brightness(1.08); }
+  .share-btn:hover { background: var(--ink); color: var(--paper); }
   .share-msg { margin: var(--s3) 0 0; color: var(--signal); }
-  .undo-link { color: var(--marine); text-decoration: underline; }
+  .undo-link { color: var(--flamingo); text-decoration: underline; }
 
   .sl-action {
     display: inline-flex;
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s4);
-    border-radius: var(--r-full);
-    background: var(--sunk);
+    border: 2px solid var(--rule);
     color: var(--soft);
+    font-family: var(--f-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-size: var(--t-meta);
   }
-  .sl-action:hover { color: var(--ink); background: var(--marine-wash); }
+  .sl-action:hover { color: var(--ink); border-color: var(--ink); }
 
 
   .layout {
@@ -564,52 +599,57 @@
     min-height: var(--tap);
     padding: 0 var(--s4);
     background: var(--sunk);
-    border: 1px solid transparent;
-    border-radius: var(--r-md);
+    border: 2px solid var(--rule);
     font-size: var(--t-body);
   }
   .search input::placeholder { color: var(--soft); }
-  .search input:hover { background: var(--marine-wash); }
-  .search input:focus { background: var(--card); border-color: var(--marine); }
+  .search input:hover { border-color: var(--marine); }
+  .search input:focus { border-color: var(--marine); }
 
+  /* The heavy poster rule under the count — 3px ink, the section break. */
   .bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--s4);
     padding-bottom: var(--s4);
-    border-bottom: 1px solid var(--hair);
+    border-bottom: 3px solid var(--ink);
   }
 
-  .count { margin: 0; display: flex; align-items: baseline; gap: var(--s2); }
-  .count strong { font-size: var(--t-section); font-weight: 800; letter-spacing: -0.03em; }
+  .count { margin: 0; display: flex; align-items: baseline; gap: var(--s3); }
+  .count strong { font-family: var(--f-display); font-size: var(--t-section); font-weight: 700; letter-spacing: -0.02em; color: var(--marine); }
 
   .bar-right { display: flex; align-items: center; gap: var(--s2); }
 
-  /* iOS segmented control — a filled track with a soft neutral thumb on the
-     selected segment, not a tinted fill. */
-  .viewsel { display: inline-flex; gap: 2px; padding: 3px; background: var(--sunk); border-radius: var(--r-md); }
+  /* Poster segmented control — a 2px ink frame, the selected segment fills cyan. */
+  .viewsel { display: inline-flex; border: 2px solid var(--rule); }
   .viewsel button {
     min-height: var(--tap);
     padding: 0 var(--s4);
+    font-family: var(--f-display);
     font-size: var(--t-meta);
-    font-weight: 590;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--soft);
-    border-radius: var(--r-sm);
   }
-  .viewsel button[aria-pressed='true'] { background: var(--card); color: var(--ink); box-shadow: var(--eyebrow); }
+  .viewsel button + button { border-left: 2px solid var(--rule); }
+  .viewsel button[aria-pressed='true'] { background: var(--marine); color: var(--on-color); }
 
-  .bar-share { min-height: var(--tap); padding: 0 var(--s4); border-radius: var(--r-full); background: var(--sunk); color: var(--soft); }
-  .bar-share:hover { color: var(--marine); background: var(--marine-wash); }
+  .bar-share {
+    min-height: var(--tap); padding: 0 var(--s4);
+    border: 2px solid var(--rule); color: var(--soft);
+    font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-meta);
+  }
+  .bar-share:hover { color: var(--marine); border-color: var(--marine); }
 
   .sortsel select {
     min-height: var(--tap);
     padding: 0 var(--s3);
     background: var(--sunk);
-    border: 1px solid transparent;
-    border-radius: var(--r-md);
+    border: 2px solid var(--rule);
     font-size: var(--t-meta);
-    color: var(--soft);
+    color: var(--ink);
   }
 
   .toggle {
@@ -617,8 +657,8 @@
     align-items: center;
     min-height: var(--tap);
     padding: 0 var(--s4);
-    background: var(--sunk);
-    border-radius: var(--r-full);
+    border: 2px solid var(--rule);
+    font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--t-meta);
     white-space: nowrap;
   }
 
@@ -627,41 +667,43 @@
     display: inline-flex;
     align-items: center;
     gap: var(--s2);
-    min-height: var(--tap);
+    min-height: 38px;
     padding: 0 var(--s3) 0 var(--s4);
-    border-radius: var(--r-full);
     background: var(--marine);
-    color: var(--card);
+    color: var(--on-color);
+    font-family: var(--f-display);
     font-size: var(--t-meta);
-    font-weight: 590;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
   .chips .x { font-size: var(--t-body); line-height: 1; opacity: 0.75; }
-  .chips .clear { background: var(--sunk); color: var(--soft); }
-  .chips .clear:hover { color: var(--flamingo); }
+  .chips .clear { background: transparent; color: var(--soft); border: 2px solid var(--rule); }
+  .chips .clear:hover { color: var(--flamingo); border-color: var(--flamingo); }
 
-  /* fit-content + max-width keeps the segmented control from pushing the page
-     wide at 320px (WCAG 1.4.10); if it can't fit, it scrolls inside itself. */
+  /* Poster segmented course lens — 2px ink frame, selected fills cyan. It scrolls
+     inside itself at 320px rather than pushing the page wide (WCAG 1.4.10). */
   .courses {
     display: flex;
-    gap: 2px;
     width: fit-content;
     max-width: 100%;
     overflow-x: auto;
-    padding: 3px;
-    background: var(--sunk);
-    border-radius: var(--r-md);
+    border: 2px solid var(--rule);
     margin: var(--s5) 0 var(--s2);
   }
   .courses button {
     flex: 0 0 auto;
     min-height: var(--tap);
     padding: 0 var(--s4);
+    font-family: var(--f-display);
     font-size: var(--t-meta);
-    font-weight: 590;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--soft);
-    border-radius: var(--r-sm);
   }
-  .courses button[aria-pressed='true'] { background: var(--card); color: var(--ink); box-shadow: var(--eyebrow); }
+  .courses button + button { border-left: 2px solid var(--rule); }
+  .courses button[aria-pressed='true'] { background: var(--marine); color: var(--on-color); }
 
   .list { list-style: none; margin: 0; padding: 0; }
 
@@ -669,13 +711,12 @@
     margin-top: var(--s5);
     padding: var(--s7) var(--s6);
     background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-lg);
+    border: 2px solid var(--rule);
     box-shadow: var(--eyebrow);
   }
   .empty-mark { display: block; color: var(--marine); margin-bottom: var(--s4); }
-  .empty .lead { font-size: var(--t-title); font-weight: 700; letter-spacing: -0.02em; margin: 0 0 var(--s3); }
-  .empty .fix { margin: 0 0 var(--s3); }
+  .empty .lead { font-family: var(--f-display); text-transform: uppercase; font-size: var(--t-title); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 var(--s3); }
+  .empty .fix { margin: 0 0 var(--s3); color: var(--soft); }
   .empty ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); justify-items: start; }
   .empty ul button, .empty .reset {
     display: inline-flex;
@@ -683,13 +724,13 @@
     gap: var(--s3);
     min-height: var(--tap);
     padding: 0 var(--s4);
-    background: var(--sunk);
-    border-radius: var(--r-full);
+    background: transparent;
+    border: 2px solid var(--rule);
     font-size: var(--t-body);
     color: var(--ink);
   }
-  .empty ul button:hover, .empty .reset:hover { background: var(--marine-wash); color: var(--ink); }
-  .empty .n { color: var(--marine); font-size: var(--t-body); }
+  .empty ul button:hover, .empty .reset:hover { border-color: var(--marine); color: var(--marine); }
+  .empty .n { color: var(--marine); font-size: var(--t-body); font-weight: 700; }
 
   .sentinel { text-align: center; padding: var(--s6); }
 
@@ -701,16 +742,17 @@
     width: 100%;
     min-height: var(--tap);
     margin-top: var(--s5);
-    background: var(--card);
-    border: 1px solid var(--hair);
-    border-radius: var(--r-full);
-    box-shadow: var(--eyebrow);
-    font-size: var(--t-body);
-    font-weight: 590;
+    background: transparent;
+    border: 2px solid var(--rule);
+    font-family: var(--f-display);
+    font-size: var(--t-meta);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--marine);
   }
-  .loadmore:hover { background: var(--marine-wash); }
-  .loadmore .n { color: var(--soft); font-weight: 400; }
+  .loadmore:hover { border-color: var(--marine); background: var(--marine-wash); }
+  .loadmore .n { color: var(--soft); }
 
   footer { padding: var(--s7) var(--s6); text-align: center; }
   footer p { margin: 0; }

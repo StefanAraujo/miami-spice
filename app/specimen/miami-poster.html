@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Miami Spice — Poster Modern (specimen)</title>
+<style>
+  :root{
+    --paper:#ffffff; --paper2:#f3f2ec; --ink:#0b0b0c;
+    --cyan:#1be7ff; --teal:#008080; --cyan-ink:#065f66;
+    --pink:#ff6ec7; --pink-ink:#a01f6f;
+    --purple:#bf00ff; --orange:#ff5733;
+    --disp:'Futura','Avenir Next','Century Gothic','Helvetica Neue',system-ui,sans-serif;
+    --body:-apple-system,BlinkMacSystemFont,'SF Pro Text',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:var(--body);-webkit-font-smoothing:antialiased;padding:56px 64px 80px}
+  .wrap{max-width:1160px;margin:0 auto}
+
+  /* ---- masthead ---- */
+  .top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+  .wordmark{font-family:var(--disp);font-weight:700;letter-spacing:-.02em;line-height:.82;font-size:88px;text-transform:uppercase}
+  /* the sliced/offset signature: cyan face, hard flat pink offset behind — a single
+     confident misregistration, the logo's fragmentation distilled to one move */
+  .wordmark .l1{display:block;color:var(--ink)}
+  .wordmark .l2{display:block;color:var(--cyan);position:relative}
+  .wordmark .l2::before{content:'SPICE';position:absolute;left:6px;top:6px;color:var(--pink);z-index:-1}
+  .tri{display:flex;gap:0;margin-top:18px;width:340px;height:10px}
+  .tri i{flex:1}
+  .tri i:nth-child(1){background:var(--cyan)}
+  .tri i:nth-child(2){background:var(--pink)}
+  .tri i:nth-child(3){background:var(--ink)}
+  .tools{display:flex;gap:10px;flex:none}
+  .chip-shortlist{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:15px;background:var(--ink);color:#fff;padding:12px 20px}
+  .chip-share{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:15px;background:var(--cyan);color:var(--cyan-ink);padding:12px 20px}
+
+  /* ---- hero ---- */
+  .hero{margin-top:58px}
+  .kicker{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:13px;color:var(--pink-ink)}
+  .headline{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:-.02em;line-height:.92;font-size:64px;margin-top:10px;max-width:15ch}
+  .headline .c{color:var(--cyan);-webkit-text-stroke:2px var(--teal)}
+  .sub{margin-top:16px;font-size:17px;color:#4b4a45;max-width:52ch;line-height:1.5}
+
+  .decide{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}
+  .btn{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.02em;font-size:16px;padding:16px 26px;border:2px solid var(--ink)}
+  .btn.primary{background:var(--ink);color:var(--cyan);border-color:var(--ink)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost b{color:var(--pink-ink)}
+
+  /* ---- discover poster wall ---- */
+  .lane-h{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:#8a897f;margin:44px 0 14px}
+  .tiles{display:flex;flex-wrap:wrap;gap:10px}
+  .tile{font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.01em;font-size:17px;padding:14px 18px;display:inline-flex;gap:10px;align-items:baseline;border:2px solid var(--ink)}
+  .tile .n{font-family:var(--body);font-weight:600;font-size:13px}
+  .tile.cyan{background:var(--cyan);color:var(--cyan-ink);border-color:var(--cyan)}
+  .tile.cyan .n{color:var(--cyan-ink)}
+  .tile.pink{background:var(--pink);color:var(--pink-ink);border-color:var(--pink)}
+  .tile.pink .n{color:var(--pink-ink)}
+  .tile.ink{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .tile.ink .n{color:#c9c8c2}
+  .tile.line{background:transparent;color:var(--ink)}
+  .tile.line .n{color:#8a897f}
+
+  /* ---- result rows ---- */
+  .rows{margin-top:44px;border-top:3px solid var(--ink)}
+  .row{display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;padding:20px 4px;border-bottom:1px solid #dddcd4}
+  .row:hover{background:var(--paper2)}
+  .name{font-family:var(--disp);font-weight:700;font-size:24px;letter-spacing:-.01em}
+  .meta{font-size:13px;color:#6b6a63;margin-top:4px;letter-spacing:.01em}
+  .teaser{font-size:15px;color:#4b4a45;margin-top:6px}
+  .side{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+  .price{font-family:var(--disp);font-weight:700;font-size:20px;background:var(--pink);color:var(--pink-ink);padding:6px 14px}
+  .when{font-size:12px;color:#6b6a63}
+
+  /* ---- palette footer ---- */
+  .pal{display:flex;gap:0;margin-top:56px;border:2px solid var(--ink)}
+  .pal div{flex:1;padding:16px 14px;font-family:var(--disp);font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:12px}
+  .pal .p-cyan{background:var(--cyan);color:var(--cyan-ink)}
+  .pal .p-pink{background:var(--pink);color:var(--pink-ink)}
+  .pal .p-ink{background:var(--ink);color:#fff}
+  .pal .p-purple{background:var(--purple);color:#fff}
+  .pal .p-orange{background:var(--orange);color:#4a1405}
+  .pal small{display:block;font-family:var(--body);font-weight:600;font-size:11px;opacity:.85;margin-top:4px;letter-spacing:0}
+  .note{margin-top:20px;font-size:13px;color:#8a897f;font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div>
+      <h1 class="wordmark"><span class="l1">Miami</span><span class="l2">Spice</span></h1>
+      <div class="tri" aria-hidden="true"><i></i><i></i><i></i></div>
+    </div>
+    <div class="tools">
+      <span class="chip-share">Share</span>
+      <span class="chip-shortlist">Shortlist 2</span>
+    </div>
+  </div>
+
+  <section class="hero">
+    <p class="kicker">Miami Beach · restaurant week · 379 spots</p>
+    <h2 class="headline">What are you in the <span class="c">mood</span> for?</h2>
+    <p class="sub">Can't decide? Let us pick — or start from a craving, a place, a time, or the occasion. Every menu, in full, filtered instantly.</p>
+    <div class="decide">
+      <span class="btn primary">Pick one for us</span>
+      <span class="btn ghost">Open tonight&nbsp;&nbsp;<b>Sunday</b></span>
+      <span class="btn ghost">Browse all 379</span>
+    </div>
+  </section>
+
+  <div class="lane-h">By cuisine</div>
+  <div class="tiles">
+    <span class="tile cyan">Italian <span class="n">71</span></span>
+    <span class="tile line">American <span class="n">56</span></span>
+    <span class="tile pink">Steakhouse <span class="n">39</span></span>
+    <span class="tile line">Japanese <span class="n">36</span></span>
+    <span class="tile ink">Mediterranean <span class="n">52</span></span>
+    <span class="tile line">Seafood <span class="n">28</span></span>
+  </div>
+
+  <div class="lane-h">By mood</div>
+  <div class="tiles">
+    <span class="tile pink">Steak &amp; fire <span class="n">84</span></span>
+    <span class="tile line">Raw &amp; cold <span class="n">61</span></span>
+    <span class="tile cyan">Date night <span class="n">92</span></span>
+    <span class="tile line">Adventurous <span class="n">84</span></span>
+  </div>
+
+  <div class="rows">
+    <div class="row">
+      <div>
+        <div class="name">Ahu | Mar</div>
+        <div class="meta">Italian, Peruvian · Brickell · 35 dishes</div>
+        <div class="teaser">Sopresatta Pizza · wood-fire salmon</div>
+      </div>
+      <div class="side"><span class="price">$40–$50</span><span class="when">Dinner $50 · daily · +2 more</span></div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="name">107 Steak and Bar</div>
+        <div class="meta">Steakhouse · Doral · 17 dishes</div>
+        <div class="teaser">Seared Atlantic salmon · pumpkin ravioli</div>
+      </div>
+      <div class="side"><span class="price">$40–$65</span><span class="when">Lunch $40 · Mon–Sat · +1 more</span></div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="name">Amazonia Nikkei</div>
+        <div class="meta">Japanese, Peruvian · Miami Lakes · 30 dishes</div>
+        <div class="teaser">Furia sushi roll · sake chatsun</div>
+      </div>
+      <div class="side"><span class="price">$40–$65</span><span class="when">Dinner $50 · Mon–Thu · +2 more</span></div>
+    </div>
+  </div>
+
+  <div class="pal">
+    <div class="p-cyan">Electric cyan<small>#1BE7FF · tint &amp; structure</small></div>
+    <div class="p-pink">Hot pink<small>#FF6EC7 · price only</small></div>
+    <div class="p-ink">Ink black<small>#0B0B0C · type &amp; edges</small></div>
+    <div class="p-purple">Purple<small>#BF00FF · category accent</small></div>
+    <div class="p-orange">Tomato<small>#FF5733 · category accent</small></div>
+  </div>
+  <p class="note">Specimen — display type shown in Futura/Avenir (system); production would self-host a geometric display (Monument Extended / Clash Display). Flat colour only: no gradient, no glow.</p>
+
+</div>
+</body>
+</html>
