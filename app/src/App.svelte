@@ -275,7 +275,7 @@
     <div class="rail-inner">
       <label class="search">
         <span class="sr-only">Search restaurants, cuisines or dishes</span>
-        <input type="search" placeholder="Search a name, cuisine, dish…" bind:value={f.query} />
+        <input type="search" placeholder="Search a name or dish…" bind:value={f.query} />
       </label>
 
       <section class="group">

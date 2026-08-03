@@ -234,6 +234,9 @@
     height: 200px;
     object-fit: cover;
     border-radius: var(--r-md);
+    /* A neutral surface behind the image so a slow or failed load reads as an
+       intentional panel, not a void; onerror still removes it entirely. */
+    background: var(--sunk);
     margin-bottom: var(--s5);
   }
 
