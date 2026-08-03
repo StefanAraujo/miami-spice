@@ -794,13 +794,19 @@
     .toggle { display: inline-flex; }
   }
 
-  @media (max-width: 560px) {
-    /* The sort <select> takes its intrinsic width from the longest option
-       ("Price low to high"), which pushes the filters button off-screen. */
-    .bar { flex-wrap: wrap; row-gap: var(--s2); }
-    .bar-right { flex: 1; min-width: 0; justify-content: flex-end; }
-    .sortsel { min-width: 0; }
-    .sortsel select { max-width: 100%; text-overflow: ellipsis; }
+  @media (max-width: 640px) {
+    /* Stack the results bar so the big count is never overlapped by the controls:
+       the count takes its own row, then List/Map/Share/Sort/Filters wrap below it.
+       640px (not 560) covers the band where the five controls + count stop fitting. */
+    .bar { flex-wrap: wrap; row-gap: var(--s3); align-items: flex-start; }
+    .count { flex: 1 0 100%; }
+    .bar-right { width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: var(--s2); }
+    .sortsel { flex: 1 1 auto; min-width: 0; }
+    .sortsel select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
+
+    /* Stack the masthead: wordmark on its own line, the switch + shortlist tools
+       below it — the pills never crowd the wordmark on a phone. */
+    .topbar { flex-direction: column; align-items: flex-start; gap: var(--s3); }
 
     .masthead { padding-top: var(--s5); }
     .intro { margin-top: var(--s4); padding: var(--s4); }
