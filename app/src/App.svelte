@@ -802,12 +802,12 @@
   }
 
   @media (max-width: 640px) {
-    /* Stack the results bar so the big count is never overlapped by the controls:
-       the count takes its own row, then List/Map/Share/Sort/Filters wrap below it.
-       640px (not 560) covers the band where the five controls + count stop fitting. */
-    .bar { flex-wrap: wrap; row-gap: var(--s3); align-items: flex-start; }
-    .count { flex: 1 0 100%; }
-    .bar-right { width: 100%; flex-wrap: wrap; justify-content: flex-start; gap: var(--s2); }
+    /* Column layout: the count and the controls are ALWAYS on separate rows — this
+       is cross-axis stacking, so it can never overlap, unlike flex-wrap + basis:100%
+       which some mobile browsers render as the count sitting on top of the controls. */
+    .bar { flex-direction: column; align-items: stretch; row-gap: var(--s3); }
+    .count { flex: 0 0 auto; }
+    .bar-right { flex-wrap: wrap; justify-content: flex-start; gap: var(--s2); }
     .sortsel { flex: 1 1 auto; min-width: 0; }
     .sortsel select { width: 100%; max-width: 100%; text-overflow: ellipsis; }
 
